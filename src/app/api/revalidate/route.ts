@@ -14,8 +14,8 @@ export async function GET(req: NextRequest) {
     tagsArray.map(async (tag) => {
       switch (tag) {
         case "products":
-          revalidatePath("/[countryCode]/(main)/store", "page")
-          revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
+          revalidatePath("/us/store")
+          //revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
         // TODO add for other tags
       }
     })
