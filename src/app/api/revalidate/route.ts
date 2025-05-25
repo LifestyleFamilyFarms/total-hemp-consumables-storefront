@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
+import type { NextApiRequest } from 'next';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextApiRequest) {
   // Verify revalidation secret
-  return NextResponse.json({ message: "Revalidation endpoint hit" }, { status: 200 })
+  return Response.json({ message: "Revalidation endpoint hit" }, { status: 200 })
   // const searchParams = req.nextUrl.searchParams
   // const secret = searchParams.get("secret")
   // const tags = searchParams.get("tags") as string

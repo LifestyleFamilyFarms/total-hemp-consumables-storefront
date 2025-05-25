@@ -45,8 +45,8 @@ export const getCacheOptions = async (
   // Always return cache tags, even if no cache ID is present
   return { 
     tags: [cacheTag],
-    // Add a default revalidation time of 1 hour
-    revalidate: 3600
+    // Add a default revalidation time of 1 minute
+    revalidate: 60
   }
 }
 
