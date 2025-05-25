@@ -24,12 +24,12 @@ export const getCacheTag = async (tag: string): Promise<string> => {
     const cacheId = cookies.get("_medusa_cache_id")?.value
 
     if (!cacheId) {
-      return ""
+      return tag
     }
 
     return `${tag}-${cacheId}`
   } catch (error) {
-    return ""
+    return tag
   }
 }
 
@@ -41,12 +41,13 @@ export const getCacheOptions = async (
   }
 
   const cacheTag = await getCacheTag(tag)
-
-  if (!cacheTag) {
-    return {}
+  
+  // Always return cache tags, even if no cache ID is present
+  return { 
+    tags: [cacheTag],
+    // Add a default revalidation time of 1 hour
+    revalidate: 3600
   }
-
-  return { tags: [`${cacheTag}`] }
 }
 
 export const setAuthToken = async (token: string) => {
