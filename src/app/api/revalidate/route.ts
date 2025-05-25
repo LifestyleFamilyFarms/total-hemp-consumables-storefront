@@ -4,7 +4,7 @@ import type { NextApiRequest } from 'next';
 
 export async function GET(req: NextApiRequest) {
   // Verify revalidation secret
-  return Response.json({ message: "Revalidation endpoint hit" }, { status: 200 })
+  return Response.json({ message: "-GET- Revalidation endpoint -GET-" }, { status: 200 })
   // const searchParams = req.nextUrl.searchParams
   // const secret = searchParams.get("secret")
   // const tags = searchParams.get("tags") as string
