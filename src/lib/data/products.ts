@@ -65,10 +65,9 @@ export const listProducts = async ({
     idPart
   ].join("-")
 
-  // Use getCacheOptions for consistency and set a 1-week revalidation
+  // Use getCacheOptions for consistency and set a 30 day revalidation
   const next = {
-    ...(await getCacheOptions(cacheTag)),
-    revalidate: 3600 * 24 * 7, // 1 day
+    ...(await getCacheOptions(cacheTag))
   }
 
   return sdk.client
