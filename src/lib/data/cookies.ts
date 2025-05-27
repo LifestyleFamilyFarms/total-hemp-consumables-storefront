@@ -7,11 +7,7 @@ export const getAuthHeaders = async (): Promise<
   try {
     const cookies = await nextCookies()
     const token = cookies.get("_medusa_jwt")?.value
-
-    if (!token) {
-      return {}
-    }
-
+    if (!token) return {}
     return { authorization: `Bearer ${token}` }
   } catch {
     return {}
@@ -22,11 +18,7 @@ export const getCacheTag = async (tag: string): Promise<string> => {
   try {
     const cookies = await nextCookies()
     const cacheId = cookies.get("_medusa_cache_id")?.value
-
-    if (!cacheId) {
-      return tag
-    }
-
+    if (!cacheId) return tag
     return `${tag}-${cacheId}`
   } catch (error) {
     return tag
@@ -35,18 +27,14 @@ export const getCacheTag = async (tag: string): Promise<string> => {
 
 export const getCacheOptions = async (
   tag: string
-): Promise<{ tags: string[] } | {}> => {
-  if (typeof window !== "undefined") {
-    return {}
-  }
-
+): Promise<{ tags: string[]; revalidate: number }> => {
+  if (typeof window !== "undefined") return { tags: [tag], revalidate: 3600*24*7}
   const cacheTag = await getCacheTag(tag)
-  
   // Always return cache tags, even if no cache ID is present
   return { 
     tags: [cacheTag],
-    // Add a default revalidation time of 1 day
-    revalidate: 3600
+    // Add a default revalidation time of 1 week
+    revalidate: 3600 * 24 *7
   }
 }
 

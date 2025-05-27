@@ -49,8 +49,26 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
+  // --- Enhanced Caching Policy ---
+  // Create a cache tag that is unique per region and query params
+  let idPart = "all"
+  if (queryParams?.id) {
+    if (Array.isArray(queryParams.id)) {
+      idPart = queryParams.id.join(",")
+    } else {
+      idPart = queryParams.id
+    }
+  }
+  const cacheTag = [
+    "products",
+    region.id,
+    idPart
+  ].join("-")
+
+  // Use getCacheOptions for consistency and set a 1-day revalidation
   const next = {
-    ...(await getCacheOptions("products")),
+    ...(await getCacheOptions(cacheTag)),
+    revalidate: 3600 * 24, // 1 day
   }
 
   return sdk.client
@@ -61,14 +79,14 @@ export const listProducts = async ({
         query: {
           limit,
           offset,
-          region_id: region?.id,
+          region_id: region.id,
           fields:
             "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
           ...queryParams,
         },
         headers,
         next,
-        cache: 'no-store',
+        cache: 'force-cache',
       }
     )
     .then(({ products, count }) => {
@@ -118,11 +136,8 @@ export const listProductsWithSort = async ({
   })
 
   const sortedProducts = sortProducts(products, sortBy)
-
   const pageParam = (page - 1) * limit
-
   const nextPage = count > pageParam + limit ? pageParam + limit : null
-
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
 
   return {
