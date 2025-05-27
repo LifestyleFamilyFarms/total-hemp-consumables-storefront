@@ -65,10 +65,10 @@ export const listProducts = async ({
     idPart
   ].join("-")
 
-  // Use getCacheOptions for consistency and set a 1-day revalidation
+  // Use getCacheOptions for consistency and set a 1-week revalidation
   const next = {
     ...(await getCacheOptions(cacheTag)),
-    revalidate: 3600 * 24, // 1 day
+    revalidate: 3600 * 24 * 7, // 1 day
   }
 
   return sdk.client
@@ -91,7 +91,6 @@ export const listProducts = async ({
     )
     .then(({ products, count }) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
-
       return {
         response: {
           products,
