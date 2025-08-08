@@ -79,6 +79,16 @@ export async function GET(req: NextRequest) {
           case "regions":
             revalidatePath("/", "page")
             revalidatedPaths.push("/")
+            revalidatePath("/us", "page")
+            revalidatedPaths.push("/us")
+            revalidatePath("/[countryCode]", "page")
+            revalidatedPaths.push("/[countryCode]")
+            // Revalidate all product pages as pricing may change
+            revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
+            revalidatedPaths.push("/[countryCode]/(main)/products/[handle]")
+            // Revalidate cart as shipping/payment options may change
+            revalidatePath("/[countryCode]/(main)/cart", "page")
+            revalidatedPaths.push("/[countryCode]/(main)/cart")
             break
           default:
             console.warn(`Unknown revalidation tag: ${tag}`)
