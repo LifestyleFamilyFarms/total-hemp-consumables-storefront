@@ -1,17 +1,19 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants"
+import { isStripe as isStripeFunc, isAuthorizeNet, PAYMENT_METHOD_INFO, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import PaymentContainer, {
   StripeCardContainer,
+  AuthorizeNetCardContainer,
 } from "@modules/checkout/components/payment-container"
 import Divider from "@modules/common/components/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
+import { createToken } from "authorizenet-react"
 
 const Payment = ({
   cart,
@@ -39,6 +41,7 @@ const Payment = ({
   const isOpen = searchParams.get("step") === "payment"
 
   const isStripe = isStripeFunc(selectedPaymentMethod)
+  const isAuthorize = isAuthorizeNet(selectedPaymentMethod)
 
   const setPaymentMethod = async (method: string) => {
     setError(null)
@@ -95,6 +98,55 @@ const Payment = ({
           }
         )
       }
+
+      const isStripeSelected = isStripeFunc(selectedPaymentMethod)
+      const isAN = isAuthorizeNet(selectedPaymentMethod)
+
+      // STRIPE: two-step flow (init session -> fill card -> then review)
+      if (isStripeSelected) {
+        const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
+
+        if(!hasActiveForSelected) {
+          await initiatePaymentSession(cart, {
+            provider_id: selectedPaymentMethod,
+          })
+          // stay on page so Stripe elements can render
+          return
+        }
+        // already have an active session -> move to review
+        return router.push(pathname + "?" + createQueryString("step", "review"), {
+            scroll: false,
+        })
+      }
+
+      // AUTHORIZE.NET: tokenize then create session with opaqueData, then review
+      if(isAN) {
+        if(!cardComplete) {
+          setError("Please complete your card details.")
+          return
+        }
+        const token = await createToken()
+        const opaqueData = token?.opaqueData
+        if(!opaqueData?.dataDescriptor || !opaqueData?.dataValue) {
+          throw new Error("Could not tokenie card. Try again.")
+        }
+        await initiatePaymentSession(cart, {
+          provider_id: selectedPaymentMethod,
+          data: { opaqueData },
+        })
+        return router.push(pathname + "?" + createQueryString("step", "review"), {
+          scroll: false,
+        })
+      }
+
+      //OTHER PROVIDERS: ensure then go to review
+      const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
+      if(!hasActiveForSelected){
+        await initiatePaymentSession(cart, { provider_id: selectedPaymentMethod })
+      }
+      return router.push(pathname + "?" + createQueryString("step", "review"), {
+        scroll: false,
+      })
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -136,7 +188,7 @@ const Payment = ({
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && availablePaymentMethods?.length && (
+          {!paidByGiftcard && ((availablePaymentMethods?.length ?? 0) > 0) && (
             <>
               <RadioGroup
                 value={selectedPaymentMethod}
@@ -153,7 +205,18 @@ const Payment = ({
                         setError={setError}
                         setCardComplete={setCardComplete}
                       />
-                    ) : (
+                    ) : isAuthorizeNet(paymentMethod.id)?(
+                      <AuthorizeNetCardContainer
+                        paymentProviderId={paymentMethod.id}
+                        selectedPaymentOptionId={selectedPaymentMethod}
+                        paymentInfoMap={paymentInfoMap}
+                        setCardBrand={setCardBrand}
+                        setError={setError}
+                        setCardComplete={setCardComplete}
+                        setOpaqueData={()=>{}}
+                        cardComplete={cardComplete}
+                      />
+                   ) : (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}
                         paymentProviderId={paymentMethod.id}
@@ -191,12 +254,13 @@ const Payment = ({
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
-              (isStripe && !cardComplete) ||
+              ((isStripe || isAuthorize) && !cardComplete) ||
               (!selectedPaymentMethod && !paidByGiftcard)
             }
             data-testid="submit-payment-button"
           >
-            {!activeSession && isStripeFunc(selectedPaymentMethod)
+            {!activeSession && 
+            (isStripeFunc(selectedPaymentMethod) || isAuthorizeNet(selectedPaymentMethod))
               ? " Enter card details"
               : "Continue to review"}
           </Button>
@@ -233,6 +297,8 @@ const Payment = ({
                   <Text>
                     {isStripeFunc(selectedPaymentMethod) && cardBrand
                       ? cardBrand
+                      : isAuthorizeNet(selectedPaymentMethod)
+                      ? (cardBrand || "Card details ready")
                       : "Another step will appear"}
                   </Text>
                 </div>
