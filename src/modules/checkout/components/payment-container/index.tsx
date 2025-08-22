@@ -11,6 +11,11 @@ import { StripeCardElementOptions } from "@stripe/stripe-js"
 import PaymentTest from "../payment-test"
 import { StripeContext } from "../payment-wrapper/stripe-wrapper"
 
+//Authorize.net Provider
+import { AuthorizeNetProvider, Card } from "authorizenet-react"
+import { isAuthorizeNet } from "../../../../lib/constants"
+
+
 type PaymentContainerProps = {
   paymentProviderId: string
   selectedPaymentOptionId: string | null
@@ -121,6 +126,69 @@ export const StripeCardContainer = ({
               }}
             />
           </div>
+        ) : (
+          <SkeletonCardDetails />
+        ))}
+    </PaymentContainer>
+  )
+}
+
+export const AuthorizeNetCardContainer = ({
+  paymentProviderId,
+  selectedPaymentOptionId,
+  paymentInfoMap,
+  disabled = false,
+  setCardBrand,
+  setError,
+  setCardComplete,
+  setOpaqueData,
+  cardComplete
+}: Omit<PaymentContainerProps, "children"> & {
+  setCardBrand: (brand: string) => void
+  setError: (error: string | null) => void
+  setCardComplete: (complete: boolean) => void
+  setOpaqueData: (data: any) => void
+  cardComplete:boolean
+}) => {
+  return (
+    <PaymentContainer
+      paymentProviderId={paymentProviderId}
+      selectedPaymentOptionId={selectedPaymentOptionId}
+      paymentInfoMap={paymentInfoMap}
+      disabled={disabled}
+    >
+      {selectedPaymentOptionId === paymentProviderId &&
+        ((isAuthorizeNet(selectedPaymentOptionId)) ? (
+          <AuthorizeNetProvider 
+            apiLoginId={process.env.NEXT_PUBLIC_API_LOGIN_ID ?? "" } 
+            clientKey={process.env.NEXT_PUBLIC_CLIENT_KEY ?? "" }>
+             <div className="my-4 transition-all duration-150 ease-in-out">
+              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                Enter your card details:
+              </Text>
+              <Card
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#424770',
+                      '::placeholder': {
+                        color: '#aab7c4'
+                      }
+                    },
+                    invalid: {
+                      color: '#9e2146'
+                    }
+                  }
+                
+                }}
+                onChange={(e:any)=>{ 
+                  setCardComplete(e.complete)
+                  setError(e.error?.message || null)
+                }}
+              />
+            </div>  
+          </AuthorizeNetProvider>
         ) : (
           <SkeletonCardDetails />
         ))}
