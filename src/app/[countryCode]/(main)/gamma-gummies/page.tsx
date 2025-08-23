@@ -82,7 +82,7 @@ export default function GammaGummiesPage() {
       {/* Background image from public/disco_biscuits_assets */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
         <Image
-          src="/disco_biscuits_assets/biscuits_background.jpeg"  // <- jpeg
+          src="/disco_biscuits_assets/biscuits_background.png"
           alt="Gamma Gummies background"
           fill
           priority
@@ -107,7 +107,7 @@ export default function GammaGummiesPage() {
         {/* Title image */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", justifyContent: "center" }}>
           <Image
-            src="/disco_biscuits_assets/title_with_gummies.jpeg" // <- jpeg
+            src="/disco_biscuits_assets/title_with_gummies.png"
             alt="Gamma Gummies"
             width={560}
             height={180}
