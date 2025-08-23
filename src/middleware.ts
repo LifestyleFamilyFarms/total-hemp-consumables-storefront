@@ -5,6 +5,11 @@ const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
+function normalizePath(pathname: string) {
+  if(!pathname) return "/"
+  return pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname
+}
+
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
@@ -104,6 +109,32 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  const MAINTENANCE_ENABLED = process.env.MAINTENANCE_MODE === "1" || process.env.MAINTENANCE_MODE === "true"
+
+  if(MAINTENANCE_ENABLED) {
+    //Comma-separated allow-list, defaults to regioned page
+    const allowRaw = process.env.ALLOW_PATHS || `/${DEFAULT_REGION}/gamma-gummies`
+
+    const allowed = new Set(
+      allowRaw
+      .split(",")
+      .map((s) => normalizePath(s.trim()))
+      .filter(Boolean)
+    )
+    const reqPath = normalizePath(request.nextUrl.pathname)
+
+    if(!allowed.has(reqPath)) {
+      const url = request.nextUrl.clone()
+      //adding /gamma-gummies normalized to region
+      if(reqPath === "/gamma-gummies") {
+        url.pathname = `/${DEFAULT_REGION}/gamma-gummies`
+      } else {
+        url.pathname = Array.from(allowed)[0] || `/${DEFAULT_REGION}/gamma-gummies`
+      }
+      return NextResponse.redirect(url, 307)
+    }
+  }
+
   let redirectUrl = request.nextUrl.href
 
   let response = NextResponse.redirect(redirectUrl, 307)
