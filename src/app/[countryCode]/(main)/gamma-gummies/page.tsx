@@ -150,7 +150,7 @@ export default function GammaGummiesPage() {
               id="first_name"
               name="first_name"
               required
-              placeholder="Ada"
+              placeholder="Please enter your first name"
               autoComplete="given-name"
               value={form.first_name}
               onChange={(e) => setForm((f) => ({ ...f, first_name: e.target.value }))}
@@ -164,7 +164,7 @@ export default function GammaGummiesPage() {
               id="last_name"
               name="last_name"
               required
-              placeholder="Lovelace"
+              placeholder="Please enter your last name"
               autoComplete="family-name"
               value={form.last_name}
               onChange={(e) => setForm((f) => ({ ...f, last_name: e.target.value }))}
@@ -179,7 +179,7 @@ export default function GammaGummiesPage() {
               name="email"
               type="email"
               required
-              placeholder="ada@example.com"
+              placeholder="email@email.com"
               autoComplete="email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
