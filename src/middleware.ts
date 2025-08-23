@@ -183,8 +183,16 @@ export async function middleware(request: NextRequest) {
   return response
 }
 
+// export const config = {
+//   matcher: [
+//     "/((?!api|_next/static|_next/image|favicon.ico|images|assets|png|svg|jpg|jpeg|gif|webp).*)",
+//   ],
+// }
+
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|images|assets|png|svg|jpg|jpeg|gif|webp).*)",
+    // Skip Next internals, API routes, your public assets folder,
+    // and any request for common static file extensions.
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|disco_biscuits_assets|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|txt|css|js|map|woff2?|ttf|json)).*)",
   ],
 }
