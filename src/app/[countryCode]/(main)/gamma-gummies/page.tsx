@@ -54,7 +54,7 @@ export default function GammaGummiesPage() {
       {/* Background image from public/disco_biscuits_assets */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
         <Image
-          src="/disco_biscuits_assets/biscuits_background.jpeg"
+          src="/disco_biscuits_assets/biscuits_background.png"
           alt="Gamma Gummies background"
           fill
           priority
