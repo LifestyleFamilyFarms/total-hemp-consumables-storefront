@@ -47,6 +47,8 @@ export default function GammaGummiesPage() {
     setStatus(null)
 
     try {
+      const fd= new FormData(e.currentTarget)
+      const hp = String(fd.get("hp") || "")
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +56,7 @@ export default function GammaGummiesPage() {
           email: form.email.trim(),
           first_name: form.first_name.trim(),
           last_name: form.last_name.trim(),
+          hp
         }),
       })
 
@@ -179,13 +182,22 @@ export default function GammaGummiesPage() {
               name="email"
               type="email"
               required
-              placeholder="email@email.com"
+              placeholder="Please enter your email address"
               autoComplete="email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
           </div>
+
+            <input
+              type="text"
+              name="hp"
+              autoComplete="off"
+              tabIndex={-1}
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-10000px", opacity: 0, height: 0, width: 0 }}
+            />
 
           <button
             type="submit"
