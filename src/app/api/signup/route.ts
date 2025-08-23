@@ -1,11 +1,9 @@
-// src/app/api/signup/route.ts
 import type { NextRequest } from "next/server"
 import Medusa from "@medusajs/js-sdk"
+import { z } from "zod"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
-
-type Payload = { email?: string; first_name?: string; last_name?: string }
 
 function ok(message: string) {
   return Response.json({ success: true, message }, { status: 200 })
@@ -22,20 +20,54 @@ function normalizeBaseUrl(url: string) {
   return url.replace(/\/+$/, "")
 }
 
+// Friendly constraints and normalization
+const Name = z
+  .string()
+  .transform((s) => s.replace(/\s+/g, " ").trim())
+  .pipe(
+    z
+      .string()
+      .min(1, "Required")
+      .max(64, "Too long")
+      .refine(
+        // Basic A–Z plus common accented Latin letters, spaces, apostrophe, hyphen, period
+        (s) => /^[A-Za-z\u00C0-\u017F\s.'-]+$/.test(s),
+        "Only letters, spaces, apostrophes, hyphens, periods"
+      )
+  )
+
+const SignupSchema = z.object({
+  email: z.string().max(254).email().transform((e) => e.trim().toLowerCase()),
+  first_name: Name,
+  last_name: Name,
+  hp: z.string().optional().transform((v) => (v ?? "").trim()), // honeypot
+})
+
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as Payload
-    const email = (body.email || "").trim().toLowerCase()
-    const first_name = (body.first_name || "").trim()
-    const last_name = (body.last_name || "").trim()
-    if (!email || !first_name || !last_name) return bad("Missing required fields.")
+    // Optional origin allow-list in prod
+    const origin = req.headers.get("origin") || ""
+    const allowed = (process.env.ALLOWED_ORIGINS || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+    if (process.env.NODE_ENV === "production" && allowed.length && origin && !allowed.includes(origin)) {
+      return bad("Forbidden", 403)
+    }
+
+    const raw = await req.json()
+    const parsed = SignupSchema.safeParse(raw)
+    if (!parsed.success) return bad("Invalid input.", 400)
+    const { email, first_name, last_name, hp } = parsed.data
+
+    // Honeypot hit → pretend success, but no-op
+    if (hp) return ok("Signed up! Check your email for confirmation.")
 
     const sdk = new Medusa({
       baseUrl: normalizeBaseUrl(requiredEnv("MEDUSA_BACKEND_URL")),
-      apiKey: requiredEnv("MEDUSA_ADMIN_TOKEN"), // Admin Secret API Key (server-only)
+      apiKey: requiredEnv("MEDUSA_ADMIN_TOKEN"),
     })
 
-    // Try create; if exists, tag it
     try {
       await sdk.admin.customer.create({
         email,
@@ -60,7 +92,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Email is sent from Medusa (Notification module subscriber), not here.
+    // Email will be sent by Medusa Notification subscribers
     return ok("Signed up! Check your email for confirmation.")
   } catch {
     return bad("Unable to complete sign‑up at this time.", 500)

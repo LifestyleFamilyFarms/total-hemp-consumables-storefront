@@ -6529,6 +6529,7 @@ __metadata:
     tailwindcss-radix: ^2.8.0
     typescript: ^5.3.2
     webpack: ^5
+    zod: ^4.0.17
   languageName: unknown
   linkType: soft
 
@@ -8914,5 +8915,12 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.0.17":
+  version: 4.0.17
+  resolution: "zod@npm:4.0.17"
+  checksum: f88a1c6f6397282da517fbc1088a21c314aabad216c0ad6a3b60dbc52247430500a329fcd093e5fc5e80e1ff1c942a67a563d6a288ccabef1569e204c4eed4de
   languageName: node
   linkType: hard
