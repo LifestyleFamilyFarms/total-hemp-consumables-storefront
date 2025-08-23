@@ -1,7 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { sdk } from "../../../../lib/medusa-sdk"
 
 type Status = { ok: boolean; message: string }
 
@@ -9,35 +10,62 @@ export default function GammaGummiesPage() {
   const [status, setStatus] = useState<Status | null>(null)
   const [loading, setLoading] = useState(false)
 
+  // Controlled form state (so we can prefill from SDK)
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+  })
+
+  // Try to prefill from Medusa Store API if the visitor is logged in.
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        // Will 401 if not logged in; that's fine—we silently ignore
+        const me: any = await (sdk as any).store.customer.me()
+        const customer = me?.customer ?? me
+        if (!cancelled && customer) {
+          setForm((prev) => ({
+            first_name: customer.first_name || prev.first_name,
+            last_name: customer.last_name || prev.last_name,
+            email: customer.email || prev.email,
+          }))
+        }
+      } catch {
+        // not logged in or no store session – ignore
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setStatus(null)
 
-    const fd = new FormData(e.currentTarget)
-    const payload = {
-      email: String(fd.get("email") || "").trim(),
-      first_name: String(fd.get("first_name") || "").trim(),
-      last_name: String(fd.get("last_name") || "").trim(),
-    }
-
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          email: form.email.trim(),
+          first_name: form.first_name.trim(),
+          last_name: form.last_name.trim(),
+        }),
       })
 
       const data = await res.json().catch(() => ({}))
+      const ok = res.ok
       setStatus({
-        ok: res.ok,
+        ok,
         message:
-          data?.message ||
-          (res.ok ? "You're signed up!" : "Something went wrong. Please try again."),
+          data?.message || (ok ? "You're signed up!" : "Something went wrong. Please try again."),
       })
-
-      if (res.ok) {
-        ;(e.currentTarget as HTMLFormElement).reset()
+      if (ok) {
+        setForm({ first_name: "", last_name: "", email: "" })
       }
     } catch (err: any) {
       setStatus({
@@ -54,7 +82,7 @@ export default function GammaGummiesPage() {
       {/* Background image from public/disco_biscuits_assets */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
         <Image
-          src="/disco_biscuits_assets/biscuits_background.png"
+          src="/disco_biscuits_assets/biscuits_background.jpeg"  // <- jpeg
           alt="Gamma Gummies background"
           fill
           priority
@@ -76,10 +104,10 @@ export default function GammaGummiesPage() {
           padding: "min(6vw, 3rem) 1.25rem",
         }}
       >
-        {/* Brand lockup / title image */}
+        {/* Title image */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", justifyContent: "center" }}>
           <Image
-            src="/disco_biscuits_assets/title_with_gummies.png"
+            src="/disco_biscuits_assets/title_with_gummies.jpeg" // <- jpeg
             alt="Gamma Gummies"
             width={560}
             height={180}
@@ -122,8 +150,10 @@ export default function GammaGummiesPage() {
               id="first_name"
               name="first_name"
               required
-              placeholder="Calyxandra"
+              placeholder="Ada"
               autoComplete="given-name"
+              value={form.first_name}
+              onChange={(e) => setForm((f) => ({ ...f, first_name: e.target.value }))}
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
           </div>
@@ -134,8 +164,10 @@ export default function GammaGummiesPage() {
               id="last_name"
               name="last_name"
               required
-              placeholder="Flora"
+              placeholder="Lovelace"
               autoComplete="family-name"
+              value={form.last_name}
+              onChange={(e) => setForm((f) => ({ ...f, last_name: e.target.value }))}
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
           </div>
@@ -147,8 +179,10 @@ export default function GammaGummiesPage() {
               name="email"
               type="email"
               required
-              placeholder="calyxandra@totalhemp.co"
+              placeholder="ada@example.com"
               autoComplete="email"
+              value={form.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
           </div>
@@ -172,11 +206,7 @@ export default function GammaGummiesPage() {
           </button>
 
           {status && (
-            <p
-              role="status"
-              aria-live="polite"
-              style={{ marginTop: ".25rem", color: status.ok ? "#0a7" : "#b00" }}
-            >
+            <p role="status" aria-live="polite" style={{ marginTop: ".25rem", color: status.ok ? "#0a7" : "#b00" }}>
               {status.message}
             </p>
           )}
