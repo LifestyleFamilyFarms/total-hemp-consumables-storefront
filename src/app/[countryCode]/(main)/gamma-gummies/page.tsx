@@ -129,10 +129,12 @@ export default function GammaGummiesPage() {
               marginBottom: ".25rem",
             }}
           >
-            Event Sign‑up
+            Premiere Event Sign Up
           </h1>
           <p style={{ color: "rgba(255,255,255,.9)" }}>
-            Join the launch list. We’ll email you details as we get closer.
+            Join the launch list 🚀
+            <br />
+            We’ll email you details as we get closer
           </p>
         </header>
 
