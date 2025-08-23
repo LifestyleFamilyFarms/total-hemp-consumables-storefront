@@ -79,7 +79,7 @@ export default function GammaGummiesPage() {
         {/* Brand lockup / title image */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", justifyContent: "center" }}>
           <Image
-            src="/disco_biscuits_assets/title_with_gummies.jpeg"
+            src="/disco_biscuits_assets/title_with_gummies.png"
             alt="Gamma Gummies"
             width={560}
             height={180}
@@ -122,7 +122,7 @@ export default function GammaGummiesPage() {
               id="first_name"
               name="first_name"
               required
-              placeholder="Ada"
+              placeholder="Calyxandra"
               autoComplete="given-name"
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
@@ -134,7 +134,7 @@ export default function GammaGummiesPage() {
               id="last_name"
               name="last_name"
               required
-              placeholder="Lovelace"
+              placeholder="Flora"
               autoComplete="family-name"
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
@@ -147,7 +147,7 @@ export default function GammaGummiesPage() {
               name="email"
               type="email"
               required
-              placeholder="ada@example.com"
+              placeholder="calyxandra@totalhemp.co"
               autoComplete="email"
               style={{ padding: ".75rem", borderRadius: 8, border: "1px solid #ddd" }}
             />
