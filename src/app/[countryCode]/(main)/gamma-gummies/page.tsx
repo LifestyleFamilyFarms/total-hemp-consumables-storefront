@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { sdk } from "../../../../lib/medusa-sdk"
+import Head from "next/head"
 
 type Status = { ok: boolean; message: string }
 
@@ -83,6 +84,9 @@ export default function GammaGummiesPage() {
   return (
     <main style={{ minHeight: "100vh", position: "relative" }}>
       {/* Background image from public/disco_biscuits_assets */}
+      <Head>
+        <link rel="stylesheet" href="https://use.typekit.net/yxe5ahp.css" />
+      </Head>
       <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
         <Image
           src="/disco_biscuits_assets/biscuits_background.png"
