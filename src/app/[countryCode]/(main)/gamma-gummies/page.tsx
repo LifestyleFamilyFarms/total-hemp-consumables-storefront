@@ -128,14 +128,21 @@ export default function GammaGummiesPage() {
             style={{
               color: "#fff",
               fontSize: "clamp(1.75rem, 5vw, 3rem)",
-              fontWeight: 800,
               letterSpacing: "-.01em",
               marginBottom: ".25rem",
+              fontFamily: "new-spirit, serif",
+              fontWeight: 700,
+              fontStyle: "normal",
             }}
           >
             Premiere Event Sign Up
           </h1>
-          <p style={{ color: "rgba(255,255,255,.9)" }}>
+          <p style={{ 
+            color: "rgba(255,255,255,.9)",
+            fontFamily: "new-spirit-condensed, serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+            }}>
             Join the launch list 🚀
             <br />
             We’ll email you details as we get closer
