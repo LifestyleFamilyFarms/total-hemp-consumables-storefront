@@ -1,7 +1,7 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
-import "styles/globals.css"
+import "./global.css"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
