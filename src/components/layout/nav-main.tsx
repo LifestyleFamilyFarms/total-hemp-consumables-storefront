@@ -24,6 +24,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 export type NavMainItem = {
@@ -36,6 +37,7 @@ export type NavMainItem = {
 
 export function NavMain({ items }: { items: NavMainItem[] }) {
   const pathname = usePathname()
+  const { setOpen } = useSidebar()
 
   return (
     <SidebarGroup>
@@ -65,42 +67,24 @@ export function NavMain({ items }: { items: NavMainItem[] }) {
                   </CollapsibleTrigger>
                 </div>
 
-                {/* Collapsed mode: render icon-only LINK to the parent URL; no chevron */}
+                {/* Collapsed mode: icons-only. Items with children expand the sidebar. */}
                 <div className="hidden group-data-[collapsible=icon]:block">
-                  <div className="grid gap-1">
-                    {/* Parent icon → navigates to the parent URL */}
-                    <SidebarMenuButton asChild tooltip={item.title}>
+                  {hasChildren ? (
+                    <SidebarMenuButton
+                      onClick={() => setOpen(true)}
+                      className="relative w-full h-9 px-2 flex items-center justify-center"
+                      aria-label={`${item.title} menu`}
+                    >
+                      {item.icon && <item.icon className="h-5 w-5" />}
+                      <span className="sr-only">{item.title}</span>
+                    </SidebarMenuButton>
+                  ) : (
+                    <SidebarMenuButton asChild className="relative w-full h-9 px-2 flex items-center justify-center">
                       <Link href={item.url}>
-                        {item.icon && <item.icon />}
-                        <span className="sr-only">{item.title}</span>
+                        {item.icon && <item.icon className="h-5 w-5" />}<span className="sr-only">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
-
-                    {/* Chevron → opens popover with sublinks (only if children exist) */}
-                    {hasChildren && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <SidebarMenuButton tooltip="Open submenu">
-                            <ChevronRight className="h-4 w-4" />
-                            <span className="sr-only">Open submenu</span>
-                          </SidebarMenuButton>
-                        </PopoverTrigger>
-                        <PopoverContent side="right" align="start" className="w-56 p-2">
-                          <SidebarMenuSub>
-                            {item.items!.map((sub) => (
-                              <SidebarMenuSubItem key={sub.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <Link href={sub.url}>
-                                    <span>{sub.title}</span>
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
+                  )}
                 </div>
 
                 {/* Sublinks (only meaningful in expanded mode) */}

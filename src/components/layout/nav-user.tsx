@@ -25,7 +25,7 @@ type User = {
 } | null
 
 export function NavUser({ user, countryCode }: { user: User; countryCode: string }) {
-  const { isMobile } = useSidebar()
+  const { isMobile, state } = useSidebar()
   const name = user?.name ?? "Guest"
   const email = user?.email ?? "Not signed in"
   const initials =
@@ -44,15 +44,18 @@ export function NavUser({ user, countryCode }: { user: User; countryCode: string
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
+              aria-label={state === "collapsed" ? `User menu for ${name}` : undefined}
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user?.avatarUrl ?? ""} alt={name} />
                 <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name}</span>
-                <span className="truncate text-xs">{email}</span>
-              </div>
+              {state === "expanded" && (
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{name}</span>
+                  <span className="truncate text-xs">{email}</span>
+                </div>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
 

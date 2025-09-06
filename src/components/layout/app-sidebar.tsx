@@ -37,11 +37,28 @@ export function AppSidebar({
     const url = it.href ? it.href(countryCode) : "#"
     const children =
       it.children?.map((c) => ({ title: c.label, url: c.href(countryCode) })) ?? []
-  
-    const parentActive =
-      (it.href ? pathname === url || pathname.startsWith(url + "/") : false) ||
-      children.some((c) => pathname === c.url || pathname.startsWith(c.url + "/"))
-  
+
+    const root = `/${countryCode}`
+    const isRealChild = (u: string) => u !== root && u !== `${root}/`
+
+    // Parent active logic:
+    // - If the parent URL resolves to the region root (e.g., "/us"), only the Home item
+    //   should be considered active on the root path. Other items that temporarily point to
+    //   the root (e.g., placeholders like Merch) should not be marked active.
+    // - Otherwise, allow exact match or prefix match for regular sections.
+    const isRootUrl = url === root || url === `${root}/`
+    const parentActiveSelf = it.href
+      ? isRootUrl
+        ? it.label === "Home" && pathname === root
+        : pathname === url || pathname.startsWith(url + "/")
+      : false
+
+    const parentActiveChildren = children.some(
+      (c) => isRealChild(c.url) && (pathname === c.url || pathname.startsWith(c.url + "/"))
+    )
+
+    const parentActive = parentActiveSelf || parentActiveChildren
+
     return { title: it.label, url, icon: it.icon, items: children, isActive: parentActive }
   })
 
