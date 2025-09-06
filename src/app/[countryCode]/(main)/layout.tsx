@@ -14,12 +14,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
-export default async function PageLayout(props: {
+export default async function PageLayout({
+  children,
+  params,
+}: {
   children: React.ReactNode
-  params: Promise<{ countryCode: string }>
+  params: { countryCode: string }
 }) {
-  const { children } = props
-  const { countryCode } = await props.params
+  const countryCode = params.countryCode
   const customer = await retrieveCustomer()
   const cart = await retrieveCart()
   let shippingOptions: StoreCartShippingOption[] = []
