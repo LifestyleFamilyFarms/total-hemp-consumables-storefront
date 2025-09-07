@@ -9,14 +9,14 @@ const ACCEPT_SRC =
     ? "https://js.authorize.net/v1/Accept.js"
     : "https://jstest.authorize.net/v1/Accept.js"
 
-export default function CheckoutLayout({
+export default async function CheckoutLayout({
   children,
   params,
 }: {
   children: ReactNode
-  params: { countryCode: string }
+  params: Promise<{ countryCode: string }>
 }) {
-  const cc = params.countryCode
+  const { countryCode: cc } = await params
 
   return (
     <div className="min-h-screen">

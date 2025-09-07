@@ -184,6 +184,10 @@ const Sidebar = React.forwardRef<
     ref
   ) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+    // Close mobile sheet whenever breakpoint flips to avoid stuck states after orientation changes.
+    React.useEffect(() => {
+      if (!isMobile && openMobile) setOpenMobile(false)
+    }, [isMobile, openMobile, setOpenMobile])
 
     if (collapsible === "none") {
       return (
@@ -202,7 +206,7 @@ const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <Sheet key="mobile" open={openMobile} onOpenChange={setOpenMobile} {...props}>
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
@@ -226,6 +230,7 @@ const Sidebar = React.forwardRef<
 
     return (
       <div
+        key="desktop"
         ref={ref}
         className="group peer hidden text-sidebar-foreground md:block"
         data-state={state}

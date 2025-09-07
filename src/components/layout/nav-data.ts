@@ -38,31 +38,31 @@ export const NAV_ITEMS: NavItem[] = [
   },
   { 
     label: "Flower", 
-    href: (cc) => `/${cc}/flower`, 
+    href: (cc) => `/${cc}`, 
     icon: Cannabis,
     children: [
       {
         label: "Indica",
-        href: (cc) => `/${cc}/flower/indica`,
+        href: (cc) => `/${cc}`,
       },
       {
         label: "Sativa",
-        href: (cc) => `/${cc}/flower/sativa`,
+        href: (cc) => `/${cc}`,
       },
       {
         label: "Hybrid",
-        href: (cc) => `/${cc}/flower/hybrid`,
+        href: (cc) => `/${cc}`,
       }
     ]
   },
   { 
     label: "Prerolls", 
-    href: (cc) => `/${cc}/prerolls`, 
+    href: (cc) => `/${cc}`, 
     icon: Cigarette 
   },
   { 
     label: "Edibles", 
-    href: (cc) => `/${cc}/edibles`, 
+    href: (cc) => `/${cc}`, 
     icon: Candy,
     children: [
       {
