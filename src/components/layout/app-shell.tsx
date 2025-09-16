@@ -65,14 +65,13 @@ export default function AppShell({
         {/* Scrollable content */}
         <div className="mx-auto max-w-6xl px-4 pt-6 pb-24 sm:px-6 lg:px-8 md:pb-24">{children}</div>
 
-        {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
-        <MobileThumbBar countryCode={countryCode} />
-
         {/* Fixed compliance bar always visible */}
         <ComplianceBar />
-
         {withBottomBar ? <div className="border-t bg-background">{/* <BottomBar /> */}</div> : null}
       </SidebarInset>
+
+      {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
+      <MobileThumbBar countryCode={countryCode} />
     </SidebarProvider>
   )
 }
