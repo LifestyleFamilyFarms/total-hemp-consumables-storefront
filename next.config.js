@@ -12,6 +12,36 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  async headers() {
+    const prod = process.env.NODE_ENV === "production"
+    const prodHeaders = [
+      {
+        key: "Content-Security-Policy-Report-Only",
+        value: [
+          "default-src 'self'",
+          "script-src 'self' https://js.authorize.net https://jstest.authorize.net",
+          "style-src 'self' 'unsafe-inline' https://use.typekit.net",
+          "img-src 'self' data: blob:",
+          "connect-src 'self' *",
+          "frame-src https://js.authorize.net https://jstest.authorize.net",
+          "base-uri 'self'",
+          "form-action 'self'",
+        ].join("; "),
+      },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+    ]
+
+    if (!prod) return []
+    return [
+      {
+        source: "/:path*",
+        headers: prodHeaders,
+      },
+    ]
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

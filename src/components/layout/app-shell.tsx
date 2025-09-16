@@ -5,6 +5,8 @@ import { AppSidebar } from "@/components/layout/app-sidebar"
 import { ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import MobileThumbBar from "@/components/layout/mobile-thumb-bar"
+import ComplianceBar from "@/components/layout/compliance-bar"
 
 type User = {
   name?: string | null
@@ -61,7 +63,13 @@ export default function AppShell({
         </div>
 
         {/* Scrollable content */}
-        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+        <div className="mx-auto max-w-6xl px-4 pt-6 pb-24 sm:px-6 lg:px-8 md:pb-24">{children}</div>
+
+        {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
+        <MobileThumbBar countryCode={countryCode} />
+
+        {/* Fixed compliance bar always visible */}
+        <ComplianceBar />
 
         {withBottomBar ? <div className="border-t bg-background">{/* <BottomBar /> */}</div> : null}
       </SidebarInset>
