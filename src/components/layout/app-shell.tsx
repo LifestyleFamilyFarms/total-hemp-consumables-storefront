@@ -9,6 +9,7 @@ import MobileThumbBar from "@/components/layout/mobile-thumb-bar"
 import ComplianceBar from "@/components/layout/compliance-bar"
 import IconRail from "@/components/layout/icon-rail"
 import { ShoppingCart } from "lucide-react"
+import SiteFooter from "@/components/layout/footer"
 
 type User = {
   name?: string | null
@@ -83,7 +84,8 @@ export default function AppShell({
 
         {/* Left icon rail (desktop), content to the right */}
         <IconRail />
-        <div className="mx-auto max-w-6xl px-4 pt-6 pb-24 sm:px-6 lg:px-8 md:pb-24">{children}</div>
+        <div className="mx-auto max-w-6xl px-4 pt-6 pb-12 sm:px-6 lg:px-8 md:pb-12 md:pl-12">{children}</div>
+        <SiteFooter countryCode={countryCode} />
 
         {/* BottomBar full-width (Compliance) */}
         <ComplianceBar />

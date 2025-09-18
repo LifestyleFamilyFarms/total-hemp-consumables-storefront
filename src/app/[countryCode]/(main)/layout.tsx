@@ -7,7 +7,6 @@ import { getBaseURL } from "@lib/util/env"
 
 import AppShell from "@/components/layout/app-shell"
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
-import Footer from "@modules/layout/templates/footer"
  
 
 export const metadata: Metadata = {
@@ -44,7 +43,6 @@ export default async function PageLayout({
       {customer && cart && <CartMismatchBanner customer={customer} cart={cart} />}
       {/* Free shipping nudge removed */}
       {children}
-      <Footer />
     </AppShell>
   )
 }

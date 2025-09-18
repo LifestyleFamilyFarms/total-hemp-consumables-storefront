@@ -36,7 +36,15 @@ function PopLinkPdf({ label, src }: { label: string; src: string }) {
       </PopoverTrigger>
       <PopoverContent side="top" align="center" sideOffset={8} className="w-screen max-w-none p-0 z-50">
         <div className="h-[92vh] sm:max-h-[70vh] overflow-y-auto">
-          <div className="sticky top-0 z-10 flex justify-end border-b bg-popover/95 backdrop-blur px-3 py-2">
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b bg-popover/95 backdrop-blur px-3 py-2">
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-foreground/80 hover:underline"
+            >
+              Open PDF in new tab
+            </a>
             <PopoverClose aria-label="Close" className="rounded p-1 text-foreground/80 hover:bg-muted">×</PopoverClose>
           </div>
           <iframe
