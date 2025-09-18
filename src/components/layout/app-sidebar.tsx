@@ -31,6 +31,13 @@ export function AppSidebar({
   user: User
 }) {
   const pathname = usePathname()
+  const normalize = (path: string) => {
+    if (!path) return "/"
+    const [base] = path.split("?")
+    const trimmed = base.replace(/\/+$/g, "")
+    return trimmed === "" ? "/" : trimmed
+  }
+  const current = normalize(pathname)
 
   // Transform your NAV_ITEMS → NavMain items
   const items: NavMainItem[] = NAV_ITEMS.map((it) => {
@@ -39,22 +46,27 @@ export function AppSidebar({
       it.children?.map((c) => ({ title: c.label, url: c.href(countryCode) })) ?? []
 
     const root = `/${countryCode}`
-    const isRealChild = (u: string) => u !== root && u !== `${root}/`
+    const rootNormalized = normalize(root)
+    const target = normalize(url)
+    const isRealChild = (u: string) => normalize(u) !== rootNormalized
 
     // Parent active logic:
     // - If the parent URL resolves to the region root (e.g., "/us"), only the Home item
     //   should be considered active on the root path. Other items that temporarily point to
     //   the root (e.g., placeholders like Merch) should not be marked active.
     // - Otherwise, allow exact match or prefix match for regular sections.
-    const isRootUrl = url === root || url === `${root}/`
+    const isRootUrl = target === rootNormalized
     const parentActiveSelf = it.href
       ? isRootUrl
-        ? it.label === "Home" && pathname === root
-        : pathname === url || pathname.startsWith(url + "/")
+        ? it.label === "Home" && current === rootNormalized
+        : current === target || current.startsWith(`${target}/`)
       : false
 
     const parentActiveChildren = children.some(
-      (c) => isRealChild(c.url) && (pathname === c.url || pathname.startsWith(c.url + "/"))
+      (c) => {
+        const childTarget = normalize(c.url)
+        return isRealChild(c.url) && (current === childTarget || current.startsWith(`${childTarget}/`))
+      }
     )
 
     const parentActive = parentActiveSelf || parentActiveChildren

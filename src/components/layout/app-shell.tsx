@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/layout/app-sidebar"
 import { ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import MobileThumbBar from "@/components/layout/mobile-thumb-bar"
 import ComplianceBar from "@/components/layout/compliance-bar"
 
@@ -33,15 +34,20 @@ export default function AppShell({
       <SidebarInset>
         {/* Topbar (no SidebarTrigger here) */}
         <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {/* Mobile-only hamburger to open the drawer */}
             <SidebarTrigger className="mr-1 md:hidden" aria-label="Open menu" />
 
-            <Link href={`/${countryCode}`} className="font-extrabold tracking-tight">
-              Total&nbsp;Hemp
+            <Link
+              href={`/${countryCode}`}
+              className="inline-flex h-9 w-24 items-center justify-center rounded-full border border-border/60 bg-background/80 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50"
+            >
+              LOGO
             </Link>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeSwitcher className="h-8" />
+
             <Button asChild variant="outline" size="icon" aria-label="Cart">
               <Link href={`/${countryCode}/checkout`} prefetch={false}>
                 <ShoppingCart className="h-5 w-5" />

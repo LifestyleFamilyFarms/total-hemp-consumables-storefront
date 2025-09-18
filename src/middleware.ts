@@ -112,7 +112,7 @@ export async function middleware(request: NextRequest) {
   const MAINTENANCE_ENABLED = process.env.MAINTENANCE_MODE === "1" || process.env.MAINTENANCE_MODE === "true"
 
   if(MAINTENANCE_ENABLED) {
-    //Comma-separated allow-list, defaults to regioned page
+    // Comma-separated allow-list, default to Gamma landing page for US
     const allowRaw = process.env.ALLOW_PATHS || `/${DEFAULT_REGION}/gamma-gummies`
 
     const allowed = new Set(
@@ -125,8 +125,8 @@ export async function middleware(request: NextRequest) {
 
     if(!allowed.has(reqPath)) {
       const url = request.nextUrl.clone()
-      //adding /gamma-gummies normalized to region
-      if(reqPath === "/gamma-gummies") {
+      // Normalize to the Gamma landing under the default region
+      if (reqPath === "/gamma-gummies") {
         url.pathname = `/${DEFAULT_REGION}/gamma-gummies`
       } else {
         url.pathname = Array.from(allowed)[0] || `/${DEFAULT_REGION}/gamma-gummies`

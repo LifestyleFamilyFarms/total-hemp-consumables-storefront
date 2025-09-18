@@ -1,6 +1,7 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
+import { ThemeProvider } from "@/components/theme/theme-provider"
 import "./global.css"
 
 export const metadata: Metadata = {
@@ -9,14 +10,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-mode="light">
+    <html lang="en" data-theme="base">
       <body>
-        <main className="relative">{props.children}</main>
-        <Analytics />
+        <ThemeProvider>
+          <main className="relative">{props.children}</main>
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
 

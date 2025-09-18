@@ -35,7 +35,7 @@ export default function SortBar({ value, className }: Props) {
     else params.delete("sortBy")
     // reset pagination when sort changes
     params.delete("page")
-    router.push(`${pathname}?${params.toString()}`)
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   return (

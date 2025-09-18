@@ -1,8 +1,5 @@
 import { listProducts } from "@lib/data/products"
 import { HttpTypes } from "@medusajs/types"
-import { Text } from "@medusajs/ui"
-
-import InteractiveLink from "@modules/common/components/interactive-link"
 import ProductPreview from "@modules/products/components/product-preview"
 
 export default async function ProductRail({
@@ -27,21 +24,23 @@ export default async function ProductRail({
   }
 
   return (
-    <div className="content-container py-12 small:py-24">
-      <div className="flex justify-between mb-8">
-        <Text className="txt-xlarge">{collection.title}</Text>
-        <InteractiveLink href={`/collections/${collection.handle}`}>
-          View all
-        </InteractiveLink>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          {collection.title}
+        </h3>
+        <a
+          href={`/collections/${collection.handle}`}
+          className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/70 transition-colors hover:text-foreground"
+        >
+          View collection
+        </a>
       </div>
-      <ul className="grid grid-cols-2 small:grid-cols-3 gap-x-6 gap-y-24 small:gap-y-36">
-        {pricedProducts &&
-          pricedProducts.map((product) => (
-            <li key={product.id}>
-              <ProductPreview product={product} region={region} isFeatured />
-            </li>
-          ))}
-      </ul>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {pricedProducts.map((product) => (
+          <ProductPreview key={product.id} product={product} region={region} />
+        ))}
+      </div>
     </div>
   )
 }

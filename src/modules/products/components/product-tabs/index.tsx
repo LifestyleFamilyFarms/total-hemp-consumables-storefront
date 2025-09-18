@@ -1,9 +1,5 @@
 "use client"
 
-import Back from "@modules/common/icons/back"
-import FastDelivery from "@modules/common/icons/fast-delivery"
-import Refresh from "@modules/common/icons/refresh"
-
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 
@@ -14,12 +10,12 @@ type ProductTabsProps = {
 const ProductTabs = ({ product }: ProductTabsProps) => {
   const tabs = [
     {
-      label: "Product Information",
+      label: "Composition & Terpenes",
       component: <ProductInfoTab product={product} />,
     },
     {
-      label: "Shipping & Returns",
-      component: <ShippingInfoTab />,
+      label: "Shipping & Compliance",
+      component: <ShippingInfoTab product={product} />,
     },
   ]
 
@@ -42,80 +38,46 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const metadata = product?.metadata || {}
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : "-"}</p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Weight</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Dimensions</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : "-"}
-            </p>
-          </div>
-        </div>
+    <div className="space-y-4 py-6 text-sm text-foreground/70">
+      <p>
+        {(metadata?.formulation as string) ||
+          "Gamma Gummies use nano-emulsified hemp extract, organic cane sugar, fruit reductions, and functional botanicals."}
+      </p>
+      <div className="grid gap-4 rounded-2xl border border-border/60 bg-background/70 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/40">
+        <Row label="Cannabinoids" value={(metadata?.cannabinoids as string) || "CBG • CBD • Δ8 • trace minors"} />
+        <Row label="Terpene ratio" value={(metadata?.terpenes as string) || "Limonene-forward with myrcene support"} />
+        <Row label="Dosage" value={(metadata?.dosage as string) || "5 mg nano-emulsified cannabinoids per gummy"} />
+        <Row label="Ingredients" value={(metadata?.ingredients as string) || "Organic cane sugar, fruit puree, pectin, hemp extract, adaptogenic blend."} />
       </div>
     </div>
   )
 }
 
-const ShippingInfoTab = () => {
+const ShippingInfoTab = ({ product }: ProductTabsProps) => {
+  const metadata = product?.metadata || {}
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDelivery />
-          <div>
-            <span className="font-semibold">Fast delivery</span>
-            <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
-          <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Back />
-          <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
-            </p>
-          </div>
-        </div>
+    <div className="space-y-4 py-6 text-sm text-foreground/70">
+      <p>
+        {(metadata?.shipping_note as string) ||
+          "Ships to all compliant states with 21+ signature required. Orders placed before 2 PM ship same day Monday–Thursday."}
+      </p>
+      <div className="grid gap-3 rounded-2xl border border-border/60 bg-background/70 p-4 text-[12px] uppercase tracking-[0.3em] text-foreground/60 backdrop-blur supports-[backdrop-filter]:bg-background/40">
+        <span>21+ required at delivery</span>
+        <span>FedEx compliant carrier</span>
+        <span>Farm Bill 2018 aligned</span>
+        <span>QR-linked COAs in every package</span>
       </div>
     </div>
   )
 }
+
+const Row = ({ label, value }: { label: string; value: string }) => (
+  <div className="flex items-start justify-between gap-3 text-xs sm:text-sm">
+    <span className="uppercase tracking-[0.3em] text-foreground/60">{label}</span>
+    <span className="text-right text-foreground/80">{value}</span>
+  </div>
+)
 
 export default ProductTabs

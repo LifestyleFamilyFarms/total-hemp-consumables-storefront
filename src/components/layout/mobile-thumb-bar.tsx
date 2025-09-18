@@ -58,25 +58,28 @@ export default function MobileThumbBar({ countryCode }: { countryCode: string })
     )
   }
 
-  const quickLabels = new Set(["Home", "Shop", "Flower", "Edibles", "Gamma Gummies"])
-  const quickItems = NAV_ITEMS.filter((item) => quickLabels.has(item.label) && item.icon)
-    .slice(0, 4)
+  const quickOrder = ["Flower", "Vapes", "Edibles", "Gamma Gummies"] as const
+  const quickItems = quickOrder
+    .map((label) => NAV_ITEMS.find((it) => it.label === label && it.icon))
+    .filter(Boolean)
     .map((item) => {
+      // type guard
+      const it = item as typeof NAV_ITEMS[number]
       const href = item.href ? item.href(countryCode) : `/${countryCode}`
       const isRootUrl = href === `/${countryCode}` || href === `/${countryCode}/`
       const active = item.href
         ? isRootUrl
-          ? item.label === "Home" && pathname === `/${countryCode}`
+          ? it.label === "Home" && pathname === `/${countryCode}`
           : pathname === href || pathname.startsWith(href + "/")
         : false
 
-      const ariaLabel = item.label === "Gamma Gummies" ? "Gamma Gummies limited drop" : item.label
+      const ariaLabel = it.label === "Gamma Gummies" ? "Gamma Gummies limited drop" : it.label
 
       return {
-        key: item.label.toLowerCase().replace(/\s+/g, "-"),
-        label: item.label,
+        key: it.label.toLowerCase().replace(/\s+/g, "-"),
+        label: it.label,
         href,
-        Icon: item.icon!,
+        Icon: it.icon!,
         active,
         ariaLabel,
       }
