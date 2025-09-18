@@ -53,6 +53,8 @@ const Payment = ({
     }
   }
 
+  // No auto-selection to avoid unintended session init flows
+
   const paidByGiftcard =
     cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
 
@@ -102,23 +104,6 @@ const Payment = ({
       const isStripeSelected = isStripeFunc(selectedPaymentMethod)
       const isAN = isAuthorizeNet(selectedPaymentMethod)
 
-      // STRIPE: two-step flow (init session -> fill card -> then review)
-      if (isStripeSelected) {
-        const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
-
-        if(!hasActiveForSelected) {
-          await initiatePaymentSession(cart, {
-            provider_id: selectedPaymentMethod,
-          })
-          // stay on page so Stripe elements can render
-          return
-        }
-        // already have an active session -> move to review
-        return router.push(pathname + "?" + createQueryString("step", "review"), {
-            scroll: false,
-        })
-      }
-
       // AUTHORIZE.NET: tokenize then create session with opaqueData, then review
       if(isAN) {
         if(!cardComplete) {
@@ -136,6 +121,23 @@ const Payment = ({
         })
         return router.push(pathname + "?" + createQueryString("step", "review"), {
           scroll: false,
+        })
+      }
+
+      // STRIPE: two-step flow (init session -> fill card -> then review)
+      if (isStripeSelected) {
+        const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
+
+        if(!hasActiveForSelected) {
+          await initiatePaymentSession(cart, {
+            provider_id: selectedPaymentMethod,
+          })
+          // stay on page so Stripe elements can render
+          return
+        }
+        // already have an active session -> move to review
+        return router.push(pathname + "?" + createQueryString("step", "review"), {
+            scroll: false,
         })
       }
 

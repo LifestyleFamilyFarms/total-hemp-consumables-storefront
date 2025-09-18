@@ -14,7 +14,10 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+import { PanelLeft } from "lucide-react"
 
 type User = {
   name?: string | null
@@ -30,6 +33,7 @@ export function AppSidebar({
   countryCode: string
   user: User
 }) {
+  const { toggleSidebar } = useSidebar()
   const pathname = usePathname()
   const normalize = (path: string) => {
     if (!path) return "/"
@@ -75,11 +79,19 @@ export function AppSidebar({
   })
 
   return (
-    <Sidebar collapsible="icon">
-      {/* Header: visible only when expanded; puts trigger at top-right */}
-      <SidebarHeader className="group-data-[collapsible=icon]:hidden">
-        <div className="flex items-center justify-end px-2">
-          <SidebarTrigger aria-label="Collapse sidebar" />
+    <Sidebar collapsible="offcanvas" className="top-14 z-30 h-[calc(100svh-theme(spacing.14))]">
+      {/* Header with prominent Close control */}
+      <SidebarHeader>
+        <div className="flex items-center justify-between gap-2 border-b border-sidebar-border px-3 py-2">
+          <Button
+            onClick={toggleSidebar}
+            variant="outline"
+            size="sm"
+            className="inline-flex items-center gap-2 rounded-md border border-sidebar-border bg-background/70 px-3 py-1.5 text-xs font-semibold tracking-wide text-foreground/80 hover:bg-background"
+          >
+            Close
+            <PanelLeft className="h-4 w-4" />
+          </Button>
         </div>
       </SidebarHeader>
 

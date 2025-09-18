@@ -5,19 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 const flavors = [
   {
     name: "Solar Citrus",
-    notes: "Meyer lemon, blood orange, lion's mane",
+    notes: "Meyer lemon, blood orange, ginger zest",
     effect: "Bright, focused lift",
     icon: Sun,
   },
   {
     name: "Spectrum Berry",
-    notes: "Huckleberry, blackberry, damiana",
+    notes: "Huckleberry, blackberry, hibiscus",
     effect: "Creative, euphoric energy",
     icon: Sparkles,
   },
   {
     name: "Lunar Nectar",
-    notes: "Yuzu, jasmine, reishi",
+    notes: "Yuzu, jasmine, lavender",
     effect: "Gentle night-time clarity",
     icon: Waves,
   },
@@ -32,7 +32,7 @@ export default function FlavorShowcase() {
           Crafted in micro-batches for distinct moods.
         </h2>
         <p className="mt-3 text-sm text-foreground/70 sm:text-base">
-          Each batch is nano-emulsified for rapid onset, layered with adaptogens for a guided experience, and finished with real fruit reductions.
+          Each batch is nano-emulsified for rapid onset, layered with botanical notes for a guided flavor profile, and finished with real fruit reductions.
         </p>
       </div>
 

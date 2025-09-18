@@ -37,10 +37,10 @@ export default function GammaHero({
         <div className="space-y-4 text-sm sm:text-base">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-foreground/70">Limited launch • Fall 2025</p>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Micro-dosed gummies formulated for clarity, creativity, and clean energy.
+            Balanced gummies crafted for clarity, creativity, and clean energy.
           </h1>
           <p className="mx-auto max-w-2xl text-foreground/70">
-            Gamma Gummies blend fast-onset nano-emulsified cannabinoids with adaptogenic botanicals. Zero corn syrup, zero dyes—just plant-powered lift with a crisp comedown.
+            Gamma Gummies blend fast-onset nano-emulsified cannabinoids with botanical extracts. Zero corn syrup, zero dyes—just plant-powered lift with a crisp finish.
           </p>
         </div>
 
