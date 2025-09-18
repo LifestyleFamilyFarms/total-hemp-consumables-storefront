@@ -1,6 +1,6 @@
 "use client"
 
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -21,8 +21,7 @@ function TopbarContent({ countryCode, user }: { countryCode: string; user: User 
   return (
     <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
       <div className="flex items-center gap-3">
-        {/* Sidebar trigger (all breakpoints) */}
-        <SidebarTrigger className="mr-1" aria-label="Open menu" />
+        {/* Sidebar trigger removed from Topbar; use IconRail burger */}
         {/* Compact logo shown when sidebar is collapsed (via peer data) */}
         <Link
           href={`/${countryCode}`}

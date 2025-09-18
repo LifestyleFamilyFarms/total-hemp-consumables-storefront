@@ -79,7 +79,11 @@ export function AppSidebar({
   })
 
   return (
-    <Sidebar collapsible="offcanvas" className="top-14 z-30 h-[calc(100svh-theme(spacing.14))]">
+    <Sidebar
+      collapsible="offcanvas"
+      className="top-14 z-30 h-auto"
+      style={{ bottom: "var(--bottom-bar-height, 4rem)" }}
+    >
       {/* Header with prominent Close control */}
       <SidebarHeader>
         <div className="flex items-center justify-between gap-2 border-b border-sidebar-border px-3 py-2">

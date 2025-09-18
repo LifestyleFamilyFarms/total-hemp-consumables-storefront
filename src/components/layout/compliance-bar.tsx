@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from "@/components/ui/popover"
 
 function PopLink({ label, children }: { label: string; children: React.ReactNode }) {
@@ -50,8 +51,21 @@ function PopLinkPdf({ label, src }: { label: string; src: string }) {
 }
 
 export default function ComplianceBar() {
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const update = () => {
+      const h = ref.current?.offsetHeight || 64
+      document.documentElement.style.setProperty("--bottom-bar-height", `${h}px`)
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
+
   return (
     <div
+      ref={ref}
       className="fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       role="contentinfo"
       aria-label="Compliance information"
