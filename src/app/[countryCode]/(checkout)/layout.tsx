@@ -3,6 +3,7 @@ import Link from "next/link"
 import Script from "next/script"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import SiteFooter from "@/components/layout/footer"
 
 const ACCEPT_SRC =
   process.env.NEXT_PUBLIC_AUTHNET_ENV === "production"
@@ -19,7 +20,7 @@ export default async function CheckoutLayout({
   const { countryCode: cc } = await params
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       {/* Load Authorize.Net Accept.js only on checkout pages */}
       <Script src={ACCEPT_SRC} strategy="afterInteractive" />
 
@@ -32,9 +33,8 @@ export default async function CheckoutLayout({
 
       <Separator />
 
-      <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
-        {children}
-      </main>
+      <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 flex-1">{children}</main>
+      <SiteFooter countryCode={cc} />
     </div>
   )
 }

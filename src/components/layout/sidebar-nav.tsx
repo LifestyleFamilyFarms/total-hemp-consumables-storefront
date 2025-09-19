@@ -14,7 +14,7 @@ import {
   SidebarMenuAction,
 } from "@/components/ui/sidebar"
 import { cn } from "@lib/utils"
-import { Amphora, Cannabis, Candy, PenTool, Shirt, ChevronDown } from "lucide-react"
+import { Amphora, Cannabis, Candy, PenTool, Shirt, ChevronDown, Home, ShoppingBag } from "lucide-react"
 
 type SectionItem = {
   title: string
@@ -30,6 +30,16 @@ type Section = {
 }
 
 export const SIDEBAR_SECTIONS: Section[] = [
+  {
+    title: "Home",
+    icon: Home,
+    href: (cc) => `/${cc}`,
+  },
+  {
+    title: "Store",
+    icon: ShoppingBag,
+    href: (cc) => `/${cc}/store`,
+  },
   {
     title: "Flower",
     icon: Cannabis,
@@ -183,4 +193,3 @@ export default function SidebarNav({ countryCode }: { countryCode: string }) {
     </SidebarGroup>
   )
 }
-

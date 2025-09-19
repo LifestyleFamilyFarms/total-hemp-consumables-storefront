@@ -19,7 +19,10 @@ const nextConfig = {
         key: "Content-Security-Policy-Report-Only",
         value: [
           "default-src 'self'",
-          "script-src 'self' https://js.authorize.net https://jstest.authorize.net",
+          // allow external Authorize.Net and minimal inline to avoid blocking framework inits
+          "script-src 'self' https://js.authorize.net https://jstest.authorize.net 'unsafe-inline'",
+          // explicit for some user agents
+          "script-src-elem 'self' https://js.authorize.net https://jstest.authorize.net 'unsafe-inline'",
           "style-src 'self' 'unsafe-inline' https://use.typekit.net",
           "img-src 'self' data: blob:",
           "connect-src 'self' *",

@@ -3,6 +3,7 @@ import {
   Amphora,
   Home,
   FlaskConical,
+  ShoppingBag,
   Cannabis,
   Candy,
   Cigarette,
@@ -25,6 +26,7 @@ import {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: (cc) => `/${cc}`, icon: Home },
+  { label: "Store", href: (cc) => `/${cc}/store`, icon: ShoppingBag },
   {
     label: "Flower",
     href: (cc) => `/${cc}/store/flower`,

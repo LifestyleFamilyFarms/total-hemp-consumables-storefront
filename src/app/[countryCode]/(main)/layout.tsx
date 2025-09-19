@@ -6,6 +6,7 @@ import { getBaseURL } from "@lib/util/env"
  
 
 import AppShell from "@/components/layout/app-shell"
+import SiteFooter from "@/components/layout/footer"
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
  
 
@@ -43,6 +44,7 @@ export default async function PageLayout({
       {customer && cart && <CartMismatchBanner customer={customer} cart={cart} />}
       {/* Free shipping nudge removed */}
       {children}
+      <SiteFooter countryCode={countryCode} />
     </AppShell>
   )
 }

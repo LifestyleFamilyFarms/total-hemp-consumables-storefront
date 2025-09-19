@@ -1,6 +1,6 @@
 "use client"
 
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset, useSidebar } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,6 @@ import MobileThumbBar from "@/components/layout/mobile-thumb-bar"
 import ComplianceBar from "@/components/layout/compliance-bar"
 import IconRail from "@/components/layout/icon-rail"
 import { ShoppingCart } from "lucide-react"
-import SiteFooter from "@/components/layout/footer"
 
 type User = {
   name?: string | null
@@ -19,24 +18,27 @@ type User = {
 } | null
 
 function TopbarContent({ countryCode, user }: { countryCode: string; user: User }) {
+  const { state } = useSidebar()
+  const isExpanded = state === "expanded"
   return (
-    <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
+    <div className="fixed top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
       <div className="flex items-center gap-3">
-        {/* Sidebar trigger removed from Topbar; use IconRail burger */}
-        {/* Compact logo shown when sidebar is collapsed (via peer data) */}
-        <Link
-          href={`/${countryCode}`}
-          className="inline-flex h-9 w-24 items-center justify-center rounded-full border border-border/60 bg-background/80 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50 md:peer-data-[state=expanded]:hidden"
-        >
-          LOGO
-        </Link>
-        {/* Horizontal logo shown when sidebar is expanded (via peer data) */}
-        <Link
-          href={`/${countryCode}`}
-          className="hidden h-9 w-40 items-center justify-center rounded-md border border-border/60 bg-background/80 text-[10px] font-semibold tracking-[0.2em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50 md:peer-data-[state=expanded]:inline-flex"
-        >
-          HORIZONTAL LOGO
-        </Link>
+        {/* Compact logo when sidebar is collapsed; horizontal when expanded */}
+        {isExpanded ? (
+          <Link
+            href={`/${countryCode}`}
+            className="inline-flex h-9 w-40 items-center justify-center rounded-md border border-border/60 bg-background/80 text-[10px] font-semibold tracking-[0.2em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50"
+          >
+            HORIZONTAL LOGO
+          </Link>
+        ) : (
+          <Link
+            href={`/${countryCode}`}
+            className="inline-flex h-9 w-24 items-center justify-center rounded-full border border-border/60 bg-background/80 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50"
+          >
+            LOGO
+          </Link>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <ThemeSwitcher className="h-8" />
@@ -72,20 +74,20 @@ export default function AppShell({
   children: React.ReactNode
   user?: User
   withBottomBar?: boolean
-}) {
+  }) {
   return (
     // Sidebar default closed so it overlays without pushing content
     <SidebarProvider defaultOpen={false}>
+      {/* Sidebar overlay, positioned under the topbar via its own top offset */}
       <AppSidebar countryCode={countryCode} user={user} />
 
       <SidebarInset>
-        {/* Topbar full-width */}
+        {/* Topbar full-width (sticky) */}
         <TopbarContent countryCode={countryCode} user={user} />
 
         {/* Left icon rail (desktop), content to the right */}
         <IconRail />
-        <div className="mx-auto max-w-6xl px-4 pt-6 pb-12 sm:px-6 lg:px-8 md:pb-12 md:pl-12">{children}</div>
-        <SiteFooter countryCode={countryCode} />
+        <div className="mx-auto max-w-6xl mt-12 px-4 pt-6 pb-12 sm:px-6 lg:pl-16 lg:pr-4 md:pb-12 md:pl-16">{children}</div>
 
         {/* BottomBar full-width (Compliance) */}
         <ComplianceBar />
