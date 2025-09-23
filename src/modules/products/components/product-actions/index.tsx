@@ -54,6 +54,39 @@ export default function ProductActions({
     })
   }, [product.variants, options])
 
+  // helper to map variant.options to keymap
+  const mapOptions = (v: HttpTypes.StoreProductVariant) => {
+    return (v.options || []).reduce((acc: Record<string, string>, o: any) => {
+      acc[o.option_id] = o.value
+      return acc
+    }, {})
+  }
+
+  const variantInStock = (v?: HttpTypes.StoreProductVariant) => {
+    if (!v) return false
+    if (!v.manage_inventory) return true
+    if (v.allow_backorder) return true
+    return (v.inventory_quantity || 0) > 0
+  }
+
+  // compute available values for a given option based on current selection and inventory
+  const getAvailableValues = (optionId: string): Set<string> => {
+    const values = new Set<string>()
+    ;(product.variants || []).forEach((v) => {
+      if (!variantInStock(v)) return
+      const vo = mapOptions(v)
+      // all other selected options must match
+      const matchesOthers = Object.entries(options).every(([k, val]) => {
+        if (!val || k === optionId) return true
+        return vo[k] === val
+      })
+      if (matchesOthers && vo[optionId]) {
+        values.add(vo[optionId])
+      }
+    })
+    return values
+  }
+
   // update the options when a variant is selected
   const setOptionValue = (optionId: string, value: string) => {
     setOptions((prev) => ({
@@ -120,6 +153,7 @@ export default function ProductActions({
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
               {(product.options || []).map((option) => {
+                const avail = getAvailableValues(option.id)
                 return (
                   <div key={option.id}>
                     <OptionSelect
@@ -129,6 +163,7 @@ export default function ProductActions({
                       title={option.title ?? ""}
                       data-testid="product-options"
                       disabled={!!disabled || isAdding}
+                      isValueDisabled={(val) => avail.size > 0 && !avail.has(val)}
                     />
                   </div>
                 )

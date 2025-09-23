@@ -4,6 +4,7 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import PreviewPrice from "./price"
+import { subtitleForProduct } from "@lib/mappers/product-labels"
 
 const BADGES: Record<string, string> = {
   sativa: "Sativa",
@@ -28,6 +29,7 @@ export default function ProductPreview({
   const { cheapestPrice } = getProductPrice({ product })
   const badge = getBadge(product)
   const image = product.thumbnail || product.images?.[0]?.url || null
+  const subtitle = subtitleForProduct(product)
 
   return (
     <LocalizedClientLink href={`/products/${product.handle}`} className="group block h-full">
@@ -58,7 +60,9 @@ export default function ProductPreview({
               </span>
             ) : null}
           </div>
-          {product.description ? (
+          {subtitle ? (
+            <p className="text-sm text-foreground/70">{subtitle}</p>
+          ) : product.description ? (
             <p className="text-sm text-foreground/70 line-clamp-3">{product.description}</p>
           ) : (
             <p className="text-sm text-foreground/60">Crafted with full-panel COAs and terpene profiles.</p>
