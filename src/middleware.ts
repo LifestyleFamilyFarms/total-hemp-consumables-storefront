@@ -109,29 +109,54 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  const NONCE = crypto.randomUUID().replace(/-/g, "")
+  const isProd = process.env.NODE_ENV === "production"
+  const AUTHNET = isProd ? "https://js.authorize.net" : "https://jstest.authorize.net"
+  const BACKEND = process.env.MEDUSA_BACKEND_URL || process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || BACKEND_URL || ""
+
+  const cspParts = [
+    "default-src 'self'",
+    `script-src 'self' ${AUTHNET} 'nonce-${NONCE}' 'strict-dynamic'`,
+    "object-src 'none'",
+    "base-uri 'self'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    "style-src 'self' 'unsafe-inline' https://use.typekit.net",
+    `connect-src 'self' ${BACKEND}`,
+    `frame-src ${AUTHNET}`,
+    "form-action 'self'",
+  ]
+  const CSP_HEADER = isProd ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only"
+
   const MAINTENANCE_ENABLED = process.env.MAINTENANCE_MODE === "1" || process.env.MAINTENANCE_MODE === "true"
 
-  if(MAINTENANCE_ENABLED) {
-    // Comma-separated allow-list, default to Gamma landing page for US
-    const allowRaw = process.env.ALLOW_PATHS || `/${DEFAULT_REGION}/gamma-gummies`
+  if (MAINTENANCE_ENABLED) {
+    const maintenancePath = normalizePath("/maintenance")
+    const allowRaw = process.env.ALLOWED_PATHS || maintenancePath
 
     const allowed = new Set(
       allowRaw
-      .split(",")
-      .map((s) => normalizePath(s.trim()))
-      .filter(Boolean)
+        .split(",")
+        .map((s) => normalizePath(s.trim()))
+        .filter(Boolean)
     )
+    allowed.add(maintenancePath)
+
     const reqPath = normalizePath(request.nextUrl.pathname)
 
-    if(!allowed.has(reqPath)) {
+    if (!allowed.has(reqPath)) {
       const url = request.nextUrl.clone()
-      // Normalize to the Gamma landing under the default region
-      if (reqPath === "/gamma-gummies") {
-        url.pathname = `/${DEFAULT_REGION}/gamma-gummies`
-      } else {
-        url.pathname = Array.from(allowed)[0] || `/${DEFAULT_REGION}/gamma-gummies`
-      }
+      const fallback = Array.from(allowed)[0] || maintenancePath
+      url.pathname = fallback || maintenancePath
+      url.search = ""
       return NextResponse.redirect(url, 307)
+    }
+
+    if (reqPath === maintenancePath) {
+      const res = NextResponse.next()
+      res.headers.set("x-csp-nonce", NONCE)
+      res.headers.set(CSP_HEADER, cspParts.join("; "))
+      return res
     }
   }
 
@@ -152,7 +177,10 @@ export async function middleware(request: NextRequest) {
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
-    return NextResponse.next()
+    const res = NextResponse.next()
+    res.headers.set("x-csp-nonce", NONCE)
+    res.headers.set(CSP_HEADER, cspParts.join("; "))
+    return res
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
@@ -161,12 +189,17 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24,
     })
 
+    response.headers.set("x-csp-nonce", NONCE)
+    response.headers.set(CSP_HEADER, cspParts.join("; "))
     return response
   }
 
   // check if the url is a static asset
   if (request.nextUrl.pathname.includes(".")) {
-    return NextResponse.next()
+    const res = NextResponse.next()
+    res.headers.set("x-csp-nonce", NONCE)
+    res.headers.set(CSP_HEADER, cspParts.join("; "))
+    return res
   }
 
   const redirectPath =
@@ -180,6 +213,8 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.redirect(`${redirectUrl}`, 307)
   }
 
+  response.headers.set("x-csp-nonce", NONCE)
+  response.headers.set(CSP_HEADER, cspParts.join("; "))
   return response
 }
 

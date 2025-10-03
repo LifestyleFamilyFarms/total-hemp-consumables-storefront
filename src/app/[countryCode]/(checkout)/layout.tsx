@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import Link from "next/link"
 import Script from "next/script"
+import { headers } from "next/headers"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import SiteFooter from "@/components/layout/footer"
@@ -18,11 +19,12 @@ export default async function CheckoutLayout({
   params: Promise<{ countryCode: string }>
 }) {
   const { countryCode: cc } = await params
+  const nonce = headers().get("x-csp-nonce") || undefined
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Load Authorize.Net Accept.js only on checkout pages */}
-      <Script src={ACCEPT_SRC} strategy="afterInteractive" />
+      <Script src={ACCEPT_SRC} strategy="afterInteractive" nonce={nonce} />
 
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
         <Button asChild variant="ghost" size="sm">

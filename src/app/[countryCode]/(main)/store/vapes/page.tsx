@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import StoreTemplate from "@modules/store/templates"
 import type { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { getCategoryByHandle } from "@lib/data/categories"
 
 export const metadata: Metadata = {
   title: "Vapes | Total Hemp Consumables",
@@ -12,12 +13,13 @@ export default async function VapesPage(props: {
 }) {
   const params = await props.params
   const searchParams = await props.searchParams
+  const category = await getCategoryByHandle(["vapes"]) // safe if missing
   return (
     <StoreTemplate
       sortBy={searchParams.sortBy}
       page={searchParams.page}
       countryCode={params.countryCode}
+      categoryId={category?.id}
     />
   )
 }
-

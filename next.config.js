@@ -15,22 +15,7 @@ const nextConfig = {
   async headers() {
     const prod = process.env.NODE_ENV === "production"
     const prodHeaders = [
-      {
-        key: "Content-Security-Policy-Report-Only",
-        value: [
-          "default-src 'self'",
-          // allow external Authorize.Net and minimal inline to avoid blocking framework inits
-          "script-src 'self' https://js.authorize.net https://jstest.authorize.net 'unsafe-inline'",
-          // explicit for some user agents
-          "script-src-elem 'self' https://js.authorize.net https://jstest.authorize.net 'unsafe-inline'",
-          "style-src 'self' 'unsafe-inline' https://use.typekit.net",
-          "img-src 'self' data: blob:",
-          "connect-src 'self' *",
-          "frame-src https://js.authorize.net https://jstest.authorize.net",
-          "base-uri 'self'",
-          "form-action 'self'",
-        ].join("; "),
-      },
+      // CSP is set dynamically in middleware with a per-request nonce
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "X-Frame-Options", value: "SAMEORIGIN" },
       { key: "X-Content-Type-Options", value: "nosniff" },
