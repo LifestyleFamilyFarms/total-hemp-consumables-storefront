@@ -209,8 +209,11 @@ export async function middleware(request: NextRequest) {
   }
 
   const repCode = request.nextUrl.searchParams.get("rep")?.trim() || ""
+  const isGammaGummies =
+    request.nextUrl.pathname.includes("/gamma-gummies") ||
+    request.nextUrl.pathname.endsWith("/gamma-gummies")
   const withRepCookie = (res: NextResponse) => {
-    if (repCode) {
+    if (repCode && !isGammaGummies) {
       res.cookies.set("_sales_rep", repCode, {
         maxAge: 60 * 60 * 24 * 30,
         httpOnly: true,

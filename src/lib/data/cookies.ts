@@ -28,13 +28,15 @@ export const getCacheTag = async (tag: string): Promise<string> => {
 export const getCacheOptions = async (
   tag: string
 ): Promise<{ tags: string[]; revalidate: number }> => {
-  if (typeof window !== "undefined") return { tags: [tag], revalidate: 3600*24*7}
+  if (typeof window !== "undefined") {
+    return { tags: [tag], revalidate: 3600 * 24 * 7 }
+  }
   const cacheTag = await getCacheTag(tag)
   // Always return cache tags, even if no cache ID is present
-  return { 
+  return {
     tags: [cacheTag],
     // Add a default revalidation time of 1 week
-    revalidate: 3600 * 24 *7
+    revalidate: 3600 * 24 * 7,
   }
 }
 
