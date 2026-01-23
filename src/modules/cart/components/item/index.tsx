@@ -1,7 +1,5 @@
 "use client"
 
-import { Table, Text, clx } from "@medusajs/ui"
-import { updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import CartItemSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -13,6 +11,8 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
+import { useCart } from "@lib/context/cart-context"
+import { cn } from "src/lib/utils"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -23,21 +23,17 @@ type ItemProps = {
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { updateItem } = useCart()
 
   const changeQuantity = async (quantity: number) => {
     setError(null)
     setUpdating(true)
 
-    await updateLineItem({
-      lineId: item.id,
-      quantity,
+    await updateItem(item.id, quantity).catch((err: Error) => {
+      setError(err.message)
     })
-      .catch((err) => {
-        setError(err.message)
-      })
-      .finally(() => {
-        setUpdating(false)
-      })
+
+    setUpdating(false)
   }
 
   // TODO: Update this to grab the actual max inventory
@@ -45,11 +41,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
 
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
+    <tr className="w-full border-b border-border/60 last:border-b-0" data-testid="product-row">
+      <td className="p-4 w-24 align-top">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
-          className={clx("flex", {
+          className={cn("flex", {
             "w-16": type === "preview",
             "small:w-24 w-12": type === "full",
           })}
@@ -60,20 +56,17 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             size="square"
           />
         </LocalizedClientLink>
-      </Table.Cell>
+      </td>
 
-      <Table.Cell className="text-left">
-        <Text
-          className="txt-medium-plus text-ui-fg-base"
-          data-testid="product-title"
-        >
+      <td className="text-left align-top">
+        <p className="text-sm font-medium text-foreground" data-testid="product-title">
           {item.product_title}
-        </Text>
+        </p>
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
-      </Table.Cell>
+      </td>
 
       {type === "full" && (
-        <Table.Cell>
+        <td className="align-top">
           <div className="flex gap-2 items-center w-28">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
             <CartItemSelect
@@ -93,36 +86,32 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
                   </option>
                 )
               )}
-
-              <option value={1} key={1}>
-                1
-              </option>
             </CartItemSelect>
             {updating && <Spinner />}
           </div>
           <ErrorMessage error={error} data-testid="product-error-message" />
-        </Table.Cell>
+        </td>
       )}
 
       {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
+        <td className="hidden small:table-cell align-top">
           <LineItemUnitPrice
             item={item}
             style="tight"
             currencyCode={currencyCode}
           />
-        </Table.Cell>
+        </td>
       )}
 
-      <Table.Cell className="!pr-0">
+      <td className="pr-0 align-top">
         <span
-          className={clx("!pr-0", {
+          className={cn("pr-0", {
             "flex flex-col items-end h-full justify-center": type === "preview",
           })}
         >
           {type === "preview" && (
             <span className="flex gap-x-1 ">
-              <Text className="text-ui-fg-muted">{item.quantity}x </Text>
+              <span className="text-ui-fg-muted text-sm">{item.quantity}x </span>
               <LineItemUnitPrice
                 item={item}
                 style="tight"
@@ -136,8 +125,8 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             currencyCode={currencyCode}
           />
         </span>
-      </Table.Cell>
-    </Table.Row>
+      </td>
+    </tr>
   )
 }
 

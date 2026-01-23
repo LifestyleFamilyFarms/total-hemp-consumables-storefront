@@ -2,14 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
+import { User } from "lucide-react"
 import { NAV_ITEMS } from "@/components/layout/nav-data"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 
 export default function IconRail() {
-  const { toggleSidebar } = useSidebar()
   const pathname = usePathname()
 
   // Normalize helper: trim trailing slashes, keep root
@@ -25,27 +22,12 @@ export default function IconRail() {
 
   return (
     <nav
-      className="fixed left-0 top-14 z-20 hidden w-12 flex-col items-center gap-3 border-r bg-background/70 py-2 backdrop-blur md:flex"
+      className="fixed left-0 top-16 z-20 hidden w-12 flex-col items-center gap-3 border-r bg-background/70 py-2 backdrop-blur md:flex"
       style={{ bottom: "var(--bottom-bar-height, 4rem)" }}
       aria-label="Icon navigation"
     >
       <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              onClick={toggleSidebar}
-              variant="outline"
-              size="icon"
-              aria-label="Open menu"
-              className="h-9 w-9"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Menu</TooltipContent>
-        </Tooltip>
-
-        <div className="mt-2 flex w-full flex-col items-center gap-2">
+        <div className="flex w-full flex-col items-center gap-2">
           {NAV_ITEMS.filter((it) => !!it.icon).map((it) => {
             const Icon = it.icon!
             const href = it.href ? it.href(cc) : "#"

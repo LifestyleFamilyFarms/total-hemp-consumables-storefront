@@ -1,14 +1,14 @@
 "use client"
 
-import { SidebarProvider, SidebarInset, useSidebar } from "@/components/ui/sidebar"
+import { useEffect, useState } from "react"
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ThemeSwitcher } from "@/components/theme/theme-switcher"
-import MobileThumbBar from "@/components/layout/mobile-thumb-bar"
 import ComplianceBar from "@/components/layout/compliance-bar"
 import IconRail from "@/components/layout/icon-rail"
 import { ShoppingCart } from "lucide-react"
+import Topbar from "@/components/layout/topbar"
+import { useAppContext } from "@lib/context/app-context"
 
 type User = {
   name?: string | null
@@ -16,53 +16,6 @@ type User = {
   avatarUrl?: string | null
   isAuthenticated?: boolean
 } | null
-
-function TopbarContent({ countryCode, user }: { countryCode: string; user: User }) {
-  const { state } = useSidebar()
-  const isExpanded = state === "expanded"
-  return (
-    <div className="fixed top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
-      <div className="flex items-center gap-3">
-        {/* Compact logo when sidebar is collapsed; horizontal when expanded */}
-        {isExpanded ? (
-          <Link
-            href={`/${countryCode}`}
-            className="inline-flex h-9 w-40 items-center justify-center rounded-md border border-border/60 bg-background/80 text-[10px] font-semibold tracking-[0.2em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50"
-          >
-            HORIZONTAL LOGO
-          </Link>
-        ) : (
-          <Link
-            href={`/${countryCode}`}
-            className="inline-flex h-9 w-24 items-center justify-center rounded-full border border-border/60 bg-background/80 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/50"
-          >
-            LOGO
-          </Link>
-        )}
-      </div>
-      <div className="flex items-center gap-2">
-        <ThemeSwitcher className="h-8" />
-        <Button asChild variant="outline" size="icon" aria-label="Cart">
-          <Link href={`/${countryCode}/checkout`} prefetch={false}>
-            <ShoppingCart className="h-5 w-5" />
-          </Link>
-        </Button>
-
-        <div className="flex items-center gap-2">
-          {user?.isAuthenticated ? (
-            <Button asChild size="sm" className="rounded-full">
-              <Link href={`/${countryCode}/account`}>Account</Link>
-            </Button>
-          ) : (
-            <Button asChild size="sm" className="rounded-full">
-              <Link href={`/${countryCode}/account`}>Sign up</Link>
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export default function AppShell({
   countryCode,
@@ -75,19 +28,27 @@ export default function AppShell({
   user?: User
   withBottomBar?: boolean
   }) {
+  const [isClient, setIsClient] = useState(false)
+  const { sidebarOpen, setSidebarOpen } = useAppContext()
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   return (
     // Sidebar default closed so it overlays without pushing content
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
       {/* Sidebar overlay, positioned under the topbar via its own top offset */}
       <AppSidebar countryCode={countryCode} user={user} />
 
-      <SidebarInset>
+      <SidebarInset className="shell-surface shell-surface--full">
         {/* Topbar full-width (sticky) */}
-        <TopbarContent countryCode={countryCode} user={user} />
+        <Topbar countryCode={countryCode} user={user} />
 
         {/* Left icon rail (desktop), content to the right */}
         <IconRail />
-        <div className="mx-auto max-w-6xl mt-12 px-4 pt-6 pb-12 sm:px-6 lg:pl-16 lg:pr-4 md:pb-12 md:pl-16">{children}</div>
+        <div className="relative isolate mt-12 px-4 pt-6 pb-12 sm:px-6 lg:pl-16 lg:pr-4 md:pb-12 md:pl-16">
+          <div className="mx-auto max-w-6xl shell-surface__content">{children}</div>
+        </div>
 
         {/* BottomBar full-width (Compliance) */}
         <ComplianceBar />
@@ -95,7 +56,25 @@ export default function AppShell({
       </SidebarInset>
 
       {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
-      <MobileThumbBar countryCode={countryCode} />
+      {isClient ? (
+        <div className="fixed right-6 z-40 hidden md:block" style={{ bottom: "calc(var(--bottom-bar-height, 5rem))" }}>
+          <Link
+            href={`/${countryCode}/cart`}
+            className="group relative inline-flex items-center gap-3 rounded-[32px] border border-border/50 bg-background px-6 py-5 text-lg font-semibold text-foreground shadow-[0_25px_60px_rgba(15,23,42,0.25)] transition hover:-translate-y-0.5"
+          >
+            <span className="absolute -top-3 right-4 h-2 w-2 rounded-full bg-primary group-hover:bg-primary/80" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/40 bg-background">
+              <ShoppingCart className="h-5 w-5" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs uppercase tracking-[0.2em] text-foreground/60">Cart</span>
+              <span className="text-base font-semibold text-foreground">View items</span>
+            </div>
+          </Link>
+        </div>
+      ) : null}
+
+      {/* Mobile thumb bar disabled per UX request */}
     </SidebarProvider>
   )
 }

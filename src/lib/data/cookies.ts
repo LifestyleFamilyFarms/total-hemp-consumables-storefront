@@ -60,6 +60,11 @@ export const getCartId = async () => {
   return cookies.get("_medusa_cart_id")?.value
 }
 
+export const getSalesRepCode = async () => {
+  const cookies = await nextCookies()
+  return cookies.get("_sales_rep")?.value
+}
+
 export const setCartId = async (cartId: string) => {
   const cookies = await nextCookies()
   cookies.set("_medusa_cart_id", cartId, {
@@ -67,6 +72,23 @@ export const setCartId = async (cartId: string) => {
     httpOnly: true,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
+  })
+}
+
+export const setSalesRepCode = async (repCode: string) => {
+  const cookies = await nextCookies()
+  cookies.set("_sales_rep", repCode, {
+    maxAge: 60 * 60 * 24 * 30,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  })
+}
+
+export const removeSalesRepCode = async () => {
+  const cookies = await nextCookies()
+  cookies.set("_sales_rep", "", {
+    maxAge: -1,
   })
 }
 

@@ -1,29 +1,45 @@
-import { Heading } from "@medusajs/ui"
+"use client"
 
-import ItemsPreviewTemplate from "@modules/cart/templates/preview"
-import DiscountCode from "@modules/checkout/components/discount-code"
+import { useCart } from "@lib/context/cart-context"
 import CartTotals from "@modules/common/components/cart-totals"
-import Divider from "@modules/common/components/divider"
+import DiscountCode from "@modules/checkout/components/discount-code"
+import ItemsPreviewTemplate from "@modules/cart/templates/preview"
 
 const CheckoutSummary = ({ cart }: { cart: any }) => {
+  const { cart: ctxCart } = useCart()
+  const currentCart = ctxCart ?? cart
+  const itemCount = currentCart?.items?.reduce(
+    (sum: number, item: any) => sum + (item?.quantity ?? 0),
+    0
+  )
+
   return (
-    <div className="sticky top-0 flex flex-col-reverse small:flex-col gap-y-8 py-8 small:py-0 ">
-      <div className="w-full bg-white flex flex-col">
-        <Divider className="my-6 small:hidden" />
-        <Heading
-          level="h2"
-          className="flex flex-row text-3xl-regular items-baseline"
-        >
-          In your Cart
-        </Heading>
-        <Divider className="my-6" />
-        <CartTotals totals={cart} />
-        <ItemsPreviewTemplate cart={cart} />
-        <div className="my-6">
-          <DiscountCode cart={cart} />
+    <aside className="lg:sticky lg:top-8">
+      <div className="rounded-2xl border border-border bg-white shadow-sm">
+        <div className="flex items-center justify-between px-5 pt-5">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Order summary
+          </h2>
+          {typeof itemCount === "number" && itemCount > 0 && (
+            <span className="text-sm text-muted-foreground">
+              {itemCount} {itemCount === 1 ? "item" : "items"}
+            </span>
+          )}
+        </div>
+
+        <div className="px-5 pt-4 pb-1">
+          <CartTotals totals={currentCart} />
+        </div>
+
+        <div className="px-5 pt-2 pb-5 border-t border-border/80">
+          <DiscountCode cart={currentCart} />
+        </div>
+
+        <div className="px-5 pb-5 border-t border-border/80">
+          <ItemsPreviewTemplate cart={currentCart} />
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 

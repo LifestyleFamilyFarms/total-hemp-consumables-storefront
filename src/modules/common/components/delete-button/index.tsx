@@ -1,40 +1,54 @@
-import { deleteLineItem } from "@lib/data/cart"
-import { Spinner, Trash } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
-import { useState } from "react"
+"use client"
+
+import { Loader2, Trash2 } from "lucide-react"
+import { ButtonHTMLAttributes, useState } from "react"
+import { useCart } from "@lib/context/cart-context"
+import { cn } from "src/lib/utils"
+import { Button } from "@/components/ui/button"
+
+type DeleteButtonProps = {
+  id: string
+  className?: string
+  children?: React.ReactNode
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">
 
 const DeleteButton = ({
   id,
-  children,
+  children = "Remove",
   className,
-}: {
-  id: string
-  children?: React.ReactNode
-  className?: string
-}) => {
+  ...buttonProps
+}: DeleteButtonProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
+  const { removeItem, refresh } = useCart()
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true)
-    await deleteLineItem(id).catch((err) => {
+    try {
+      await removeItem(id)
+      await refresh()
+    } finally {
       setIsDeleting(false)
-    })
+    }
   }
 
   return (
-    <div
-      className={clx(
-        "flex items-center justify-between text-small-regular",
-        className
-      )}
-    >
-      <button
-        className="flex gap-x-1 text-ui-fg-subtle hover:text-ui-fg-base cursor-pointer"
+    <div className={cn("flex items-center justify-between text-sm", className)}>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="gap-2 px-2 text-muted-foreground hover:text-destructive"
         onClick={() => handleDelete(id)}
+        disabled={isDeleting}
+        type="button"
+        {...buttonProps}
       >
-        {isDeleting ? <Spinner className="animate-spin" /> : <Trash />}
+        {isDeleting ? (
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+        ) : (
+          <Trash2 className="h-4 w-4" aria-hidden />
+        )}
         <span>{children}</span>
-      </button>
+      </Button>
     </div>
   )
 }

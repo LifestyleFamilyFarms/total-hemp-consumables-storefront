@@ -11,8 +11,8 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
-import { useParams, usePathname } from "next/navigation"
-import { updateRegion } from "@lib/data/cart"
+import { useParams, usePathname, useRouter } from "next/navigation"
+import { useCart } from "@lib/context/cart-context"
 import { HttpTypes } from "@medusajs/types"
 
 type CountryOption = {
@@ -36,6 +36,8 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const currentPath = usePathname().split(`/${countryCode}`)[1]
 
   const { state, close } = toggleState
+  const router = useRouter()
+  const { setRegion } = useCart()
 
   const options = useMemo(() => {
     return regions
@@ -58,8 +60,11 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   }, [options, countryCode])
 
   const handleChange = (option: CountryOption) => {
-    updateRegion(option.country, currentPath)
-    close()
+    // update region in cart via context, then navigate if needed
+    void setRegion(option.region).finally(() => {
+      router.push(`/${option.country}${currentPath}`)
+      close()
+    })
   }
 
   return (

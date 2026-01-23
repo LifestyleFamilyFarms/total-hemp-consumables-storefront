@@ -98,17 +98,15 @@ Your site is now running at http://localhost:8000!
 
 # Payment integrations
 
-By default this starter supports the following payment integrations
-
-- [Stripe](https://stripe.com/)
-
-To enable the integrations you need to add the following to your `.env.local` file:
+This storefront is configured to work with Authorize.Net through the custom Medusa provider. Ensure the following environment variables are set:
 
 ```shell
-NEXT_PUBLIC_STRIPE_KEY=<your-stripe-public-key>
+NEXT_PUBLIC_API_LOGIN_ID=<your-authorize-net-api-login-id>
+NEXT_PUBLIC_CLIENT_KEY=<your-authorize-net-client-key>
+NEXT_PUBLIC_AUTHNET_ENV=sandbox # or production
 ```
 
-You'll also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information on how to configure [Stripe](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe#main).
+Your Medusa server must also be configured with the Authorize.Net credentials and payment module. Refer to the Medusa documentation for detailed setup steps.
 
 # Resources
 

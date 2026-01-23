@@ -1,0 +1,1408 @@
+{
+  "generatedAt": "2025-11-08T04:58:21.571Z",
+  "sourceDir": "/logos/LOGOS_ICONS_WEB",
+  "outputDir": "/logos/optimized",
+  "sizes": [
+    {
+      "label": "orig",
+      "width": null
+    },
+    {
+      "label": "md",
+      "width": 256
+    }
+  ],
+  "assets": [
+    {
+      "id": "bw-horizontal-full-color-logo-nobgweb",
+      "label": "Bw Horizontal Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "BW_horizontal_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
+          "svg": "/logos/svg/BW_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
+          "svg": "/logos/svg/BW_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "bw-horizontal-full-color-logo-wbgweb",
+      "label": "Bw Horizontal Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "BW_horizontal_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-icon-nobgweb",
+      "label": "Bw Icon Nobgweb",
+      "meta": {
+        "baseName": "BW_ICON_NObgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_ICON_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/BW_ICON_NObgWEB/orig.png",
+          "webp": "/logos/optimized/BW_ICON_NObgWEB/orig.webp",
+          "svg": "/logos/svg/BW_ICON_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/BW_ICON_NObgWEB/md.png",
+          "webp": "/logos/optimized/BW_ICON_NObgWEB/md.webp",
+          "svg": "/logos/svg/BW_ICON_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "bw-iconnotm-nobgweb",
+      "label": "Bw Iconnotm Nobgweb",
+      "meta": {
+        "baseName": "BW_ICONnoTM_NObgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_ICONnoTM_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/BW_ICONnoTM_NObgWEB/orig.png",
+          "webp": "/logos/optimized/BW_ICONnoTM_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/BW_ICONnoTM_NObgWEB/md.png",
+          "webp": "/logos/optimized/BW_ICONnoTM_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-iconnotm-wbgweb",
+      "label": "Bw Iconnotm Wbgweb",
+      "meta": {
+        "baseName": "BW_ICONnoTM_WbgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_ICONnoTM_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/BW_ICONnoTM_WbgWEB/orig.png",
+          "webp": "/logos/optimized/BW_ICONnoTM_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/BW_ICONnoTM_WbgWEB/md.png",
+          "webp": "/logos/optimized/BW_ICONnoTM_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-logo-nobgweb",
+      "label": "Bw Logo Nobgweb",
+      "meta": {
+        "baseName": "BW_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/BW_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/BW_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/BW_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/BW_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-logo-wbgweb",
+      "label": "Bw Logo Wbgweb",
+      "meta": {
+        "baseName": "BW_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/BW_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/BW_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/BW_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/BW_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-logowtagline-nobgweb",
+      "label": "Bw Logowtagline Nobgweb",
+      "meta": {
+        "baseName": "BW_LOGOwTAGLINE_NObgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/BW_LOGOwTAGLINE_NObgWEB/orig.png",
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/BW_LOGOwTAGLINE_NObgWEB/md.png",
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "bw-logowtagline-wbgweb",
+      "label": "Bw Logowtagline Wbgweb",
+      "meta": {
+        "baseName": "BW_LOGOwTAGLINE_WbgWEB",
+        "collection": "standard",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/orig.png",
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/orig.webp",
+          "svg": "/logos/svg/BW_LOGOwTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/md.png",
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/md.webp",
+          "svg": "/logos/svg/BW_LOGOwTAGLINE_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "colorhorizontal-full-color-logo-nobgweb",
+      "label": "Colorhorizontal Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "COLORhorizontal_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
+          "svg": "/logos/svg/COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
+          "svg": "/logos/svg/COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "colorhorizontal-full-color-logo-wbgweb",
+      "label": "Colorhorizontal Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "COLORhorizontal_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-bw-icon-nobgweb",
+      "label": "Db Bw Icon Nobgweb",
+      "meta": {
+        "baseName": "DB_BW_ICON_NObgWEB",
+        "collection": "dark-block",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICON_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_BW_ICON_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_BW_ICON_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_BW_ICON_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_BW_ICON_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-bw-icon-wbgweb",
+      "label": "Db Bw Icon Wbgweb",
+      "meta": {
+        "baseName": "DB_BW_ICON_WbgWEB",
+        "collection": "dark-block",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICON_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_BW_ICON_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_BW_ICON_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_BW_ICON_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_BW_ICON_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-bw-iconnotm-nobgweb",
+      "label": "Db Bw Iconnotm Nobgweb",
+      "meta": {
+        "baseName": "DB_BW_ICONnoTM_NObgWEB",
+        "collection": "dark-block",
+        "palette": "black-white",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/DB_BW_ICONnoTM_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_BW_ICONnoTM_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/DB_BW_ICONnoTM_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_BW_ICONnoTM_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-bw-iconnotm-wbgweb",
+      "label": "Db Bw Iconnotm Wbgweb",
+      "meta": {
+        "baseName": "DB_BW_ICONnoTM_WbgWEB",
+        "collection": "dark-block",
+        "palette": "black-white",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/DB_BW_ICONnoTM_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_BW_ICONnoTM_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/DB_BW_ICONnoTM_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_BW_ICONnoTM_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-colorhorizontal-full-color-logo-nobgweb",
+      "label": "Db Colorhorizontal Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-colorhorizontal-full-color-logo-wbgweb",
+      "label": "Db Colorhorizontal Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-icon-nobgweb",
+      "label": "Db Full Color Icon Nobgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_ICON_NObgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/orig.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_ICON_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/md.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_ICON_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-icon-wbgweb",
+      "label": "Db Full Color Icon Wbgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_ICON_WbgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICON_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICON_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-iconnotm-nobgweb",
+      "label": "Db Full Color Iconnotm Nobgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_ICONnoTM_NObgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 592,
+          "height": 600,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-iconnotm-wbgweb",
+      "label": "Db Full Color Iconnotm Wbgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_ICONnoTM_WbgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICONnoTM_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-logo-nobgweb",
+      "label": "Db Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/orig.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGO_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/md.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGO_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-logo-wbgweb",
+      "label": "Db Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-logowtagline-nobgweb",
+      "label": "Db Full Color Logowtagline Nobgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/orig.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/md.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "db-full-color-logowtagline-wbgweb",
+      "label": "Db Full Color Logowtagline Wbgweb",
+      "meta": {
+        "baseName": "DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB",
+        "collection": "dark-block",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/orig.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/md.webp",
+          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "db-grey-horizontal-full-color-logo-nobgweb",
+      "label": "Db Grey Horizontal Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-grey-horizontal-full-color-logo-wbgweb",
+      "label": "Db Grey Horizontal Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-grey-logo-nobgweb",
+      "label": "Db Grey Logo Nobgweb",
+      "meta": {
+        "baseName": "DB_GREY_LOGO_NObgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_GREY_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_GREY_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-grey-logo-wbgweb",
+      "label": "Db Grey Logo Wbgweb",
+      "meta": {
+        "baseName": "DB_GREY_LOGO_WbgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/DB_GREY_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/DB_GREY_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-grey-logowtagline-nobgweb",
+      "label": "Db Grey Logowtagline Nobgweb",
+      "meta": {
+        "baseName": "DB_GREY_LOGOwTAGLINE_NObgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/DB_GREY_LOGOwTAGLINE_NObgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_LOGOwTAGLINE_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/DB_GREY_LOGOwTAGLINE_NObgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_LOGOwTAGLINE_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "db-grey-logowtagline-wbgweb",
+      "label": "Db Grey Logowtagline Wbgweb",
+      "meta": {
+        "baseName": "DB_GREY_LOGOwTAGLINE_WbgWEB",
+        "collection": "dark-block",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/DB_GREY_LOGOwTAGLINE_WbgWEB/orig.png",
+          "webp": "/logos/optimized/DB_GREY_LOGOwTAGLINE_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/DB_GREY_LOGOwTAGLINE_WbgWEB/md.png",
+          "webp": "/logos/optimized/DB_GREY_LOGOwTAGLINE_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "full-color-icon-nobgweb",
+      "label": "Full Color Icon Nobgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_ICON_NObgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_ICON_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/orig.webp",
+          "svg": "/logos/svg/FULL_COLOR_ICON_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.webp",
+          "svg": "/logos/svg/FULL_COLOR_ICON_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "full-color-icon-wbgweb",
+      "label": "Full Color Icon Wbgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_ICON_WbgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_ICON_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/FULL_COLOR_ICON_WbgWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_ICON_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/FULL_COLOR_ICON_WbgWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_ICON_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "full-color-logo-nobgweb",
+      "label": "Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "full-color-logo-wbgweb",
+      "label": "Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "full-color-logowtaglinenobgweb",
+      "label": "Full Color Logowtaglinenobgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_LOGOwTAGLINEnoBGWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEnoBGWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/orig.webp",
+          "svg": "/logos/svg/FULL_COLOR_LOGOwTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/md.webp",
+          "svg": "/logos/svg/FULL_COLOR_LOGOwTAGLINE_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "full-color-logowtaglinewbgweb",
+      "label": "Full Color Logowtaglinewbgweb",
+      "meta": {
+        "baseName": "FULL_COLOR_LOGOwTAGLINEwBGWEB",
+        "collection": "standard",
+        "palette": "full-color",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEwBGWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEwBGWEB/orig.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEwBGWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEwBGWEB/md.png",
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEwBGWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-horizontal-full-color-logo-nobgweb",
+      "label": "Grey Horizontal Full Color Logo Nobgweb",
+      "meta": {
+        "baseName": "GREY_horizontal_FULL_COLOR_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
+          "svg": "/logos/svg/GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
+          "svg": "/logos/svg/GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "grey-horizontal-full-color-logo-wbgweb",
+      "label": "Grey Horizontal Full Color Logo Wbgweb",
+      "meta": {
+        "baseName": "GREY_horizontal_FULL_COLOR_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "horizontal",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 1683,
+          "height": 600,
+          "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 91,
+          "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-icon-nobgweb",
+      "label": "Grey Icon Nobgweb",
+      "meta": {
+        "baseName": "GREY_ICON_NObgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICON_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/GREY_ICON_NObgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_ICON_NObgWEB/orig.webp",
+          "svg": "/logos/svg/GREY_ICON_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/GREY_ICON_NObgWEB/md.png",
+          "webp": "/logos/optimized/GREY_ICON_NObgWEB/md.webp",
+          "svg": "/logos/svg/GREY_ICON_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "grey-icon-wbgweb",
+      "label": "Grey Icon Wbgweb",
+      "meta": {
+        "baseName": "GREY_ICON_WbgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICON_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/GREY_ICON_WbgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_ICON_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/GREY_ICON_WbgWEB/md.png",
+          "webp": "/logos/optimized/GREY_ICON_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-iconnotm-nobgweb",
+      "label": "Grey Iconnotm Nobgweb",
+      "meta": {
+        "baseName": "GREY_ICONnoTM_NObgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICONnoTM_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/GREY_ICONnoTM_NObgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_ICONnoTM_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/GREY_ICONnoTM_NObgWEB/md.png",
+          "webp": "/logos/optimized/GREY_ICONnoTM_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-iconnotm-wbgweb",
+      "label": "Grey Iconnotm Wbgweb",
+      "meta": {
+        "baseName": "GREY_ICONnoTM_WbgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "icon",
+        "hasTagline": false,
+        "hasTrademark": false
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICONnoTM_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 608,
+          "png": "/logos/optimized/GREY_ICONnoTM_WbgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_ICONnoTM_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 259,
+          "png": "/logos/optimized/GREY_ICONnoTM_WbgWEB/md.png",
+          "webp": "/logos/optimized/GREY_ICONnoTM_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-logo-nobgweb",
+      "label": "Grey Logo Nobgweb",
+      "meta": {
+        "baseName": "GREY_LOGO_NObgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGO_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/GREY_LOGO_NObgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_LOGO_NObgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/GREY_LOGO_NObgWEB/md.png",
+          "webp": "/logos/optimized/GREY_LOGO_NObgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-logo-wbgweb",
+      "label": "Grey Logo Wbgweb",
+      "meta": {
+        "baseName": "GREY_LOGO_WbgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": false,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGO_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 600,
+          "png": "/logos/optimized/GREY_LOGO_WbgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_LOGO_WbgWEB/orig.webp"
+        },
+        "md": {
+          "width": 256,
+          "height": 256,
+          "png": "/logos/optimized/GREY_LOGO_WbgWEB/md.png",
+          "webp": "/logos/optimized/GREY_LOGO_WbgWEB/md.webp"
+        }
+      }
+    },
+    {
+      "id": "grey-logowtagline-nobgweb",
+      "label": "Grey Logowtagline Nobgweb",
+      "meta": {
+        "baseName": "GREY_LOGOwTAGLINE_NObgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "transparent",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_NObgWEB.gif",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/orig.webp",
+          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/md.png",
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/md.webp",
+          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+        }
+      }
+    },
+    {
+      "id": "grey-logowtagline-wbgweb",
+      "label": "Grey Logowtagline Wbgweb",
+      "meta": {
+        "baseName": "GREY_LOGOwTAGLINE_WbgWEB",
+        "collection": "standard",
+        "palette": "grey",
+        "background": "light",
+        "orientation": "stacked",
+        "markType": "logo",
+        "hasTagline": true,
+        "hasTrademark": true
+      },
+      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_WbgWEB.jpg",
+      "outputs": {
+        "orig": {
+          "width": 600,
+          "height": 604,
+          "png": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/orig.png",
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/orig.webp",
+          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+        },
+        "md": {
+          "width": 256,
+          "height": 258,
+          "png": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/md.png",
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/md.webp",
+          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+        }
+      }
+    }
+  ]
+}

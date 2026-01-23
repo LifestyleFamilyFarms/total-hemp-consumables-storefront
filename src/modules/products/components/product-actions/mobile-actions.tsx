@@ -1,6 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { Button, clx } from "@medusajs/ui"
+import { Button } from "@/components/ui/button"
+import { cn } from "src/lib/utils"
 import React, { Fragment, useMemo } from "react"
+import { Loader2 } from "lucide-react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
 import ChevronDown from "@modules/common/icons/chevron-down"
@@ -55,7 +57,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   return (
     <>
       <div
-        className={clx("lg:hidden inset-x-0 bottom-0 fixed", {
+        className={cn("lg:hidden inset-x-0 bottom-0 fixed", {
           "pointer-events-none": !show,
         })}
       >
@@ -86,7 +88,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                     </p>
                   )}
                   <span
-                    className={clx({
+                    className={cn({
                       "text-ui-fg-interactive":
                         selectedPrice.price_type === "sale",
                     })}
@@ -98,36 +100,43 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 <div></div>
               )}
             </div>
-            <div className={clx("grid grid-cols-2 w-full gap-x-4", {
-              "!grid-cols-1": isSimple
-            })}>
-              {!isSimple && <Button
-                onClick={open}
-                variant="secondary"
-                className="w-full"
-                data-testid="mobile-actions-button"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span>
-                    {variant
-                      ? Object.values(options).join(" / ")
-                      : "Select Options"}
-                  </span>
-                  <ChevronDown />
-                </div>
-              </Button>}
+            <div
+              className={cn("grid grid-cols-2 w-full gap-x-4", {
+                "!grid-cols-1": isSimple,
+              })}
+            >
+              {!isSimple && (
+                <Button
+                  onClick={open}
+                  variant="secondary"
+                  className="w-full"
+                  data-testid="mobile-actions-button"
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <span>
+                      {variant
+                        ? Object.values(options).join(" / ")
+                        : "Select Options"}
+                    </span>
+                    <ChevronDown />
+                  </div>
+                </Button>
+              )}
               <Button
                 onClick={handleAddToCart}
                 disabled={!inStock || !variant}
                 className="w-full"
-                isLoading={isAdding}
                 data-testid="mobile-cart-button"
               >
-                {!variant
-                  ? "Select variant"
-                  : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
+                {isAdding ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                ) : !variant ? (
+                  "Select variant"
+                ) : !inStock ? (
+                  "Out of stock"
+                ) : (
+                  "Add to cart"
+                )}
               </Button>
             </div>
           </div>

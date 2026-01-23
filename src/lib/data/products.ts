@@ -7,6 +7,65 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
+const resolvedSalesChannels = new Map<string, string | null>()
+let cachedDefaultSalesChannelId: string | null | undefined
+
+const getDefaultStoreSalesChannelId = async (
+  headers: Record<string, string>
+) => {
+  if (typeof cachedDefaultSalesChannelId !== "undefined") {
+    return cachedDefaultSalesChannelId
+  }
+
+  try {
+    const { store } = await sdk.client.fetch<{ store: any }>("/store", {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    })
+
+    cachedDefaultSalesChannelId =
+      store?.default_sales_channel_id ??
+      store?.default_sales_channel?.id ??
+      null
+
+    return cachedDefaultSalesChannelId
+  } catch (error) {
+    cachedDefaultSalesChannelId = null
+    return null
+  }
+}
+
+const resolveSalesChannelId = async (
+  regionId: string,
+  headers: Record<string, string>
+) => {
+  const defaultSalesChannelId = await getDefaultStoreSalesChannelId(headers)
+  if (defaultSalesChannelId) {
+    return defaultSalesChannelId
+  }
+
+  if (resolvedSalesChannels.has(regionId)) {
+    return resolvedSalesChannels.get(regionId)
+  }
+
+  try {
+    const { cart } = await sdk.store.cart.create(
+      { region_id: regionId },
+      {},
+      headers
+    )
+
+    const salesChannelId = cart?.sales_channel_id ?? null
+    resolvedSalesChannels.set(regionId, salesChannelId)
+
+    return salesChannelId
+  } catch (error) {
+    resolvedSalesChannels.set(regionId, null)
+    return null
+  }
+}
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -70,6 +129,8 @@ export const listProducts = async ({
     ...(await getCacheOptions(cacheTag))
   }
 
+  const salesChannelId = await resolveSalesChannelId(region.id, headers)
+
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
       `/store/products`,
@@ -79,6 +140,7 @@ export const listProducts = async ({
           limit,
           offset,
           region_id: region.id,
+          ...(salesChannelId ? { sales_channel_id: salesChannelId } : {}),
           fields:
             "*variants.calculated_price,+variants.inventory_quantity,+variants.options,+variants.metadata,+metadata,+tags,+type",
           ...queryParams,

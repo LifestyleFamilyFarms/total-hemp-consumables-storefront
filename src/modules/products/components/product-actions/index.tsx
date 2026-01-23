@@ -1,16 +1,17 @@
 "use client"
 
-import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
+import { useCart } from "@lib/context/cart-context"
+import { toast } from "@/components/ui/sonner"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -33,7 +34,7 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
-  const countryCode = useParams().countryCode as string
+  const { addItem, refresh } = useCart()
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -62,11 +63,36 @@ export default function ProductActions({
     }, {})
   }
 
+  const variantInventoryQuantity = (
+    v?: HttpTypes.StoreProductVariant
+  ): number | null => {
+    if (!v) {
+      return null
+    }
+
+    const qty = v.inventory_quantity
+
+    if (typeof qty === "number") {
+      return qty
+    }
+
+    if (typeof qty === "string") {
+      const parsed = Number(qty)
+      return Number.isFinite(parsed) ? parsed : null
+    }
+
+    return null
+  }
+
   const variantInStock = (v?: HttpTypes.StoreProductVariant) => {
     if (!v) return false
     if (!v.manage_inventory) return true
     if (v.allow_backorder) return true
-    return (v.inventory_quantity || 0) > 0
+    const quantity = variantInventoryQuantity(v)
+    if (quantity === null) {
+      return true
+    }
+    return quantity > 0
   }
 
   // compute available values for a given option based on current selection and inventory
@@ -116,10 +142,12 @@ export default function ProductActions({
     }
 
     // If there is inventory available, we can add to cart
-    if (
-      selectedVariant?.manage_inventory &&
-      (selectedVariant?.inventory_quantity || 0) > 0
-    ) {
+    if (selectedVariant?.manage_inventory) {
+      const quantity = variantInventoryQuantity(selectedVariant)
+      if (quantity === null || quantity > 0) {
+        return true
+      }
+    } else if (selectedVariant) {
       return true
     }
 
@@ -131,18 +159,26 @@ export default function ProductActions({
 
   const inView = useIntersection(actionsRef, "0px")
 
+  const buttonLabel =
+    !selectedVariant || !isValidVariant
+      ? (product.variants?.length ?? 0) > 1
+        ? "Select options"
+        : "Unavailable"
+      : !inStock
+      ? "Out of stock"
+      : "Add to cart"
+
   // add the selected variant to the cart
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
 
-    await addToCart({
-      variantId: selectedVariant.id,
-      quantity: 1,
-      countryCode,
+    await addItem(selectedVariant.id, 1).catch(() => {
+      /* swallow errors for now */
     })
-
+    await refresh()
+    toast.success("Added to cart")
     setIsAdding(false)
   }
 
@@ -184,16 +220,14 @@ export default function ProductActions({
             isAdding ||
             !isValidVariant
           }
-          variant="primary"
-          className="w-full h-10"
-          isLoading={isAdding}
+          className="flex h-10 w-full items-center justify-center"
           data-testid="add-product-button"
         >
-          {!selectedVariant && !options
-            ? "Select variant"
-            : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+          {isAdding ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          ) : (
+            buttonLabel
+          )}
         </Button>
         <MobileActions
           product={product}

@@ -1,7 +1,7 @@
 "use client"
 
-import { clx } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { cn } from "src/lib/utils"
 
 export function Pagination({
   page,
@@ -35,7 +35,7 @@ export function Pagination({
   ) => (
     <button
       key={p}
-      className={clx("txt-xlarge-plus text-ui-fg-muted", {
+      className={cn("txt-xlarge-plus text-ui-fg-muted", {
         "text-ui-fg-base hover:text-ui-fg-subtle": isCurrent,
       })}
       disabled={isCurrent}

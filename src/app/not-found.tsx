@@ -1,7 +1,6 @@
-import { ArrowUpRightMini } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
 import { Metadata } from "next"
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "404",
@@ -19,10 +18,10 @@ export default function NotFound() {
         className="flex gap-x-1 items-center group"
         href="/"
       >
-        <Text className="text-ui-fg-interactive">Go to frontpage</Text>
-        <ArrowUpRightMini
+        <span className="text-ui-fg-interactive">Go to frontpage</span>
+        <ArrowUpRight
+          size={16}
           className="group-hover:rotate-45 ease-in-out duration-150"
-          color="var(--fg-interactive)"
         />
       </Link>
     </div>

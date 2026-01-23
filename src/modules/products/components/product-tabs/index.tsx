@@ -1,47 +1,48 @@
 "use client"
 
-import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
 }
 
 const ProductTabs = ({ product }: ProductTabsProps) => {
-  const tabs = [
-    {
-      label: "Composition & Terpenes",
-      component: <ProductInfoTab product={product} />,
-    },
-    {
-      label: "Shipping & Compliance",
-      component: <ShippingInfoTab product={product} />,
-    },
-  ]
-
   return (
-    <div className="w-full">
-      <Accordion type="multiple">
-        {tabs.map((tab, i) => (
-          <Accordion.Item
-            key={i}
-            title={tab.label}
-            headingSize="medium"
-            value={tab.label}
-          >
-            {tab.component}
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </div>
+    <Accordion
+      type="multiple"
+      className="divide-y divide-border/70 overflow-hidden rounded-2xl border border-border/70 bg-card/70 shadow-[0_22px_46px_rgba(5,8,20,0.28)] backdrop-blur"
+    >
+      <AccordionItem value="composition">
+        <AccordionTrigger className="px-5 text-base font-semibold text-foreground">
+          Composition & Terpenes
+        </AccordionTrigger>
+        <AccordionContent className="px-5 pb-6">
+          <ProductInfoTab product={product} />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="shipping">
+        <AccordionTrigger className="px-5 text-base font-semibold text-foreground">
+          Shipping & Compliance
+        </AccordionTrigger>
+        <AccordionContent className="px-5 pb-6">
+          <ShippingInfoTab product={product} />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   const metadata = product?.metadata || {}
   return (
-    <div className="space-y-4 py-6 text-sm text-foreground/70">
-      <p>
+    <div className="space-y-4 pt-2 text-sm text-foreground/80">
+      <p className="leading-relaxed">
         {(metadata?.formulation as string) ||
           "Gamma Gummies use nano-emulsified hemp extract, organic cane sugar, fruit reductions, and functional botanicals."}
       </p>
@@ -58,8 +59,8 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
 const ShippingInfoTab = ({ product }: ProductTabsProps) => {
   const metadata = product?.metadata || {}
   return (
-    <div className="space-y-4 py-6 text-sm text-foreground/70">
-      <p>
+    <div className="space-y-4 pt-2 text-sm text-foreground/80">
+      <p className="leading-relaxed">
         {(metadata?.shipping_note as string) ||
           "Ships to all compliant states with 21+ signature required. Orders placed before 2 PM ship same day Monday–Thursday."}
       </p>
@@ -74,9 +75,9 @@ const ShippingInfoTab = ({ product }: ProductTabsProps) => {
 }
 
 const Row = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex items-start justify-between gap-3 text-xs sm:text-sm">
+  <div className="flex items-start justify-between gap-4 text-xs sm:text-sm">
     <span className="uppercase tracking-[0.3em] text-foreground/60">{label}</span>
-    <span className="text-right text-foreground/80">{value}</span>
+    <span className="text-right text-foreground/85">{value}</span>
   </div>
 )
 

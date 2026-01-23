@@ -114,15 +114,63 @@ export async function middleware(request: NextRequest) {
   const AUTHNET = isProd ? "https://js.authorize.net" : "https://jstest.authorize.net"
   const BACKEND = process.env.MEDUSA_BACKEND_URL || process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || BACKEND_URL || ""
 
+  const hostname = request.nextUrl.hostname
+  const origin = request.nextUrl.origin
+
+  const isLocalDev =
+    !isProd &&
+    (hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname.endsWith(".localhost"))
+
+  let backendOrigin: string | undefined
+  try {
+    backendOrigin = BACKEND ? new URL(BACKEND).origin : undefined
+  } catch {
+    backendOrigin = undefined
+  }
+
+  const scriptSrc = new Set<string>([
+    "'self'",
+    AUTHNET,
+    `'nonce-${NONCE}'`,
+    "'unsafe-inline'",
+  ])
+
+  if (isProd) {
+    scriptSrc.add("https://va.vercel-scripts.com")
+  }
+
+  if (isLocalDev) {
+    scriptSrc.add("'unsafe-eval'")
+  }
+
+  const connectSrc = new Set<string>(["'self'"])
+
+  if (backendOrigin) {
+    connectSrc.add(backendOrigin)
+  } else if (BACKEND) {
+    connectSrc.add(BACKEND)
+  }
+
+  connectSrc.add(origin)
+  connectSrc.add(AUTHNET)
+
+  if (isLocalDev) {
+    connectSrc.add("ws:")
+    connectSrc.add("http://localhost:8000")
+    connectSrc.add("http://127.0.0.1:8000")
+  }
+
   const cspParts = [
     "default-src 'self'",
-    `script-src 'self' ${AUTHNET} 'nonce-${NONCE}' 'strict-dynamic'`,
+    `script-src ${Array.from(scriptSrc).join(" ")}`,
     "object-src 'none'",
     "base-uri 'self'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
     "style-src 'self' 'unsafe-inline' https://use.typekit.net",
-    `connect-src 'self' ${BACKEND}`,
+    `connect-src ${Array.from(connectSrc).join(" ")}`,
     `frame-src ${AUTHNET}`,
     "form-action 'self'",
   ]
@@ -160,6 +208,19 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  const repCode = request.nextUrl.searchParams.get("rep")?.trim() || ""
+  const withRepCookie = (res: NextResponse) => {
+    if (repCode) {
+      res.cookies.set("_sales_rep", repCode, {
+        maxAge: 60 * 60 * 24 * 30,
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      })
+    }
+    return res
+  }
+
   let redirectUrl = request.nextUrl.href
 
   let response = NextResponse.redirect(redirectUrl, 307)
@@ -180,7 +241,7 @@ export async function middleware(request: NextRequest) {
     const res = NextResponse.next()
     res.headers.set("x-csp-nonce", NONCE)
     res.headers.set(CSP_HEADER, cspParts.join("; "))
-    return res
+    return withRepCookie(res)
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
@@ -191,7 +252,7 @@ export async function middleware(request: NextRequest) {
 
     response.headers.set("x-csp-nonce", NONCE)
     response.headers.set(CSP_HEADER, cspParts.join("; "))
-    return response
+    return withRepCookie(response)
   }
 
   // check if the url is a static asset
@@ -199,7 +260,7 @@ export async function middleware(request: NextRequest) {
     const res = NextResponse.next()
     res.headers.set("x-csp-nonce", NONCE)
     res.headers.set(CSP_HEADER, cspParts.join("; "))
-    return res
+    return withRepCookie(res)
   }
 
   const redirectPath =
@@ -215,7 +276,7 @@ export async function middleware(request: NextRequest) {
 
   response.headers.set("x-csp-nonce", NONCE)
   response.headers.set(CSP_HEADER, cspParts.join("; "))
-  return response
+  return withRepCookie(response)
 }
 
 // export const config = {

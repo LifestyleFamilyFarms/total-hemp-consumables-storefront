@@ -1,5 +1,4 @@
-import { ChevronUpDown } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
+import { ChevronsUpDown } from "lucide-react"
 import {
   SelectHTMLAttributes,
   forwardRef,
@@ -8,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react"
+import { cn } from "src/lib/utils"
 
 export type NativeSelectProps = {
   placeholder?: string
@@ -41,27 +41,25 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
         <div
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
-          className={clx(
-            "relative flex items-center text-base-regular border border-ui-border-base bg-ui-bg-subtle rounded-md hover:bg-ui-bg-field-hover",
+          className={cn(
+            "relative flex items-center rounded-md border border-border bg-white text-sm shadow-sm transition-colors hover:bg-accent/10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
             className,
-            {
-              "text-ui-fg-muted": isPlaceholder,
-            }
+            isPlaceholder && "text-muted-foreground"
           )}
         >
           <select
             ref={innerRef}
             defaultValue={defaultValue}
             {...props}
-            className="appearance-none flex-1 bg-transparent border-none px-4 py-2.5 transition-colors duration-150 outline-none "
+            className="flex-1 appearance-none border-none bg-transparent px-4 py-2.5 text-sm outline-none"
           >
             <option disabled value="">
               {placeholder}
             </option>
             {children}
           </select>
-          <span className="absolute right-4 inset-y-0 flex items-center pointer-events-none ">
-            <ChevronUpDown />
+          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-muted-foreground">
+            <ChevronsUpDown className="h-4 w-4" aria-hidden />
           </span>
         </div>
       </div>

@@ -1,19 +1,73 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, isAuthorizeNet, PAYMENT_METHOD_INFO, paymentInfoMap } from "@lib/constants"
-import { initiatePaymentSession } from "@lib/data/cart"
-import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
-import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
+import { isAuthorizeNet, PAYMENT_METHOD_INFO, paymentInfoMap } from "@lib/constants"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import PaymentContainer, {
-  StripeCardContainer,
-  AuthorizeNetCardContainer,
-} from "@modules/checkout/components/payment-container"
-import Divider from "@modules/common/components/divider"
+import { AuthorizeNetCardContainer } from "@modules/checkout/components/payment-container"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { createToken } from "authorizenet-react"
+import SectionCard from "../section-card"
+import { Button } from "@/components/ui/button"
+import { CreditCard as CreditCardIcon, Loader2 } from "lucide-react"
+import { useCart } from "@lib/context/cart-context"
+
+type CartSnapshot = {
+  shipping_methods: Array<{ amount: number; name: string }>
+  billing_address?: Record<string, unknown> | null
+  shipping_address?: Record<string, unknown> | null
+}
+
+const buildAuthorizeNetCartSnapshot = (cart: any): CartSnapshot | undefined => {
+  if (!cart) {
+    return undefined
+  }
+
+  const shippingMethods =
+    cart.shipping_methods?.map((method: any) => ({
+      amount: method.amount,
+      name:
+        method.name ??
+        method.shipping_option?.name ??
+        "Shipping",
+    })) ?? []
+
+  const maybeCopyAddress = (address: any) => {
+    if (!address) {
+      return null
+    }
+    const {
+      first_name,
+      last_name,
+      company,
+      address_1,
+      address_2,
+      city,
+      postal_code,
+      province,
+      country_code,
+      phone,
+    } = address
+    return {
+      first_name,
+      last_name,
+      company,
+      address_1,
+      address_2,
+      city,
+      postal_code,
+      province,
+      country_code,
+      phone,
+    }
+  }
+
+  return {
+    shipping_methods: shippingMethods,
+    billing_address: maybeCopyAddress(cart.billing_address),
+    shipping_address: maybeCopyAddress(cart.shipping_address),
+  }
+}
 
 const Payment = ({
   cart,
@@ -22,7 +76,12 @@ const Payment = ({
   cart: any
   availablePaymentMethods: any[]
 }) => {
-  const activeSession = cart.payment_collection?.payment_sessions?.find(
+  const { cart: ctxCart, refresh, initiatePaymentSession } = useCart()
+  const currentCart = ctxCart ?? cart
+  const authorizeNetMethods = (availablePaymentMethods || []).filter(
+    (method) => isAuthorizeNet(method.id)
+  )
+  const activeSession = currentCart?.payment_collection?.payment_sessions?.find(
     (paymentSession: any) => paymentSession.status === "pending"
   )
 
@@ -31,7 +90,7 @@ const Payment = ({
   const [cardBrand, setCardBrand] = useState<string | null>(null)
   const [cardComplete, setCardComplete] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
-    activeSession?.provider_id ?? ""
+    activeSession?.provider_id ?? authorizeNetMethods.at(0)?.id ?? ""
   )
 
   const searchParams = useSearchParams()
@@ -40,17 +99,26 @@ const Payment = ({
 
   const isOpen = searchParams.get("step") === "payment"
 
-  const isStripe = isStripeFunc(selectedPaymentMethod)
   const isAuthorize = isAuthorizeNet(selectedPaymentMethod)
 
   const setPaymentMethod = async (method: string) => {
-    setError(null)
-    setSelectedPaymentMethod(method)
-    if (isStripeFunc(method)) {
-      await initiatePaymentSession(cart, {
-        provider_id: method,
-      })
+    const isValidMethod = authorizeNetMethods.some(
+      (m) => m.id === method
+    )
+
+    if (!isValidMethod) {
+      return
     }
+
+    if (method === selectedPaymentMethod) {
+      return
+    }
+
+    setError(null)
+    setCardBrand(null)
+    setCardComplete(false)
+    setSelectedPaymentMethod(method)
+
   }
 
   // No auto-selection to avoid unintended session init flows
@@ -58,8 +126,24 @@ const Payment = ({
   const paidByGiftcard =
     cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
 
+  useEffect(() => {
+    if (authorizeNetMethods.length === 0) {
+      setSelectedPaymentMethod("")
+      return
+    }
+
+    const current = authorizeNetMethods.find(
+      (method) => method.id === selectedPaymentMethod
+    )
+
+    if (!current) {
+      setSelectedPaymentMethod(authorizeNetMethods[0].id)
+    }
+  }, [authorizeNetMethods, selectedPaymentMethod])
+
   const paymentReady =
-    (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard
+    (activeSession && (currentCart?.shipping_methods?.length ?? 0) !== 0) ||
+    paidByGiftcard
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -80,77 +164,64 @@ const Payment = ({
   const handleSubmit = async () => {
     setIsLoading(true)
     try {
-      const shouldInputCard =
-        isStripeFunc(selectedPaymentMethod) && !activeSession
-
-      const checkActiveSession =
-        activeSession?.provider_id === selectedPaymentMethod
-
-      if (!checkActiveSession) {
-        await initiatePaymentSession(cart, {
-          provider_id: selectedPaymentMethod,
-        })
+      if (!selectedPaymentMethod) {
+        setError("Select a payment method to continue.")
+        return
       }
 
-      if (!shouldInputCard) {
-        return router.push(
+      const hasActiveForSelected =
+        activeSession?.provider_id === selectedPaymentMethod
+
+      if (isAuthorize) {
+        if (!hasActiveForSelected) {
+          if (!cardComplete) {
+            setError("Please complete your card details.")
+            return
+          }
+
+          const token = await createToken()
+          const opaqueData = token?.opaqueData
+
+          if (!opaqueData?.dataDescriptor || !opaqueData?.dataValue) {
+            throw new Error("Could not tokenize card. Try again.")
+          }
+
+          const authorizeNetCart = buildAuthorizeNetCartSnapshot(currentCart)
+
+          await initiatePaymentSession(currentCart, {
+            provider_id: selectedPaymentMethod,
+            data: {
+              dataDescriptor: opaqueData.dataDescriptor,
+              dataValue: opaqueData.dataValue,
+              ...(authorizeNetCart ? { cart: authorizeNetCart } : {}),
+            },
+          })
+        }
+
+        await refresh()
+        router.push(
           pathname + "?" + createQueryString("step", "review"),
           {
             scroll: false,
           }
         )
+        return
       }
 
-      const isStripeSelected = isStripeFunc(selectedPaymentMethod)
-      const isAN = isAuthorizeNet(selectedPaymentMethod)
-
-      // AUTHORIZE.NET: tokenize then create session with opaqueData, then review
-      if(isAN) {
-        if(!cardComplete) {
-          setError("Please complete your card details.")
-          return
-        }
-        const token = await createToken()
-        const opaqueData = token?.opaqueData
-        if(!opaqueData?.dataDescriptor || !opaqueData?.dataValue) {
-          throw new Error("Could not tokenie card. Try again.")
-        }
-        await initiatePaymentSession(cart, {
-          provider_id: selectedPaymentMethod,
-          data: { opaqueData },
-        })
-        return router.push(pathname + "?" + createQueryString("step", "review"), {
+      router.push(
+        pathname + "?" + createQueryString("step", "review"),
+        {
           scroll: false,
-        })
-      }
-
-      // STRIPE: two-step flow (init session -> fill card -> then review)
-      if (isStripeSelected) {
-        const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
-
-        if(!hasActiveForSelected) {
-          await initiatePaymentSession(cart, {
-            provider_id: selectedPaymentMethod,
-          })
-          // stay on page so Stripe elements can render
-          return
         }
-        // already have an active session -> move to review
-        return router.push(pathname + "?" + createQueryString("step", "review"), {
-            scroll: false,
-        })
-      }
-
-      //OTHER PROVIDERS: ensure then go to review
-      const hasActiveForSelected = activeSession?.provider_id === selectedPaymentMethod
-      if(!hasActiveForSelected){
-        await initiatePaymentSession(cart, { provider_id: selectedPaymentMethod })
-      }
-      return router.push(pathname + "?" + createQueryString("step", "review"), {
-        scroll: false,
-      })
+      )
     } catch (err: any) {
-      setError(err.message)
+      console.error("[authorize-net] initiatePaymentSession failed", err)
+      const message =
+        err?.message ||
+        err?.response?.messages?.message?.[0]?.text ||
+        err?.response?.error?.text ||
+        "Something went wrong."
+      setError(message)
     } finally {
       setIsLoading(false)
     }
@@ -160,88 +231,66 @@ const Payment = ({
     setError(null)
   }, [isOpen])
 
+  const activeSessionMatchesSelection =
+    activeSession?.provider_id === selectedPaymentMethod
+  const requiresCardEntry =
+    !paidByGiftcard && isAuthorize && !activeSessionMatchesSelection
+
   return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
-            {
-              "opacity-50 pointer-events-none select-none":
-                !isOpen && !paymentReady,
-            }
-          )}
-        >
-          Payment
-          {!isOpen && paymentReady && <CheckCircleSolid />}
-        </Heading>
-        {!isOpen && paymentReady && (
-          <Text>
-            <button
-              onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-              data-testid="edit-payment-button"
-            >
-              Edit
-            </button>
-          </Text>
-        )}
-      </div>
+    <SectionCard
+      title="Payment"
+      description="Choose how you want to pay for your order."
+      rightAction={
+        !isOpen && paymentReady ? (
+          <button
+            onClick={handleEdit}
+            className="text-sm font-medium text-primary hover:text-primary/80"
+            data-testid="edit-payment-button"
+          >
+            Edit
+          </button>
+        ) : null
+      }
+      className={
+        isOpen
+          ? "bg-green-50 border border-green-200"
+          : undefined
+      }
+    >
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && ((availablePaymentMethods?.length ?? 0) > 0) && (
+          {!paidByGiftcard && authorizeNetMethods.length > 0 && (
             <>
               <RadioGroup
                 value={selectedPaymentMethod}
                 onChange={(value: string) => setPaymentMethod(value)}
               >
-                {availablePaymentMethods.map((paymentMethod) => (
-                  <div key={paymentMethod.id}>
-                    {isStripeFunc(paymentMethod.id) ? (
-                      <StripeCardContainer
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                        paymentInfoMap={paymentInfoMap}
-                        setCardBrand={setCardBrand}
-                        setError={setError}
-                        setCardComplete={setCardComplete}
-                      />
-                    ) : isAuthorizeNet(paymentMethod.id)?(
-                      <AuthorizeNetCardContainer
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                        paymentInfoMap={paymentInfoMap}
-                        setCardBrand={setCardBrand}
-                        setError={setError}
-                        setCardComplete={setCardComplete}
-                        setOpaqueData={()=>{}}
-                        cardComplete={cardComplete}
-                      />
-                   ) : (
-                      <PaymentContainer
-                        paymentInfoMap={paymentInfoMap}
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                      />
-                    )}
-                  </div>
+                {authorizeNetMethods.map((paymentMethod) => (
+                  <AuthorizeNetCardContainer
+                    key={paymentMethod.id}
+                    paymentProviderId={paymentMethod.id}
+                    selectedPaymentOptionId={selectedPaymentMethod}
+                    paymentInfoMap={paymentInfoMap}
+                    setCardBrand={setCardBrand}
+                    setError={setError}
+                    setCardComplete={setCardComplete}
+                  />
                 ))}
               </RadioGroup>
             </>
           )}
+          {!paidByGiftcard && authorizeNetMethods.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              No supported payment methods are enabled. Contact support.
+            </p>
+          )}
 
           {paidByGiftcard && (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
+            <div className="flex flex-col gap-y-1">
+              <p className="text-sm font-medium text-foreground">Payment method</p>
+              <p className="text-sm text-muted-foreground" data-testid="payment-method-summary">
                 Gift card
-              </Text>
+              </p>
             </div>
           )}
 
@@ -251,78 +300,82 @@ const Payment = ({
           />
 
           <Button
-            size="large"
-            className="mt-6"
+            className="mt-6 h-11 w-full px-6 text-sm font-medium md:w-auto"
             onClick={handleSubmit}
-            isLoading={isLoading}
             disabled={
-              ((isStripe || isAuthorize) && !cardComplete) ||
-              (!selectedPaymentMethod && !paidByGiftcard)
+              (!selectedPaymentMethod && !paidByGiftcard) ||
+              (requiresCardEntry && !cardComplete) ||
+              isLoading
             }
             data-testid="submit-payment-button"
           >
-            {!activeSession && 
-            (isStripeFunc(selectedPaymentMethod) || isAuthorizeNet(selectedPaymentMethod))
-              ? " Enter card details"
-              : "Continue to review"}
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {requiresCardEntry ? "Enter card details" : "Continue to review"}
           </Button>
         </div>
 
         <div className={isOpen ? "hidden" : "block"}>
           {cart && paymentReady && activeSession ? (
-            <div className="flex items-start gap-x-1 w-full">
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment method
-                </Text>
-                <Text
-                  className="txt-medium text-ui-fg-subtle"
+            <div className="grid gap-6 text-sm md:grid-cols-2">
+              <div className="flex flex-col gap-y-1">
+                <p className="font-medium text-foreground">Payment method</p>
+                <p
+                  className="text-muted-foreground"
                   data-testid="payment-method-summary"
                 >
                   {paymentInfoMap[activeSession?.provider_id]?.title ||
                     activeSession?.provider_id}
-                </Text>
+                </p>
               </div>
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment details
-                </Text>
+              <div className="flex flex-col gap-y-1">
+                <p className="font-medium text-foreground">Payment details</p>
                 <div
-                  className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
+                  className="flex items-center gap-2 text-muted-foreground"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+                  <div className="flex h-7 w-fit items-center rounded-md bg-accent/10 px-2">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || (
-                      <CreditCard />
+                      <CreditCardIcon className="h-4 w-4" aria-hidden />
                     )}
-                  </Container>
-                  <Text>
-                    {isStripeFunc(selectedPaymentMethod) && cardBrand
-                      ? cardBrand
-                      : isAuthorizeNet(selectedPaymentMethod)
-                      ? (cardBrand || "Card details ready")
-                      : "Another step will appear"}
-                  </Text>
+                  </div>
+                  <span>{cardBrand || "Card details ready"}</span>
                 </div>
               </div>
             </div>
+          ) : !paymentReady && !paidByGiftcard ? (
+            <div className="flex flex-col gap-3 rounded-2xl border border-dashed border-border bg-card/40 p-6 text-sm text-muted-foreground">
+              <div>
+                <p className="font-medium text-foreground">Payment not completed</p>
+                <p>
+                  Your delivery choice is saved. Continue to payment to tokenize
+                  your card details and finish checkout.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-fit"
+                onClick={handleEdit}
+              >
+                Continue to payment
+              </Button>
+            </div>
           ) : paidByGiftcard ? (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+            <div className="flex flex-col gap-y-1">
+              <p className="text-sm font-medium text-foreground">
                 Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
+              </p>
+              <p
+                className="text-sm text-muted-foreground"
                 data-testid="payment-method-summary"
               >
                 Gift card
-              </Text>
+              </p>
             </div>
           ) : null}
         </div>
       </div>
-      <Divider className="mt-8" />
-    </div>
+    </SectionCard>
   )
 }
 

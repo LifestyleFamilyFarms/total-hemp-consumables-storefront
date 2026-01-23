@@ -1,6 +1,5 @@
 "use client"
 
-import { IconBadge, clx } from "@medusajs/ui"
 import {
   SelectHTMLAttributes,
   forwardRef,
@@ -11,6 +10,7 @@ import {
 } from "react"
 
 import ChevronDown from "@modules/common/icons/chevron-down"
+import { cn } from "src/lib/utils"
 
 type NativeSelectProps = {
   placeholder?: string
@@ -38,11 +38,11 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 
     return (
       <div>
-        <IconBadge
+        <div
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
-          className={clx(
-            "relative flex items-center txt-compact-small border text-ui-fg-base group",
+          className={cn(
+            "relative flex items-center txt-compact-small border rounded-md text-ui-fg-base group bg-background",
             className,
             {
               "text-ui-fg-subtle": isPlaceholder,
@@ -52,17 +52,17 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           <select
             ref={innerRef}
             {...props}
-            className="appearance-none bg-transparent border-none px-4 transition-colors duration-150 focus:border-gray-700 outline-none w-16 h-16 items-center justify-center"
+            className="appearance-none bg-transparent border-none px-4 transition-colors duration-150 focus:border-gray-700 outline-none w-16 h-10 items-center justify-center rounded-md"
           >
             <option disabled value="">
               {placeholder}
             </option>
             {children}
           </select>
-          <span className="absolute flex pointer-events-none justify-end w-8 group-hover:animate-pulse">
+          <span className="absolute right-2 flex pointer-events-none justify-end w-8 group-hover:animate-pulse">
             <ChevronDown />
           </span>
-        </IconBadge>
+        </div>
       </div>
     )
   }

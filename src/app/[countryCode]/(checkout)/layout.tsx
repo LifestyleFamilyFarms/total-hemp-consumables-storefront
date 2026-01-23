@@ -19,7 +19,8 @@ export default async function CheckoutLayout({
   params: Promise<{ countryCode: string }>
 }) {
   const { countryCode: cc } = await params
-  const nonce = headers().get("x-csp-nonce") || undefined
+  const nonceHeader = await headers()
+  const nonce = nonceHeader.get("x-csp-nonce") || undefined
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,7 +36,7 @@ export default async function CheckoutLayout({
 
       <Separator />
 
-      <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 flex-1">{children}</main>
+      <main className="mx-auto w-full max-w-8xl px-4 py-6 sm:px-6 flex-1">{children}</main>
       <SiteFooter countryCode={cc} />
     </div>
   )

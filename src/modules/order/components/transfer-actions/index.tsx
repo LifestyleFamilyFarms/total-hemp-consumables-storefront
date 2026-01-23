@@ -1,8 +1,8 @@
 "use client"
 
 import { acceptTransferRequest, declineTransferRequest } from "@lib/data/orders"
-import { Button, Text } from "@medusajs/ui"
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
 
 type TransferStatus = "pending" | "success" | "error"
 
@@ -39,41 +39,39 @@ const TransferActions = ({ id, token }: { id: string; token: string }) => {
   return (
     <div className="flex flex-col gap-y-4">
       {status?.accept === "success" && (
-        <Text className="text-emerald-500">
+        <p className="text-emerald-500">
           Order transferred successfully!
-        </Text>
+        </p>
       )}
       {status?.decline === "success" && (
-        <Text className="text-emerald-500">
+        <p className="text-emerald-500">
           Order transfer declined successfully!
-        </Text>
+        </p>
       )}
       {status?.accept !== "success" && status?.decline !== "success" && (
         <div className="flex gap-x-4">
           <Button
-            size="large"
             onClick={acceptTransfer}
-            isLoading={status?.accept === "pending"}
             disabled={
               status?.accept === "pending" || status?.decline === "pending"
             }
           >
-            Accept transfer
+            {status?.accept === "pending" ? "Accepting..." : "Accept transfer"}
           </Button>
           <Button
-            size="large"
             variant="secondary"
             onClick={declineTransfer}
-            isLoading={status?.decline === "pending"}
             disabled={
               status?.accept === "pending" || status?.decline === "pending"
             }
           >
-            Decline transfer
+            {status?.decline === "pending"
+              ? "Declining..."
+              : "Decline transfer"}
           </Button>
         </div>
       )}
-      {errorMessage && <Text className="text-red-500">{errorMessage}</Text>}
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   )
 }

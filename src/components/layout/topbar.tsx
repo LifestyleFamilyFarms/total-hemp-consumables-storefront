@@ -1,24 +1,128 @@
 "use client"
 
 import Link from "next/link"
+import { useSidebar } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart } from "lucide-react"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { BrandLogo } from "@/components/brand/brand-logo"
+import { CreditCard, Menu, ShoppingCart } from "lucide-react"
+import { useTheme } from "@/components/theme/theme-provider"
+import { ThemeSwitcher } from "@/components/theme/theme-switcher"
+import type { BrandThemeId } from "@lib/brand"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function Topbar({ countryCode }: { countryCode: string }) {
+type TopbarProps = {
+  countryCode: string
+  user?: {
+    isAuthenticated?: boolean | null
+    name?: string | null
+    email?: string | null
+    avatarUrl?: string | null
+  } | null
+}
+
+export default function Topbar({ countryCode, user }: TopbarProps) {
+  const { toggleSidebar } = useSidebar()
+  const accountHref = `/${countryCode}/account`
+  const accountLabel = user?.isAuthenticated ? "Account" : "Sign up"
+  const { theme } = useTheme()
+  const currentTheme = theme as BrandThemeId
+  const desktopLogoSlot = currentTheme === "indica" ? "nav" : "hero"
+  const name = user?.name ?? "Guest"
+  const email = user?.email ?? "Not signed in"
+  const initials = (name || "TH")
+    .split(" ")
+    .map((s: string) => s[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase()
+
   return (
-    <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:px-6">
-      <div className="flex items-center gap-2">
-        <SidebarTrigger className="mr-1" />
-        <Link href={`/${countryCode}`} className="font-extrabold tracking-tight">
-          Total&nbsp;Hemp
+    <div className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/85/80 backdrop-blur-lg">
+      <div className="relative flex h-16 w-full items-center px-4 sm:px-6">
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={toggleSidebar}
+            variant="outline"
+            size="icon"
+            aria-label="Open menu"
+            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground"
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
+          <ThemeSwitcher className="h-10" />
+        </div>
+
+        <Link
+          href={`/${countryCode}`}
+          aria-label="Return to the homepage"
+          className="absolute left-1/2 flex w-32 -translate-x-1/2 items-center justify-center sm:w-48 lg:w-56"
+        >
+          <span className="sr-only">Total Hemp Consumables</span>
+          <BrandLogo theme={currentTheme} slot="nav" className="block w-10 sm:hidden" />
+          <BrandLogo
+            theme={currentTheme}
+            slot={desktopLogoSlot}
+            className="hidden w-full sm:block"
+          />
         </Link>
-      </div>
-      <div className="flex items-center gap-2">
-        {/* check this url to make sure it is correct */}
-        <Button asChild size="sm" className="rounded-full">
-          <Link href={`/${countryCode}/account`}>Sign up</Link>
-        </Button>
+
+        {/* Right Side of Topbar */}
+        <div className="ml-auto flex items-center gap-3">
+          <Link
+            href={`/${countryCode}/checkout`}
+            className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/25"
+          >
+            <CreditCard className="h-4 w-4" />
+            Checkout
+          </Link>
+          <Link
+            href={`/${countryCode}/cart`}
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            Cart
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="hidden h-11 items-center gap-2 rounded-full border border-white/15 bg-background/70 px-3 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-white/25 sm:inline-flex"
+              >
+                <Avatar className="h-8 w-8 rounded-full">
+                  <AvatarImage src={user?.avatarUrl ?? ""} alt={name} />
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+                <span className="hidden sm:inline-flex">{name}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end">
+              <DropdownMenuLabel className="text-foreground">{name}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {user?.isAuthenticated ? (
+                <>
+                  <DropdownMenuItem asChild><Link href={accountHref}>Account</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link href={`/${countryCode}/account/orders`}>Orders</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link href={`/${countryCode}/account/addresses`}>Addresses</Link></DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild><Link href={`/${countryCode}/logout`}>Sign out</Link></DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem asChild><Link href={`/${countryCode}/login`}>Sign in</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link href={`/${countryCode}/register`}>Create account</Link></DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   )

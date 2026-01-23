@@ -5,62 +5,93 @@ import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
 
-export const listRegions = async () => {
-  const next = {
-    ...(await getCacheOptions("regions")),
+type RegionRequestInit =
+  | { cache: "no-store" }
+  | {
+      cache: "force-cache"
+      next: Awaited<ReturnType<typeof getCacheOptions>>
+    }
+
+const buildRegionRequestInit = async (
+  forceRefresh: boolean,
+  cacheKey: string
+): Promise<RegionRequestInit> => {
+  if (forceRefresh) {
+    return { cache: "no-store" }
   }
+
+  return {
+    cache: "force-cache",
+    next: await getCacheOptions(cacheKey),
+  }
+}
+
+export const listRegions = async (forceRefresh = false) => {
+  const requestInit = await buildRegionRequestInit(forceRefresh, "regions")
 
   return sdk.client
     .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
       method: "GET",
-      next,
-      cache: "force-cache",
+      ...requestInit,
     })
     .then(({ regions }) => regions)
     .catch(medusaError)
 }
 
-export const retrieveRegion = async (id: string) => {
-  const next = {
-    ...(await getCacheOptions(["regions", id].join("-"))),
-  }
+export const retrieveRegion = async (id: string, forceRefresh = false) => {
+  const requestInit = await buildRegionRequestInit(
+    forceRefresh,
+    ["regions", id].join("-")
+  )
 
   return sdk.client
     .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
       method: "GET",
-      next,
-      cache: "force-cache",
+      ...requestInit,
     })
     .then(({ region }) => region)
     .catch(medusaError)
 }
 
-const regionMap = new Map<string, HttpTypes.StoreRegion>()
-
 export const getRegion = async (countryCode: string) => {
-  try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
-    }
+  const normalized = (countryCode || "us").toLowerCase()
 
-    const regions = await listRegions()
+  const findRegion = async (forceRefresh = false) => {
+    const regions = await listRegions(forceRefresh)
 
-    if (!regions) {
+    if (!regions?.length) {
       return null
     }
 
-    regions.forEach((region) => {
-      region.countries?.forEach((c) => {
-        regionMap.set(c?.iso_2 ?? "", region)
-      })
-    })
+    const match =
+      regions.find((region) =>
+        region.countries?.some(
+          (country) => country?.iso_2?.toLowerCase() === normalized
+        )
+      ) || null
 
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get("us")
+    return match
+  }
 
-    return region
-  } catch (e: any) {
+  try {
+    let region = await findRegion(false)
+
+    if (!region) {
+      region = await findRegion(true)
+    }
+
+    if (!region) {
+      return null
+    }
+
+    try {
+      await retrieveRegion(region.id, true)
+    } catch {
+      region = await findRegion(true)
+    }
+
+    return region ?? null
+  } catch {
     return null
   }
 }

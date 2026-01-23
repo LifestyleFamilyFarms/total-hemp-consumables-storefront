@@ -2,28 +2,35 @@
 
 import repeat from "@lib/util/repeat"
 import { HttpTypes } from "@medusajs/types"
-import { Table, clx } from "@medusajs/ui"
 
 import Item from "@modules/cart/components/item"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
+import { useCart } from "@lib/context/cart-context"
+import { cn } from "src/lib/utils"
+import {
+  Table,
+  TableBody,
+} from "@/components/ui/table"
 
 type ItemsTemplateProps = {
   cart: HttpTypes.StoreCart
 }
 
 const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
-  const items = cart.items
+  const { cart: ctxCart } = useCart()
+  const currentCart = ctxCart ?? cart
+  const items = currentCart.items
   const hasOverflow = items && items.length > 4
 
   return (
     <div
-      className={clx({
+      className={cn({
         "pl-[1px] overflow-y-scroll overflow-x-hidden no-scrollbar max-h-[420px]":
           hasOverflow,
       })}
     >
-      <Table>
-        <Table.Body data-testid="items-table">
+      <Table className="w-full text-sm">
+        <TableBody data-testid="items-table">
           {items
             ? items
                 .sort((a, b) => {
@@ -35,14 +42,14 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
                       key={item.id}
                       item={item}
                       type="preview"
-                      currencyCode={cart.currency_code}
+                      currencyCode={currentCart.currency_code}
                     />
                   )
                 })
             : repeat(5).map((i) => {
                 return <SkeletonLineItem key={i} />
               })}
-        </Table.Body>
+        </TableBody>
       </Table>
     </div>
   )

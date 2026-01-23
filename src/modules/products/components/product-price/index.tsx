@@ -1,7 +1,6 @@
-import { clx } from "@medusajs/ui"
-
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { cn } from "src/lib/utils"
 
 export default function ProductPrice({
   product,
@@ -24,7 +23,7 @@ export default function ProductPrice({
   return (
     <div className="flex flex-col text-ui-fg-base">
       <span
-        className={clx("text-xl-semi", {
+        className={cn("text-xl-semi", {
           "text-ui-fg-interactive": selectedPrice.price_type === "sale",
         })}
       >

@@ -13,6 +13,7 @@ type CartTotalsProps = {
     gift_card_total?: number | null
     currency_code: string
     shipping_subtotal?: number | null
+    shipping_methods?: Array<unknown>
   }
 }
 
@@ -25,7 +26,48 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     discount_total,
     gift_card_total,
     shipping_subtotal,
+    shipping_total,
+    shipping_methods,
   } = totals
+
+  const hasShippingMethod =
+    Array.isArray(shipping_methods) && shipping_methods.length > 0
+
+  /**
+   * Shipping amounts from the API can occasionally arrive in minor units
+   * (cents). If we see a clearly out-of-range value, normalise by 100 to
+   * avoid showing $900+ rates to the shopper. We also fall back gracefully
+   * when no shipping method has been selected yet.
+   */
+  const normalizeShipping = (amount?: number | null) => {
+    if (typeof amount !== "number" || Number.isNaN(amount)) {
+      return 0
+    }
+    // Heuristic: if the value looks 100x too large, scale it down.
+    return amount >= 200 ? amount / 100 : amount
+  }
+
+  const shippingAmountFromMethod = (() => {
+    if (!hasShippingMethod) return 0
+    const latest =
+      Array.isArray(shipping_methods) && shipping_methods.length > 0
+        ? (shipping_methods as any)[shipping_methods.length - 1]
+        : null
+    return normalizeShipping(
+      typeof latest?.amount === "number" ? latest.amount : undefined
+    )
+  })()
+
+  const shippingDisplay = hasShippingMethod
+    ? shippingAmountFromMethod ||
+      normalizeShipping(
+        typeof shipping_total === "number"
+          ? shipping_total
+          : typeof shipping_subtotal === "number"
+            ? shipping_subtotal
+            : 0
+      )
+    : 0
 
   return (
     <div>
@@ -53,8 +95,13 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         )}
         <div className="flex items-center justify-between">
           <span>Shipping</span>
-          <span data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
-            {convertToLocale({ amount: shipping_subtotal ?? 0, currency_code })}
+          <span data-testid="cart-shipping" data-value={shippingDisplay || 0}>
+            {hasShippingMethod
+              ? convertToLocale({
+                  amount: shippingDisplay ?? 0,
+                  currency_code,
+                })
+              : "Calculated at checkout"}
           </span>
         </div>
         <div className="flex justify-between">

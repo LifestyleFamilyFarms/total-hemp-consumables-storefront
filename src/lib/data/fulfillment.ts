@@ -21,7 +21,7 @@ export const listCartShippingMethods = async (cartId: string) => {
         query: {
           cart_id: cartId,
           fields:
-            "+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address",
+            "+service_zone.fulfillment_set.type,*service_zone.fulfillment_set.location.address",
         },
         headers,
         next,
@@ -64,7 +64,14 @@ export const calculatePriceForShippingOption = async (
       }
     )
     .then(({ shipping_option }) => shipping_option)
-    .catch((e) => {
-      return null
+    .catch((error) => {
+      const message =
+        (error &&
+          typeof error === "object" &&
+          "message" in error &&
+          error.message) ||
+        "Unable to calculate shipping rate."
+
+      throw new Error(message as string)
     })
 }

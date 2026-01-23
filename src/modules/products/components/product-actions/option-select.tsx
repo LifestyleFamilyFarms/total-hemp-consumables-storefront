@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { clx } from "@medusajs/ui"
+import { cn } from "src/lib/utils"
 import React from "react"
 
 type OptionSelectProps = {
@@ -59,13 +59,12 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
             <button
               onClick={() => updateOption(option.id, v)}
               key={v}
-              className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
+              className={cn(
+                "flex-1 rounded-lg border border-border/60 bg-card/70 px-3 py-2 text-sm font-semibold text-foreground transition duration-150 hover:-translate-y-[1px] hover:border-primary/50 hover:shadow-[0_10px_30px_rgba(6,10,22,0.15)]",
                 {
                   "opacity-50 pointer-events-none": perValueDisabled,
-                  "border-ui-border-interactive": v === current,
-                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                    v !== current && !perValueDisabled,
+                  "border-primary/50 bg-primary/10 text-foreground shadow-[0_10px_30px_rgba(6,10,22,0.12)]":
+                    v === current && !perValueDisabled,
                 }
               )}
               disabled={disabled || perValueDisabled}

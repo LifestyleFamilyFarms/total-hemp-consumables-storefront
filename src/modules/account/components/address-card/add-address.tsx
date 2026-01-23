@@ -1,7 +1,6 @@
 "use client"
 
-import { Plus } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Plus } from "lucide-react"
 import { useEffect, useState, useActionState } from "react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
@@ -11,6 +10,7 @@ import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
 import { addCustomerAddress } from "@lib/data/customer"
+import { Button } from "@/components/ui/button"
 
 const AddAddress = ({
   region,
@@ -54,12 +54,12 @@ const AddAddress = ({
         data-testid="add-address-button"
       >
         <span className="text-base-semi">New address</span>
-        <Plus />
+        <Plus className="h-5 w-5" aria-hidden />
       </button>
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title>
-          <Heading className="mb-2">Add address</Heading>
+          <h2 className="mb-2 text-lg font-semibold">Add address</h2>
         </Modal.Title>
         <form action={formAction}>
           <Modal.Body>

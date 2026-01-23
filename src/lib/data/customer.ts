@@ -10,10 +10,12 @@ import {
   getCacheOptions,
   getCacheTag,
   getCartId,
+  getSalesRepCode,
   removeAuthToken,
   removeCartId,
   setAuthToken,
 } from "./cookies"
+import { attachSalesRep } from "./sales-people"
 
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
@@ -98,6 +100,18 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await transferCart()
 
+    const cartId = await getCartId()
+    const repCode = await getSalesRepCode()
+    if (repCode) {
+      await attachSalesRep({
+        customerId: createdCustomer.id,
+        cartId: cartId || undefined,
+        repCode,
+      })
+      revalidateTag(await getCacheTag("customers"))
+      revalidateTag(await getCacheTag("carts"))
+    }
+
     return createdCustomer
   } catch (error: any) {
     return error.toString()
@@ -122,6 +136,18 @@ export async function login(_currentState: unknown, formData: FormData) {
 
   try {
     await transferCart()
+    const customer = await retrieveCustomer()
+    const cartId = await getCartId()
+    const repCode = await getSalesRepCode()
+    if (customer?.id && repCode) {
+      await attachSalesRep({
+        customerId: customer.id,
+        cartId: cartId || undefined,
+        repCode,
+      })
+      revalidateTag(await getCacheTag("customers"))
+      revalidateTag(await getCacheTag("carts"))
+    }
   } catch (error: any) {
     return error.toString()
   }

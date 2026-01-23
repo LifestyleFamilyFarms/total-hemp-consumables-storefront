@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import type { ReactNode } from "react"
 
 const strainColors: Record<string, string> = {
   sativa: "bg-primary/20 text-primary",
@@ -27,7 +28,7 @@ const ProductInfo = ({ product, priceDisplay }: ProductInfoProps) => {
             {strainLabel}
           </span>
         ) : null}
-        {metadata?.harvest_batch ? <span>Batch {metadata.harvest_batch}</span> : null}
+        {metadata?.harvest_batch ? <span>Batch {String(metadata.harvest_batch)}</span> : null}
         <span>Δ9 &lt; 0.3%</span>
       </div>
 

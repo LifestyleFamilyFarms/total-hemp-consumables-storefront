@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useEffect, useState, useActionState } from "react"
-import { PencilSquare as Edit, Trash } from "@medusajs/icons"
-import { Button, Heading, Text, clx } from "@medusajs/ui"
+import { Pencil, Trash2 } from "lucide-react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
 import CountrySelect from "@modules/checkout/components/country-select"
@@ -15,6 +14,8 @@ import {
   deleteCustomerAddress,
   updateCustomerAddress,
 } from "@lib/data/customer"
+import { Button } from "@/components/ui/button"
+import { cn } from "src/lib/utils"
 
 type EditAddressProps = {
   region: HttpTypes.StoreRegion
@@ -64,7 +65,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
   return (
     <>
       <div
-        className={clx(
+        className={cn(
           "border rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between transition-colors",
           {
             "border-gray-900": isActive,
@@ -73,21 +74,18 @@ const EditAddress: React.FC<EditAddressProps> = ({
         data-testid="address-container"
       >
         <div className="flex flex-col">
-          <Heading
-            className="text-left text-base-semi"
-            data-testid="address-name"
-          >
+          <h3 className="text-left text-base-semi" data-testid="address-name">
             {address.first_name} {address.last_name}
-          </Heading>
+          </h3>
           {address.company && (
-            <Text
+            <p
               className="txt-compact-small text-ui-fg-base"
               data-testid="address-company"
             >
               {address.company}
-            </Text>
+            </p>
           )}
-          <Text className="flex flex-col text-left text-base-regular mt-2">
+          <p className="flex flex-col text-left text-base-regular mt-2">
             <span data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}
@@ -99,7 +97,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
               {address.province && `${address.province}, `}
               {address.country_code?.toUpperCase()}
             </span>
-          </Text>
+          </p>
         </div>
         <div className="flex items-center gap-x-4">
           <button
@@ -107,7 +105,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
             onClick={open}
             data-testid="address-edit-button"
           >
-            <Edit />
+            <Pencil className="h-4 w-4" aria-hidden />
             Edit
           </button>
           <button
@@ -115,7 +113,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
             onClick={removeAddress}
             data-testid="address-delete-button"
           >
-            {removing ? <Spinner /> : <Trash />}
+            {removing ? <Spinner /> : <Trash2 className="h-4 w-4" aria-hidden />}
             Remove
           </button>
         </div>
@@ -123,7 +121,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 
       <Modal isOpen={state} close={close} data-testid="edit-address-modal">
         <Modal.Title>
-          <Heading className="mb-2">Edit address</Heading>
+          <h3 className="mb-2 text-lg font-semibold">Edit address</h3>
         </Modal.Title>
         <form action={formAction}>
           <input type="hidden" name="addressId" value={address.id} />

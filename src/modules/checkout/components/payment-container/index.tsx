@@ -1,20 +1,18 @@
 import { Radio as RadioGroupOption } from "@headlessui/react"
-import { Text, clx } from "@medusajs/ui"
-import React, { useContext, useMemo, type JSX } from "react"
+import React, { type JSX } from "react"
 
 import Radio from "@modules/common/components/radio"
 
-import { isManual } from "@lib/constants"
-import SkeletonCardDetails from "@modules/skeletons/components/skeleton-card-details"
-import { CardElement } from "@stripe/react-stripe-js"
-import { StripeCardElementOptions } from "@stripe/stripe-js"
-import PaymentTest from "../payment-test"
-import { StripeContext } from "../payment-wrapper/stripe-wrapper"
-
-//Authorize.net Provider
+// Authorize.Net provider
 import { AuthorizeNetProvider, Card } from "authorizenet-react"
-import { isAuthorizeNet } from "../../../../lib/constants"
+import { cn } from "src/lib/utils"
 
+const ACCEPTED_CARD_BRANDS = [
+  "Visa",
+  "Mastercard",
+  "American Express",
+  "Discover",
+]
 
 type PaymentContainerProps = {
   paymentProviderId: string
@@ -31,107 +29,35 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
   disabled = false,
   children,
 }) => {
-  const isDevelopment = process.env.NODE_ENV === "development"
-
   return (
     <RadioGroupOption
       key={paymentProviderId}
       value={paymentProviderId}
       disabled={disabled}
-      className={clx(
-        "flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
-        {
-          "border-ui-border-interactive":
-            selectedPaymentOptionId === paymentProviderId,
-        }
+      className={cn(
+        "flex flex-col gap-2 text-sm cursor-pointer rounded-2xl border border-border px-6 py-4 mb-3 transition-all duration-200 bg-card hover:border-primary hover:bg-accent/5",
+        selectedPaymentOptionId === paymentProviderId &&
+          "border-green-200 bg-green-50",
+        disabled && "opacity-60 cursor-not-allowed"
       )}
     >
       <div className="flex items-center justify-between ">
         <div className="flex items-center gap-x-4">
           <Radio checked={selectedPaymentOptionId === paymentProviderId} />
-          <Text className="text-base-regular">
+          <span className="text-base font-medium text-foreground">
             {paymentInfoMap[paymentProviderId]?.title || paymentProviderId}
-          </Text>
-          {isManual(paymentProviderId) && isDevelopment && (
-            <PaymentTest className="hidden small:block" />
-          )}
+          </span>
         </div>
-        <span className="justify-self-end text-ui-fg-base">
+        <span className="justify-self-end text-foreground">
           {paymentInfoMap[paymentProviderId]?.icon}
         </span>
       </div>
-      {isManual(paymentProviderId) && isDevelopment && (
-        <PaymentTest className="small:hidden text-[10px]" />
-      )}
       {children}
     </RadioGroupOption>
   )
 }
 
 export default PaymentContainer
-
-export const StripeCardContainer = ({
-  paymentProviderId,
-  selectedPaymentOptionId,
-  paymentInfoMap,
-  disabled = false,
-  setCardBrand,
-  setError,
-  setCardComplete,
-}: Omit<PaymentContainerProps, "children"> & {
-  setCardBrand: (brand: string) => void
-  setError: (error: string | null) => void
-  setCardComplete: (complete: boolean) => void
-}) => {
-  const stripeReady = useContext(StripeContext)
-
-  const useOptions: StripeCardElementOptions = useMemo(() => {
-    return {
-      style: {
-        base: {
-          fontFamily: "Inter, sans-serif",
-          color: "#424270",
-          "::placeholder": {
-            color: "rgb(107 114 128)",
-          },
-        },
-      },
-      classes: {
-        base: "pt-3 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover transition-all duration-300 ease-in-out",
-      },
-    }
-  }, [])
-
-  return (
-    <PaymentContainer
-      paymentProviderId={paymentProviderId}
-      selectedPaymentOptionId={selectedPaymentOptionId}
-      paymentInfoMap={paymentInfoMap}
-      disabled={disabled}
-    >
-      {selectedPaymentOptionId === paymentProviderId &&
-        (stripeReady ? (
-          <div className="my-4 transition-all duration-150 ease-in-out">
-            <Text className="txt-medium-plus text-ui-fg-base mb-1">
-              Enter your card details:
-            </Text>
-            <CardElement
-              options={useOptions as StripeCardElementOptions}
-              onChange={(e) => {
-                setCardBrand(
-                  e.brand && e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
-                )
-                setError(e.error?.message || null)
-                setCardComplete(e.complete)
-              }}
-            />
-          </div>
-        ) : (
-          <SkeletonCardDetails />
-        ))}
-    </PaymentContainer>
-  )
-}
 
 export const AuthorizeNetCardContainer = ({
   paymentProviderId,
@@ -141,15 +67,18 @@ export const AuthorizeNetCardContainer = ({
   setCardBrand,
   setError,
   setCardComplete,
-  setOpaqueData,
-  cardComplete
 }: Omit<PaymentContainerProps, "children"> & {
-  setCardBrand: (brand: string) => void
+  setCardBrand: (brand: string | null) => void
   setError: (error: string | null) => void
   setCardComplete: (complete: boolean) => void
-  setOpaqueData: (data: any) => void
-  cardComplete:boolean
 }) => {
+  const apiLoginId = process.env.NEXT_PUBLIC_API_LOGIN_ID ?? ""
+  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY ?? ""
+  const environment =
+    process.env.NEXT_PUBLIC_AUTHNET_ENV === "production"
+      ? "production"
+      : "sandbox"
+
   return (
     <PaymentContainer
       paymentProviderId={paymentProviderId}
@@ -157,41 +86,54 @@ export const AuthorizeNetCardContainer = ({
       paymentInfoMap={paymentInfoMap}
       disabled={disabled}
     >
-      {selectedPaymentOptionId === paymentProviderId &&
-        ((isAuthorizeNet(selectedPaymentOptionId)) ? (
-          <AuthorizeNetProvider 
-            apiLoginId={process.env.NEXT_PUBLIC_API_LOGIN_ID ?? "" } 
-            clientKey={process.env.NEXT_PUBLIC_CLIENT_KEY ?? "" }>
-             <div className="my-4 transition-all duration-150 ease-in-out">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Enter your card details:
-              </Text>
-              <Card
-                options={{
-                  style: {
-                    base: {
-                      fontSize: '16px',
-                      color: '#424770',
-                      '::placeholder': {
-                        color: '#aab7c4'
-                      }
+      {selectedPaymentOptionId === paymentProviderId && (
+        <AuthorizeNetProvider
+          apiLoginId={apiLoginId}
+          clientKey={clientKey}
+          environment={environment}
+        >
+          <div className="my-4 transition-all duration-150 ease-in-out">
+            <p className="mb-1 text-sm font-medium text-foreground">
+              Enter your card details:
+            </p>
+            <Card
+              options={{
+                style: {
+                  base: {
+                    fontSize: "16px",
+                    color: "#424770",
+                    "::placeholder": {
+                      color: "#aab7c4",
                     },
-                    invalid: {
-                      color: '#9e2146'
-                    }
-                  }
-                
-                }}
-                onChange={(e:any)=>{ 
-                  setCardComplete(e.complete)
-                  setError(e.error?.message || null)
-                }}
-              />
-            </div>  
-          </AuthorizeNetProvider>
-        ) : (
-          <SkeletonCardDetails />
-        ))}
+                  },
+                  invalid: {
+                    color: "#9e2146",
+                  },
+                },
+              }}
+          onChange={(e: any) => {
+            setCardComplete(e.complete)
+            setError(e.error?.message || null)
+            setCardBrand(e.cardType || null)
+          }}
+        />
+            <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">We accept</span>
+              {ACCEPTED_CARD_BRANDS.map((brand) => (
+                <span
+                  key={brand}
+                  className="rounded-full border border-border bg-accent/10 px-2.5 py-1 text-xs font-medium text-foreground"
+                >
+                  {brand}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              Card details are securely tokenized by Authorize.Net before we submit payment.
+            </p>
+          </div>
+        </AuthorizeNetProvider>
+      )}
     </PaymentContainer>
   )
 }

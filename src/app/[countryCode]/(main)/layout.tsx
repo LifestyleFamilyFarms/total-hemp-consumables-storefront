@@ -40,7 +40,7 @@ export default async function PageLayout({
     }
 
   return (
-    <AppShell countryCode={countryCode} user={user}>
+    <AppShell countryCode={countryCode} user={user} >
       {customer && cart && <CartMismatchBanner customer={customer} cart={cart} />}
       {/* Free shipping nudge removed */}
       {children}

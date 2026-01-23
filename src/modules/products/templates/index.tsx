@@ -54,7 +54,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             </Suspense>
           </div>
 
-          <TerpeneProfile profile={parseTerpenes(product.metadata)} />
+          <TerpeneProfile profile={parseTerpenes(product.metadata ?? undefined)} />
 
           <ProductOnboardingCta />
         </div>
@@ -95,4 +95,3 @@ function parseTerpenes(metadata: Record<string, any> | undefined) {
   }
   return undefined
 }
-
