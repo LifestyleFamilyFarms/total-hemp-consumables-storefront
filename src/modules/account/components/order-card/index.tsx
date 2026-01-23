@@ -55,6 +55,14 @@ const OrderCard = ({ order }: OrderCardProps) => {
               currency_code: order.currency_code,
             })}
           </span>
+          {order.metadata?.sales_person_code && (
+            <>
+              <span className="h-1 w-1 rounded-full bg-border" aria-hidden />
+              <span className="text-xs uppercase tracking-wide">
+                Rep {String(order.metadata.sales_person_code)}
+              </span>
+            </>
+          )}
           <span className="h-1 w-1 rounded-full bg-border" aria-hidden />
           <span>{numberOfLines} {numberOfLines === 1 ? "item" : "items"}</span>
         </div>

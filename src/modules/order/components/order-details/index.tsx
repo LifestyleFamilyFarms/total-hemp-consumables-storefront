@@ -33,6 +33,14 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       <p className="mt-2 text-ui-fg-interactive">
         Order number: <span data-testid="order-id">{order.display_id}</span>
       </p>
+      {order.metadata?.sales_person_code && (
+        <p className="mt-2 text-ui-fg-subtle">
+          Sales rep:{" "}
+          <span className="font-semibold">
+            {String(order.metadata.sales_person_code)}
+          </span>
+        </p>
+      )}
 
       <div className="flex items-center text-compact-small gap-x-4 mt-4">
         {showStatus && (

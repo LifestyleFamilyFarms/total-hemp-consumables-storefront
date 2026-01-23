@@ -103,6 +103,25 @@ export async function POST(req: NextRequest) {
       apiKey: requiredEnv("MEDUSA_ADMIN_TOKEN"),
     })
 
+    const repCode = req.cookies.get("_sales_rep")?.value?.trim() || ""
+    let repMetadata: Record<string, string> = {}
+    if (repCode) {
+      try {
+        const { person } = await sdk.client.fetch<{
+          person: { id: string; rep_code: string }
+        }>(`/store/sales-people/lookup`, {
+          method: "GET",
+          query: { code: repCode },
+        })
+        repMetadata = {
+          sales_person_id: person.id,
+          sales_person_code: person.rep_code,
+        }
+      } catch {
+        repMetadata = {}
+      }
+    }
+
     try {
       await sdk.admin.customer.create({
         email,
@@ -111,6 +130,7 @@ export async function POST(req: NextRequest) {
         metadata: {
           gamma_gummies_event_2025: true,
           signup_source: "/us/gamma-gummies",
+          ...repMetadata,
         },
       })
     } catch (e: any) {
@@ -119,7 +139,10 @@ export async function POST(req: NextRequest) {
         const id = customers?.[0]?.id
         if (id) {
           await sdk.admin.customer.update(id, {
-            metadata: { gamma_gummies_event_2025: true },
+            metadata: {
+              gamma_gummies_event_2025: true,
+              ...repMetadata,
+            },
           })
         }
       } else {

@@ -32,6 +32,14 @@ export default async function OrderCompletedTemplate({
             <span>Thank you!</span>
             <span>Your order was placed successfully.</span>
           </div>
+          {order.metadata?.sales_person_code && (
+            <div className="rounded-md border border-ui-border-base bg-white/60 p-3 text-sm text-ui-fg-subtle">
+              Sales rep:{" "}
+              <span className="font-semibold">
+                {String(order.metadata.sales_person_code)}
+              </span>
+            </div>
+          )}
           <OrderDetails order={order} />
           <h2 className="flex flex-row text-3xl-regular font-semibold">
             Summary
