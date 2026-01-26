@@ -9,6 +9,7 @@ import IconRail from "@/components/layout/icon-rail"
 import { ShoppingCart } from "lucide-react"
 import Topbar from "@/components/layout/topbar"
 import { useAppContext } from "@lib/context/app-context"
+import AgeGate from "@/components/layout/age-gate"
 
 type User = {
   name?: string | null
@@ -54,6 +55,8 @@ export default function AppShell({
         <ComplianceBar />
         {withBottomBar ? <div className="border-t bg-background">{/* <BottomBar /> */}</div> : null}
       </SidebarInset>
+
+      <AgeGate />
 
       {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
       {isClient ? (
