@@ -47,6 +47,27 @@ export default function AppShell({
       </SidebarInset>
 
       <AgeGate />
+
+      {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
+      {isClient ? (
+        <div className="fixed right-6 z-40 hidden md:block" style={{ bottom: "calc(var(--bottom-bar-height, 5rem))" }}>
+          <Link
+            href={`/${countryCode}/cart`}
+            className="group relative inline-flex items-center gap-3 rounded-[32px] border border-border/50 bg-background px-6 py-5 text-lg font-semibold text-foreground shadow-[0_25px_60px_rgba(15,23,42,0.25)] transition hover:-translate-y-0.5"
+          >
+            <span className="absolute -top-3 right-4 h-2 w-2 rounded-full bg-primary group-hover:bg-primary/80" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/40 bg-background">
+              <ShoppingCart className="h-5 w-5" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs uppercase tracking-[0.2em] text-foreground/60">Cart</span>
+              <span className="text-base font-semibold text-foreground">View items</span>
+            </div>
+          </Link>
+        </div>
+      ) : null}
+
+      {/* Mobile thumb bar disabled per UX request */}
     </SidebarProvider>
   )
 }
