@@ -98,18 +98,7 @@ export default function ComplianceBar() {
 
           <PopLink label="Disclaimer">
             <p className="whitespace-pre-line">
-              All hemp-derived products sold on this website are compliant with the 2018 Agriculture Improvement
-              Act (Farm Bill) and contain less than 0.3% Δ9-THC on a dry-weight basis; these products are derived
-              from legally grown industrial hemp and are intended for sale only in jurisdictions where such
-              products are lawful. We currently ship only to the following states:{" "}
-              {ALLOWED_SHIPPING_STATES_LABEL}. Products are intended for adults 21+ only; by purchasing you
-              represent that you are at least 21 years of age. These statements have not been evaluated by the
-              Food and Drug Administration (FDA) and products are not intended to diagnose, treat, cure, or
-              prevent any disease. Do not use if pregnant, breastfeeding, operating heavy machinery, or if you
-              have a medical condition without consulting a licensed healthcare provider. Purchasers assume all
-              responsibility for compliance with local laws and regulations; we are not responsible for any legal
-              consequences that may arise from the purchase, possession, or use of our products in any
-              jurisdiction.
+All hemp-derived products sold on this website are compliant with the 2018 Agriculture Improvement Act (Farm Bill) and contain less than 0.3% Δ9-THC on a dry-weight basis; these products are derived from legally grown industrial hemp and are intended for sale only in jurisdictions where such products are lawful. We currently ship only to the following states: {ALLOWED_SHIPPING_STATES_LABEL}. Products are intended for adults 21+ only; by purchasing you represent that you are at least 21 years of age. These statements have not been evaluated by the Food and Drug Administration (FDA) and products are not intended to diagnose, treat, cure, or prevent any disease. Do not use if pregnant, breastfeeding, operating heavy machinery, or if you have a medical condition without consulting a licensed healthcare provider. Purchasers assume all responsibility for compliance with local laws and regulations; we are not responsible for any legal consequences that may arise from the purchase, possession, or use of our products in any jurisdiction.
             </p>
           </PopLink>
 
