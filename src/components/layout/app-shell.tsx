@@ -27,6 +27,7 @@ export default function AppShell({
   withBottomBar?: boolean
 }) {
   const { sidebarOpen, setSidebarOpen } = useAppContext()
+  const [isClient, setIsClient] = useState(false)
 
   return (
     // Sidebar default closed so it overlays without pushing content

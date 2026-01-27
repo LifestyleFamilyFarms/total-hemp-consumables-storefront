@@ -76,13 +76,6 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
         <div className="ml-auto flex items-center gap-3">
           <Link
             href={`/${countryCode}/cart`}
-            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Cart
-          </Link>
-          <Link
-            href={`/${countryCode}/cart`}
             className="hidden items-center gap-2 rounded-full border border-white/15 bg-background/70 px-4 py-2 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-foreground/40 sm:inline-flex"
           >
             <ShoppingCart className="h-4 w-4" />
