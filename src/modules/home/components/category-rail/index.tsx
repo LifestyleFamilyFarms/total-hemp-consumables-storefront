@@ -1,50 +1,18 @@
 import Link from "next/link"
 import { ArrowUpRight, Sparkles } from "lucide-react"
+import { STORE_CATEGORIES } from "@lib/constants/navigation"
 
 type CategoryRailProps = {
   countryCode: string
   compact?: boolean
 }
 
-const CATEGORIES = [
-  {
-    title: "Flower",
-    slug: "store/flower",
-    description: "Hand-trimmed indoor + sun-grown eighths with NFC COAs in every jar.",
-    tag: "Drop favorite",
-  },
-  {
-    title: "Prerolls",
-    slug: "store/flower/prerolls",
-    description: "Fresh half-gram minis and limited collabs, packed the same day they ship.",
-    tag: "One-click ritual",
-  },
-  {
-    title: "Beverages",
-    slug: "store/beverages",
-    description: "Nano emulsions, sparkling tonics, and chef-built elixirs for daytime clarity.",
-    tag: "Low-dose",
-  },
-  {
-    title: "Edibles",
-    slug: "store/edibles",
-    description: "Chef-crafted chocolate, pâte de fruit, and gummies with terp stacking guidance.",
-    tag: "Chef-crafted",
-  },
-  {
-    title: "Elixirs",
-    slug: "store/elixirs",
-    description: "Sipping syrups and droppers that layer adaptogens with full-spectrum oil.",
-    tag: "Lab favorite",
-  },
-] as const
-
 export default function CategoryRail({ countryCode, compact = false }: CategoryRailProps) {
   if (compact) {
     return (
       <div className="flex flex-col gap-3">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground/60">Shop categories</p>
-        {CATEGORIES.map((category) => (
+        {STORE_CATEGORIES.map((category) => (
           <Link
             key={category.title}
             href={`/${countryCode}/${category.slug}`}
@@ -80,7 +48,7 @@ export default function CategoryRail({ countryCode, compact = false }: CategoryR
       </div>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((category) => (
+        {STORE_CATEGORIES.map((category) => (
           <Link
             key={category.title}
             href={`/${countryCode}/${category.slug}`}
