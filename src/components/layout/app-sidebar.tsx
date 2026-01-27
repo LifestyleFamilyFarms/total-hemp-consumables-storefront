@@ -1,6 +1,5 @@
 "use client"
 
-import { usePathname } from "next/navigation"
 import Link from "next/link"
 import SidebarNav from "@/components/layout/sidebar-nav"
 import {
@@ -8,11 +7,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
@@ -40,14 +35,10 @@ export function AppSidebar({
   const currentTheme = theme as BrandThemeId
   const isExpanded = state === "expanded"
   const showWordmark = (!isMobile && isExpanded) || (isMobile && openMobile)
-  const pathname = usePathname()
-  const normalize = (path: string) => {
-    if (!path) return "/"
-    const [base] = path.split("?")
-    const trimmed = base.replace(/\/+$/g, "")
-    return trimmed === "" ? "/" : trimmed
+
+  if (!isMobile) {
+    return null
   }
-  const current = normalize(pathname)
 
   return (
     <Sidebar
