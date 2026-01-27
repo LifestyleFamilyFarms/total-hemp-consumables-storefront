@@ -51,7 +51,7 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
             variant="outline"
             size="icon"
             aria-label="Open menu"
-            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground"
+            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
           >
             <Menu className="h-4 w-4" />
           </Button>
