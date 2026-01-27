@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { ShoppingCart } from "lucide-react"
+import Link from 'next/link'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import ComplianceBar from "@/components/layout/compliance-bar"
