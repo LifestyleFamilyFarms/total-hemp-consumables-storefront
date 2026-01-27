@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from "@/components/ui/popover"
+import { ALLOWED_SHIPPING_STATES_LABEL } from "@lib/constants/shipping"
 
 function PopLink({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -83,13 +84,8 @@ export default function ComplianceBar() {
           <span>21+ Only</span>
           <span className="hidden sm:inline">•</span>
           <PopLink label="Shipping FAQ">
-            <p>
-              Available for shipping in 40 states! Please check here to see if your state is on the list:
-            </p>
-            <p className="font-mono text-xs">
-              AL, AZ, AR, CA, DC, DE, FL, GA, HI, IA, IL, IN, KS, KY, LA, ME, MD, MI, MN, MS,
-              MO, NE, NV, NH, NJ, NM, NC, OH, OK, OR, PA, RI, SC, SD, TN, TX, VA, WV, WI, WY
-            </p>
+            <p>Please check here to see if your state or territory is on the list:</p>
+            <p className="text-xs">{ALLOWED_SHIPPING_STATES_LABEL}</p>
             <p className="text-[11px] text-foreground/70">
               Note: We only ship to jurisdictions where our products are lawful. State availability may change.
             </p>
@@ -102,7 +98,7 @@ export default function ComplianceBar() {
 
           <PopLink label="Disclaimer">
             <p className="whitespace-pre-line">
-All hemp-derived products sold on this website are compliant with the 2018 Agriculture Improvement Act (Farm Bill) and contain less than 0.3% Δ9-THC on a dry-weight basis; these products are derived from legally grown industrial hemp and are intended for sale only in jurisdictions where such products are lawful. We currently ship only to the following states: AL, AZ, AR, CA, DC, DE, FL, GA, HI, IA, IL, IN, KS, KY, LA, ME, MD, MI, MN, MS, MO, NE, NV, NH, NJ, NM, NC, OH, OK, OR, PA, RI, SC, SD, TN, TX, VA, WV, WI, WY. Products are intended for adults 21+ only; by purchasing you represent that you are at least 21 years of age. These statements have not been evaluated by the Food and Drug Administration (FDA) and products are not intended to diagnose, treat, cure, or prevent any disease. Do not use if pregnant, breastfeeding, operating heavy machinery, or if you have a medical condition without consulting a licensed healthcare provider. Purchasers assume all responsibility for compliance with local laws and regulations; we are not responsible for any legal consequences that may arise from the purchase, possession, or use of our products in any jurisdiction.
+All hemp-derived products sold on this website are compliant with the 2018 Agriculture Improvement Act (Farm Bill) and contain less than 0.3% Δ9-THC on a dry-weight basis; these products are derived from legally grown industrial hemp and are intended for sale only in jurisdictions where such products are lawful. We currently ship only to the following states: {ALLOWED_SHIPPING_STATES_LABEL}. Products are intended for adults 21+ only; by purchasing you represent that you are at least 21 years of age. These statements have not been evaluated by the Food and Drug Administration (FDA) and products are not intended to diagnose, treat, cure, or prevent any disease. Do not use if pregnant, breastfeeding, operating heavy machinery, or if you have a medical condition without consulting a licensed healthcare provider. Purchasers assume all responsibility for compliance with local laws and regulations; we are not responsible for any legal consequences that may arise from the purchase, possession, or use of our products in any jurisdiction.
             </p>
           </PopLink>
 
