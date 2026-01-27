@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useSidebar } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { BrandLogo } from "@/components/brand/brand-logo"
-import { CreditCard, Menu, ShoppingCart } from "lucide-react"
+import { Menu, ShoppingCart } from "lucide-react"
 import { useTheme } from "@/components/theme/theme-provider"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import type { BrandThemeId } from "@lib/brand"
@@ -31,12 +31,10 @@ type TopbarProps = {
 export default function Topbar({ countryCode, user }: TopbarProps) {
   const { toggleSidebar } = useSidebar()
   const accountHref = `/${countryCode}/account`
-  const accountLabel = user?.isAuthenticated ? "Account" : "Sign up"
   const { theme } = useTheme()
   const currentTheme = theme as BrandThemeId
   const desktopLogoSlot = currentTheme === "indica" ? "nav" : "hero"
   const name = user?.name ?? "Guest"
-  const email = user?.email ?? "Not signed in"
   const initials = (name || "TH")
     .split(" ")
     .map((s: string) => s[0])
@@ -76,13 +74,6 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
 
         {/* Right Side of Topbar */}
         <div className="ml-auto flex items-center gap-3">
-          <Link
-            href={`/${countryCode}/checkout`}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/25"
-          >
-            <CreditCard className="h-4 w-4" />
-            Checkout
-          </Link>
           <Link
             href={`/${countryCode}/cart`}
             className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"

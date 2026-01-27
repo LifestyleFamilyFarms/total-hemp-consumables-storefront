@@ -1,12 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/app-sidebar"
-import Link from "next/link"
 import ComplianceBar from "@/components/layout/compliance-bar"
-import IconRail from "@/components/layout/icon-rail"
-import { ShoppingCart } from "lucide-react"
 import Topbar from "@/components/layout/topbar"
 import { useAppContext } from "@lib/context/app-context"
 import AgeGate from "@/components/layout/age-gate"
@@ -28,13 +24,9 @@ export default function AppShell({
   children: React.ReactNode
   user?: User
   withBottomBar?: boolean
-  }) {
-  const [isClient, setIsClient] = useState(false)
+}) {
   const { sidebarOpen, setSidebarOpen } = useAppContext()
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
   return (
     // Sidebar default closed so it overlays without pushing content
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
@@ -45,8 +37,6 @@ export default function AppShell({
         {/* Topbar full-width (sticky) */}
         <Topbar countryCode={countryCode} user={user} />
 
-        {/* Left icon rail (desktop), content to the right */}
-        <IconRail />
         <div className="relative isolate mt-12 px-4 pt-6 pb-12 sm:px-6 lg:pl-16 lg:pr-4 md:pb-12 md:pl-16">
           <div className="mx-auto max-w-6xl shell-surface__content">{children}</div>
         </div>
