@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useSidebar } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { BrandLogo } from "@/components/brand/brand-logo"
-import { CreditCard, Menu, ShoppingCart } from "lucide-react"
+import { Menu, ShoppingCart } from "lucide-react"
 import { useTheme } from "@/components/theme/theme-provider"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import type { BrandThemeId } from "@lib/brand"
@@ -31,12 +31,10 @@ type TopbarProps = {
 export default function Topbar({ countryCode, user }: TopbarProps) {
   const { toggleSidebar } = useSidebar()
   const accountHref = `/${countryCode}/account`
-  const accountLabel = user?.isAuthenticated ? "Account" : "Sign up"
   const { theme } = useTheme()
   const currentTheme = theme as BrandThemeId
   const desktopLogoSlot = currentTheme === "indica" ? "nav" : "hero"
   const name = user?.name ?? "Guest"
-  const email = user?.email ?? "Not signed in"
   const initials = (name || "TH")
     .split(" ")
     .map((s: string) => s[0])
@@ -53,7 +51,7 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
             variant="outline"
             size="icon"
             aria-label="Open menu"
-            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground"
+            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
           >
             <Menu className="h-4 w-4" />
           </Button>
@@ -77,15 +75,15 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
         {/* Right Side of Topbar */}
         <div className="ml-auto flex items-center gap-3">
           <Link
-            href={`/${countryCode}/checkout`}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/25"
+            href={`/${countryCode}/cart`}
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
           >
-            <CreditCard className="h-4 w-4" />
-            Checkout
+            <ShoppingCart className="h-4 w-4" />
+            Cart
           </Link>
           <Link
             href={`/${countryCode}/cart`}
-            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
+            className="hidden items-center gap-2 rounded-full border border-white/15 bg-background/70 px-4 py-2 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-foreground/40 sm:inline-flex"
           >
             <ShoppingCart className="h-4 w-4" />
             Cart
