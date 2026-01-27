@@ -26,6 +26,11 @@ export default function AppShell({
   withBottomBar?: boolean
 }) {
   const { sidebarOpen, setSidebarOpen } = useAppContext()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     // Sidebar default closed so it overlays without pushing content
@@ -46,6 +51,7 @@ export default function AppShell({
         {withBottomBar ? <div className="border-t bg-background">{/* <BottomBar /> */}</div> : null}
       </SidebarInset>
 
+      {isClient ? <AgeGate /> : null}
       <AgeGate />
 
       {/* Mobile thumb bar for quick browse (sits above compliance bar) */}
