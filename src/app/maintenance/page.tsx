@@ -1,41 +1,65 @@
-import Link from "next/link"
 import type { Metadata } from "next"
+import { BrandLogo } from "@/components/brand/brand-logo"
+import LaunchWaitlistForm from "@modules/maintenance/components/launch-waitlist-form"
 
 export const metadata: Metadata = {
-  title: "We'll be right back | Total Hemp Consumables",
+  title: "Grand Opening Soon | Total Hemp Consumables",
+  description:
+    "Total Hemp Consumables is in maintenance mode while we prepare launch inventory. Join the email list for grand opening alerts.",
 }
 
 export default function MaintenancePage() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background/90 to-primary/25 px-6 py-20 text-center">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(142,213,188,0.2),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(227,177,108,0.16),_transparent_60%)]" />
-      <div className="max-w-2xl space-y-8 rounded-[36px] border border-border/40 bg-background/80 p-10 shadow-[0_32px_90px_rgba(12,23,34,0.32)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-foreground/60">
-          Harvest underway
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-          We&apos;re drying, curing, and prepping the next release.
-        </h1>
-        <div className="space-y-4 text-left text-base leading-relaxed text-foreground/70 sm:text-lg">
-          <p>
-            The latest cut is hanging in cold cure, slowly shedding moisture before trim, testing, and final pack.
-            Each lot moves through the lab before we reopen the store with fresh flower, vapes, and edibles.
-          </p>
-          <p>
-            Need product availability, wholesale allocations, or timeline details? Reach our sales team at{" "}
-            <a className="text-primary underline" href="mailto:info@totalhemp.co">info@totalhemp.co</a>{" "}
-            and we&apos;ll follow up between drying-room checks.
-          </p>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background/95 to-primary/20 px-6 py-16">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(142,213,188,0.2),_transparent_50%),radial-gradient(circle_at_bottom_right,_rgba(227,177,108,0.25),_transparent_55%)]" />
+
+      <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-background/80 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+          <div className="space-y-6 text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-foreground/60">Maintenance mode</p>
+
+            <BrandLogo variant="heroWordmark" size="md" className="max-w-[320px]" priority />
+
+            <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              Grand opening is close.
+            </h1>
+
+            <p className="text-base leading-relaxed text-foreground/75 sm:text-lg">
+              We&apos;re in final production checks and compliance prep before opening the full storefront. Expect a
+              launch lineup built around premium CBD and Delta-9 THC products.
+            </p>
+
+            <div className="rounded-2xl border border-border/50 bg-background/65 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Coming online</p>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/75 sm:text-base">
+                Full product menus, lab-backed details, and fresh drops for flower, edibles, vapes, and more.
+              </p>
+            </div>
+
+            <p className="text-sm leading-relaxed text-foreground/70">
+              Need wholesale support or launch timeline details? Email{" "}
+              <a className="font-semibold text-primary underline" href="mailto:info@totalhemp.co">
+                info@totalhemp.co
+              </a>
+              .
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-border/50 bg-background/70 p-6 shadow-[0_18px_45px_rgba(12,23,34,0.12)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Launch alerts</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
+              Drop your email for first access.
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/70">
+              We&apos;ll send one email when the storefront opens and occasional updates for major releases.
+            </p>
+
+            <div className="mt-6">
+              <LaunchWaitlistForm />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link
-            href="mailto:info@totalhemp.co"
-            className="rounded-full bg-primary px-7 py-3 text-sm font-medium text-background shadow-sm transition hover:bg-primary/90"
-          >
-            Contact sales
-          </Link>
-        </div>
-      </div>
+      </section>
     </main>
   )
 }

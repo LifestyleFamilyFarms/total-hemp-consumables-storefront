@@ -62,12 +62,40 @@ const Name = z
       )
   )
 
+const OptionalName = z
+  .string()
+  .optional()
+  .transform((value) => (value ?? "").replace(/\s+/g, " ").trim())
+  .pipe(
+    z
+      .string()
+      .max(64, "Too long")
+      .refine(
+        // Basic A–Z plus common accented Latin letters, spaces, apostrophe, hyphen, period
+        (s) => !s || /^[A-Za-z\u00C0-\u017F\s.'-]+$/.test(s),
+        "Only letters, spaces, apostrophes, hyphens, periods"
+      )
+  )
+  .transform((value) => (value.length ? value : undefined))
+
+const Campaign = z.enum(["gamma_gummies_event_2025", "grand_opening_waitlist"])
+const DEFAULT_SIGNUP_SOURCE = "/us/gamma-gummies"
+
 const SignupSchema = z.object({
   email: z.string().max(254).email().transform((e) => e.trim().toLowerCase()),
-  first_name: Name,
-  last_name: Name,
+  first_name: z.union([Name, OptionalName]).optional().transform((value) => value || undefined),
+  last_name: z.union([Name, OptionalName]).optional().transform((value) => value || undefined),
+  signup_source: z.string().trim().min(1).max(120).optional().default(DEFAULT_SIGNUP_SOURCE),
+  campaign: Campaign.optional().default("gamma_gummies_event_2025"),
   hp: z.string().optional().transform((v) => (v ?? "").trim()), // honeypot
 })
+
+function successMessage(campaign: z.infer<typeof Campaign>) {
+  if (campaign === "grand_opening_waitlist") {
+    return "You're on the list. We'll email you before grand opening."
+  }
+  return "Signed up! Check your email for confirmation."
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -93,36 +121,66 @@ export async function POST(req: NextRequest) {
     const raw = await req.json()
     const parsed = SignupSchema.safeParse(raw)
     if (!parsed.success) return bad("Invalid input.", 400)
-    const { email, first_name, last_name, hp } = parsed.data
+    const { email, first_name, last_name, hp, signup_source, campaign } = parsed.data
 
     // Honeypot hit → pretend success, but no-op
-    if (hp) return ok("Signed up! Check your email for confirmation.")
+    if (hp) return ok(successMessage(campaign))
 
     const sdk = new Medusa({
       baseUrl: normalizeBaseUrl(requiredEnv("MEDUSA_BACKEND_URL")),
       apiKey: requiredEnv("MEDUSA_ADMIN_TOKEN"),
     })
 
+    const metadataPatch: Record<string, unknown> = {
+      signup_source,
+      [campaign]: true,
+    }
+
     try {
-      await sdk.admin.customer.create({
+      const createPayload: {
+        email: string
+        first_name?: string
+        last_name?: string
+        metadata: Record<string, unknown>
+      } = {
         email,
-        first_name,
-        last_name,
-        metadata: {
-          gamma_gummies_event_2025: true,
-          signup_source: "/us/gamma-gummies",
-        },
-      })
+        metadata: metadataPatch,
+      }
+
+      if (first_name) createPayload.first_name = first_name
+      if (last_name) createPayload.last_name = last_name
+
+      await sdk.admin.customer.create(createPayload)
     } catch (e: any) {
       if (e?.status === 409 || e?.status === 422) {
-        const { customers } = await sdk.admin.customer.list({ q: email, limit: 1 })
-        const id = customers?.[0]?.id
+        const { customers } = await sdk.admin.customer.list({
+          q: email,
+          limit: 1,
+          fields: "id,metadata",
+        })
+        const existingCustomer = customers?.[0]
+        const id = existingCustomer?.id
+
         if (id) {
-          await sdk.admin.customer.update(id, {
+          const existingMetadata =
+            existingCustomer?.metadata && typeof existingCustomer.metadata === "object"
+              ? (existingCustomer.metadata as Record<string, unknown>)
+              : {}
+          const updatePayload: {
+            first_name?: string
+            last_name?: string
+            metadata: Record<string, unknown>
+          } = {
             metadata: {
-              gamma_gummies_event_2025: true,
+              ...existingMetadata,
+              ...metadataPatch,
             },
-          })
+          }
+
+          if (first_name) updatePayload.first_name = first_name
+          if (last_name) updatePayload.last_name = last_name
+
+          await sdk.admin.customer.update(id, updatePayload)
         }
       } else {
         throw e
@@ -130,8 +188,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Email will be sent by Medusa Notification subscribers
-    return ok("Signed up! Check your email for confirmation.")
+    return ok(successMessage(campaign))
   } catch {
-    return bad("Unable to complete sign‑up at this time.", 500)
+    return bad("Unable to complete sign-up at this time.", 500)
   }
 }
