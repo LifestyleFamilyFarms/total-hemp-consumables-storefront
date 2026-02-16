@@ -146,10 +146,10 @@ export default async function MaintenancePage() {
                 <Image
                   src="/logos/svg/FULL_COLOR_LOGO_PRINT.svg"
                   alt="Total Hemp Consumables logo"
-                  width={132}
-                  height={98}
+                  width={256}
+                  height={256}
                   unoptimized
-                  className="h-24 w-auto object-contain"
+                  className="h-[95%] w-[95%] object-contain"
                 />
               </div>
               <p className="mt-4 text-center text-xs uppercase tracking-[0.18em] text-foreground/65">
