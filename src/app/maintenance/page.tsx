@@ -144,12 +144,12 @@ export default async function MaintenancePage() {
             <div className="mt-8 rounded-2xl border border-border/45 bg-gradient-to-b from-background/70 to-secondary/15 p-5">
               <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border border-border/50 bg-background/75 shadow-[0_14px_34px_rgba(12,23,34,0.2)]">
                 <Image
-                  src="/logos/svg/FULL_COLOR_ICON_PRINT.svg"
-                  alt="Total Hemp Consumables badge"
-                  width={110}
-                  height={110}
+                  src="/logos/svg/FULL_COLOR_LOGO_PRINT.svg"
+                  alt="Total Hemp Consumables logo"
+                  width={132}
+                  height={98}
                   unoptimized
-                  className="h-24 w-24 object-contain"
+                  className="h-24 w-auto object-contain"
                 />
               </div>
               <p className="mt-4 text-center text-xs uppercase tracking-[0.18em] text-foreground/65">
