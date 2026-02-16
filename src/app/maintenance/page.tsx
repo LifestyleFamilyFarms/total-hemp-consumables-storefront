@@ -12,6 +12,12 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"
 
 const RETIRED_CATEGORY_HANDLES = new Set(["flower", "flowers", "vape", "vapes"])
+const THC_PRIORITY_TERMS = ["thc", "delta-9", "delta 9", "delta9"]
+
+function isThcPriorityCategory(name?: string | null, handle?: string | null) {
+  const value = `${name || ""} ${handle || ""}`.toLowerCase()
+  return THC_PRIORITY_TERMS.some((term) => value.includes(term))
+}
 
 async function getLaunchCategories() {
   try {
@@ -31,7 +37,18 @@ async function getLaunchCategories() {
       return (category.products?.length || 0) > 0
     })
 
-    return filteredCategories.slice(0, 8)
+    const sortedCategories = [...filteredCategories].sort((a, b) => {
+      const aIsThc = isThcPriorityCategory(a.name, a.handle)
+      const bIsThc = isThcPriorityCategory(b.name, b.handle)
+
+      if (aIsThc !== bIsThc) {
+        return aIsThc ? -1 : 1
+      }
+
+      return (b.name || "").localeCompare(a.name || "")
+    })
+
+    return sortedCategories.slice(0, 8)
   } catch {
     return []
   }
