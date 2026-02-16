@@ -79,7 +79,10 @@ export default async function MaintenancePage() {
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="space-y-6 text-left">
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Total Hemp Consumables is about to launch, be the first to know when it happens
+              Total Hemp Consumables is about to launch!
+              <span className="block">
+                Sign up &amp; be the first to know when it happens.
+              </span>
             </h1>
 
             <p className="text-base leading-relaxed text-foreground/75 sm:text-lg">
