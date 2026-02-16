@@ -134,7 +134,6 @@ export async function middleware(request: NextRequest) {
     "'self'",
     AUTHNET,
     `'nonce-${NONCE}'`,
-    "'unsafe-inline'",
   ])
 
   if (isProd) {
@@ -168,13 +167,35 @@ export async function middleware(request: NextRequest) {
     "object-src 'none'",
     "base-uri 'self'",
     "img-src 'self' data: blob: https:",
-    "font-src 'self' data:",
-    "style-src 'self' 'unsafe-inline' https://use.typekit.net",
+    "font-src 'self' data: https://use.typekit.net https://p.typekit.net",
+    "style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net",
     `connect-src ${Array.from(connectSrc).join(" ")}`,
     `frame-src ${AUTHNET}`,
     "form-action 'self'",
   ]
   const CSP_HEADER = isProd ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only"
+  const CSP_VALUE = cspParts.join("; ")
+
+  const setSecurityHeaders = (response: NextResponse) => {
+    response.headers.set("x-csp-nonce", NONCE)
+    response.headers.set("x-nonce", NONCE)
+    response.headers.set(CSP_HEADER, CSP_VALUE)
+    return response
+  }
+
+  const nextWithSecurityHeaders = () => {
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set("x-csp-nonce", NONCE)
+    requestHeaders.set("x-nonce", NONCE)
+
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    })
+
+    return setSecurityHeaders(response)
+  }
 
   const MAINTENANCE_ENABLED = process.env.MAINTENANCE_MODE === "1" || process.env.MAINTENANCE_MODE === "true"
 
@@ -197,14 +218,11 @@ export async function middleware(request: NextRequest) {
       const fallback = Array.from(allowed)[0] || maintenancePath
       url.pathname = fallback || maintenancePath
       url.search = ""
-      return NextResponse.redirect(url, 307)
+      return setSecurityHeaders(NextResponse.redirect(url, 307))
     }
 
     if (reqPath === maintenancePath) {
-      const res = NextResponse.next()
-      res.headers.set("x-csp-nonce", NONCE)
-      res.headers.set(CSP_HEADER, cspParts.join("; "))
-      return res
+      return nextWithSecurityHeaders()
     }
   }
 
@@ -241,9 +259,7 @@ export async function middleware(request: NextRequest) {
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
-    const res = NextResponse.next()
-    res.headers.set("x-csp-nonce", NONCE)
-    res.headers.set(CSP_HEADER, cspParts.join("; "))
+    const res = nextWithSecurityHeaders()
     return withRepCookie(res)
   }
 
@@ -253,16 +269,13 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24,
     })
 
-    response.headers.set("x-csp-nonce", NONCE)
-    response.headers.set(CSP_HEADER, cspParts.join("; "))
+    setSecurityHeaders(response)
     return withRepCookie(response)
   }
 
   // check if the url is a static asset
   if (request.nextUrl.pathname.includes(".")) {
-    const res = NextResponse.next()
-    res.headers.set("x-csp-nonce", NONCE)
-    res.headers.set(CSP_HEADER, cspParts.join("; "))
+    const res = nextWithSecurityHeaders()
     return withRepCookie(res)
   }
 
@@ -277,8 +290,7 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.redirect(`${redirectUrl}`, 307)
   }
 
-  response.headers.set("x-csp-nonce", NONCE)
-  response.headers.set(CSP_HEADER, cspParts.join("; "))
+  setSecurityHeaders(response)
   return withRepCookie(response)
 }
 

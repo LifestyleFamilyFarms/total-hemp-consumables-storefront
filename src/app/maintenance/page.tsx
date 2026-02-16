@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     "Total Hemp Consumables is in maintenance mode while we prepare launch inventory. Join the email list for grand opening alerts.",
 }
 
+export const dynamic = "force-dynamic"
+
 export default function MaintenancePage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background/95 to-primary/20 px-6 py-16">
