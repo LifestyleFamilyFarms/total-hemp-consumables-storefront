@@ -12,6 +12,21 @@ const c = require("ansi-colors")
 
 const NODE_ENV = process.env.NODE_ENV || "development"
 
+function isLocalhostUrl(url) {
+  if (!url) return false
+
+  try {
+    const { hostname } = new URL(url)
+    return (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname.endsWith(".localhost")
+    )
+  } catch {
+    return false
+  }
+}
+
 if (!process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY) {
   if (NODE_ENV === "development" && process.env.MEDUSA_DEV_PUBLISHABLE_KEY) {
     process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY =
@@ -66,6 +81,26 @@ if (!process.env.MEDUSA_BACKEND_URL) {
     process.env.MEDUSA_BACKEND_URL = normalizeBase(process.env.MEDUSA_PROD_BACKEND_URL)
   } else if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
     process.env.MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+  }
+}
+
+if (NODE_ENV === "production") {
+  if (isLocalhostUrl(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL)) {
+    console.error(
+      c.red.bold(
+        "\n🚫 Error: NEXT_PUBLIC_MEDUSA_BACKEND_URL points to localhost in production.\n"
+      )
+    )
+    process.exit(1)
+  }
+
+  if (isLocalhostUrl(process.env.MEDUSA_BACKEND_URL)) {
+    console.error(
+      c.red.bold(
+        "\n🚫 Error: MEDUSA_BACKEND_URL points to localhost in production.\n"
+      )
+    )
+    process.exit(1)
   }
 }
 

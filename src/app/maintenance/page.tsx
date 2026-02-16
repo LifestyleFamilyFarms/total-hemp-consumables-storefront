@@ -19,7 +19,7 @@ export default function MaintenancePage() {
 
       <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-gradient-to-br from-background/90 via-background/82 to-secondary/10 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
         <header className="mb-10 flex justify-center border-b border-border/35 pb-7">
-          <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow priority />
+          <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow />
         </header>
 
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
@@ -29,7 +29,7 @@ export default function MaintenancePage() {
             </h1>
 
             <p className="text-base leading-relaxed text-foreground/75 sm:text-lg">
-              We're in final production and compliance prep before opening the full storefront. Expect a first-wave
+              We&apos;re in final production and compliance prep before opening the full storefront. Expect a first-wave
               lineup centered on premium Delta-9 THC products, with complementary CBD offerings.
             </p>
 
@@ -56,7 +56,7 @@ export default function MaintenancePage() {
               Drop your email for first access.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-foreground/70">
-              We'll send one email for opening day and occasional updates for premium THC releases.
+              We&apos;ll send one email for opening day and occasional updates for premium THC releases.
             </p>
 
             <div className="mt-6">

@@ -55,10 +55,12 @@ export function BrandLogo({
     throw new Error(`Brand asset ${asset.id} is missing ${format.toUpperCase()} output`)
   }
 
+  const normalizedSrc = src.startsWith("/") || src.startsWith("http") ? src : `/${src}`
+
   return (
     <figure className={cn("inline-flex flex-col items-center gap-2", className)}>
       <Image
-        src={src}
+        src={normalizedSrc}
         alt={config.label}
         width={selectedOutput.width ?? 0}
         height={selectedOutput.height ?? 0}
