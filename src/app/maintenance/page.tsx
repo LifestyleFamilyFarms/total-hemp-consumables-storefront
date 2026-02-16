@@ -76,7 +76,7 @@ export default async function MaintenancePage() {
           />
         </header>
 
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="space-y-6 text-left">
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               Total Hemp Consumables is about to launch!
@@ -128,7 +128,7 @@ export default async function MaintenancePage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-gradient-to-b from-background/85 via-background/75 to-secondary/20 p-6 shadow-[0_18px_45px_rgba(12,23,34,0.12)]">
+          <div className="self-start rounded-2xl border border-border/50 bg-gradient-to-b from-background/85 via-background/75 to-secondary/20 p-6 shadow-[0_18px_45px_rgba(12,23,34,0.12)]">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Launch alerts</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
               Drop your email for first access.
