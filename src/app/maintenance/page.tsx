@@ -18,16 +18,18 @@ export default function MaintenancePage() {
       <div className="pointer-events-none absolute -bottom-16 right-0 -z-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
       <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-gradient-to-br from-background/90 via-background/82 to-secondary/10 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
+        <header className="mb-10 flex justify-center border-b border-border/35 pb-7">
+          <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow priority />
+        </header>
+
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="space-y-6 text-left">
-            <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow priority />
-
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Premium THC launch is close.
+              Total Hemp Consumables is about to launch, be the first to know when it happens
             </h1>
 
             <p className="text-base leading-relaxed text-foreground/75 sm:text-lg">
-              We&apos;re in final production and compliance prep before opening the full storefront. Expect a first-wave
+              We're in final production and compliance prep before opening the full storefront. Expect a first-wave
               lineup centered on premium Delta-9 THC products, with complementary CBD offerings.
             </p>
 
@@ -54,7 +56,7 @@ export default function MaintenancePage() {
               Drop your email for first access.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-foreground/70">
-              We&apos;ll send one email for opening day and occasional updates for premium THC releases.
+              We'll send one email for opening day and occasional updates for premium THC releases.
             </p>
 
             <div className="mt-6">
