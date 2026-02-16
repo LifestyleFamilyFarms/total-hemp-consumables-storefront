@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { BrandLogo } from "@/components/brand/brand-logo"
+import Image from "next/image"
 import LaunchWaitlistForm from "@modules/maintenance/components/launch-waitlist-form"
 
 export const metadata: Metadata = {
@@ -19,7 +19,15 @@ export default function MaintenancePage() {
 
       <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-gradient-to-br from-background/90 via-background/82 to-secondary/10 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
         <header className="mb-10 flex justify-center border-b border-border/35 pb-7">
-          <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow />
+          <Image
+            src="/logos/svg/COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg"
+            alt="Total Hemp Consumables"
+            width={340}
+            height={121}
+            unoptimized
+            priority
+            className="h-auto w-[260px] max-w-full drop-shadow-[0_18px_28px_rgba(15,23,42,0.35)] sm:w-[340px]"
+          />
         </header>
 
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
