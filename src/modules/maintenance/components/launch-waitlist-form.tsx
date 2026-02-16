@@ -40,7 +40,7 @@ export default function LaunchWaitlistForm() {
         const message =
           payload?.message ||
           (response.ok
-            ? "You're on the list. We'll email you before grand opening."
+            ? "You're on the list. We'll email you before Grand Opening."
             : "Unable to join the alert list right now. Please try again.")
 
         setStatus({ ok: response.ok, message })
@@ -62,7 +62,7 @@ export default function LaunchWaitlistForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <label htmlFor="maintenance-email" className="text-sm font-medium text-foreground/80">
-          Email address
+          Email Address
         </label>
         <Input
           id="maintenance-email"
@@ -89,7 +89,7 @@ export default function LaunchWaitlistForm() {
       </div>
 
       <Button type="submit" size="lg" className="w-full" disabled={isPending}>
-        {isPending ? "Saving..." : "Notify me at grand opening"}
+        {isPending ? "Saving..." : "Notify Me at Grand Opening"}
       </Button>
 
       {status ? (
