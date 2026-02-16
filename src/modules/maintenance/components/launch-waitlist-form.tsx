@@ -71,6 +71,7 @@ export default function LaunchWaitlistForm() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="you@example.com"
+          className="h-11 border-border/70 bg-card/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] placeholder:text-foreground/45 focus-visible:ring-primary/45"
           required
         />
       </div>

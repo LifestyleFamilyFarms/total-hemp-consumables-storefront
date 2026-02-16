@@ -14,27 +14,28 @@ export default function MaintenancePage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background/95 to-primary/20 px-6 py-16">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(142,213,188,0.2),_transparent_50%),radial-gradient(circle_at_bottom_right,_rgba(227,177,108,0.25),_transparent_55%)]" />
+      <div className="pointer-events-none absolute -left-20 top-10 -z-10 h-72 w-72 rounded-full bg-secondary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 right-0 -z-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
-      <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-background/80 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
+      <section className="w-full max-w-6xl rounded-[36px] border border-border/40 bg-gradient-to-br from-background/90 via-background/82 to-secondary/10 p-7 shadow-[0_32px_90px_rgba(12,23,34,0.28)] backdrop-blur-md supports-[backdrop-filter]:bg-background/55 sm:p-10 lg:p-12">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div className="space-y-6 text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-foreground/60">Maintenance mode</p>
-
-            <BrandLogo variant="heroWordmark" size="md" className="max-w-[320px]" priority />
+            <BrandLogo variant="heroWordmark" size="md" className="max-w-[360px]" withShadow priority />
 
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Grand opening is close.
+              Premium THC launch is close.
             </h1>
 
             <p className="text-base leading-relaxed text-foreground/75 sm:text-lg">
-              We&apos;re in final production checks and compliance prep before opening the full storefront. Expect a
-              launch lineup built around premium CBD and Delta-9 THC products.
+              We&apos;re in final production and compliance prep before opening the full storefront. Expect a first-wave
+              lineup centered on premium Delta-9 THC products, with complementary CBD offerings.
             </p>
 
-            <div className="rounded-2xl border border-border/50 bg-background/65 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Coming online</p>
+            <div className="rounded-2xl border border-border/50 bg-gradient-to-br from-background/80 to-secondary/15 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Premium menu preview</p>
               <p className="mt-3 text-sm leading-relaxed text-foreground/75 sm:text-base">
-                Full product menus, lab-backed details, and fresh drops for flower, edibles, vapes, and more.
+                Curated THC gummies, vapes, and flower drops with lab-backed transparency, compliance-first packaging,
+                and small-batch release cadence.
               </p>
             </div>
 
@@ -47,13 +48,13 @@ export default function MaintenancePage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-background/70 p-6 shadow-[0_18px_45px_rgba(12,23,34,0.12)]">
+          <div className="rounded-2xl border border-border/50 bg-gradient-to-b from-background/85 via-background/75 to-secondary/20 p-6 shadow-[0_18px_45px_rgba(12,23,34,0.12)]">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Launch alerts</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
               Drop your email for first access.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-foreground/70">
-              We&apos;ll send one email when the storefront opens and occasional updates for major releases.
+              We&apos;ll send one email for opening day and occasional updates for premium THC releases.
             </p>
 
             <div className="mt-6">
