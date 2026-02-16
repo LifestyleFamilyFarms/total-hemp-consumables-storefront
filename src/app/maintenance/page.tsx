@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
+import { listCategories } from "@lib/data/categories"
 import LaunchWaitlistForm from "@modules/maintenance/components/launch-waitlist-form"
 
 export const metadata: Metadata = {
@@ -10,7 +11,35 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic"
 
-export default function MaintenancePage() {
+const RETIRED_CATEGORY_HANDLES = new Set(["flower", "flowers", "vape", "vapes"])
+
+async function getLaunchCategories() {
+  try {
+    const categories = await listCategories({ limit: 100 })
+
+    const topLevelCategories = categories.filter((category) => {
+      return !category.parent_category && !category.parent_category_id
+    })
+
+    const filteredCategories = topLevelCategories.filter((category) => {
+      const handle = (category.handle || "").toLowerCase().trim()
+
+      if (RETIRED_CATEGORY_HANDLES.has(handle)) {
+        return false
+      }
+
+      return (category.products?.length || 0) > 0
+    })
+
+    return filteredCategories.slice(0, 8)
+  } catch {
+    return []
+  }
+}
+
+export default async function MaintenancePage() {
+  const launchCategories = await getLaunchCategories()
+
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background/95 to-primary/20 px-6 py-16">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(142,213,188,0.2),_transparent_50%),radial-gradient(circle_at_bottom_right,_rgba(227,177,108,0.25),_transparent_55%)]" />
@@ -43,10 +72,31 @@ export default function MaintenancePage() {
 
             <div className="rounded-2xl border border-border/50 bg-gradient-to-br from-background/80 to-secondary/15 p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-foreground/60">Premium menu preview</p>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/75 sm:text-base">
-                Curated THC gummies, vapes, and flower drops with lab-backed transparency, compliance-first packaging,
-                and small-batch release cadence.
-              </p>
+              {launchCategories.length > 0 ? (
+                <>
+                  <p className="mt-3 text-sm leading-relaxed text-foreground/75 sm:text-base">
+                    Live categories currently staged for launch:
+                  </p>
+                  <ul className="mt-4 flex flex-wrap gap-2" data-testid="maintenance-live-categories">
+                    {launchCategories.map((category) => (
+                      <li
+                        key={category.id}
+                        className="rounded-full border border-border/55 bg-background/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-foreground/80"
+                      >
+                        {category.name}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-3 text-xs leading-relaxed text-foreground/65">
+                    This lineup is pulled directly from our live store catalog.
+                  </p>
+                </>
+              ) : (
+                <p className="mt-3 text-sm leading-relaxed text-foreground/75 sm:text-base">
+                  Curated Delta-9 THC gummies, beverages, and elixirs with lab-backed transparency,
+                  compliance-first packaging, and small-batch release cadence.
+                </p>
+              )}
             </div>
 
             <p className="text-sm leading-relaxed text-foreground/70">
