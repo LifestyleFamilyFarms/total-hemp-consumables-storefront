@@ -6,6 +6,12 @@ type OrderDetailsProps = {
 }
 
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
+  const salesPersonCode =
+    typeof order.metadata?.sales_person_code === "string" ||
+    typeof order.metadata?.sales_person_code === "number"
+      ? String(order.metadata.sales_person_code)
+      : null
+
   const formatStatus = (str: string) => {
     const formatted = str.split("_").join(" ")
 
@@ -33,12 +39,10 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       <p className="mt-2 text-ui-fg-interactive">
         Order number: <span data-testid="order-id">{order.display_id}</span>
       </p>
-      {order.metadata?.sales_person_code && (
+      {salesPersonCode && (
         <p className="mt-2 text-ui-fg-subtle">
           Sales rep:{" "}
-          <span className="font-semibold">
-            {String(order.metadata.sales_person_code)}
-          </span>
+          <span className="font-semibold">{salesPersonCode}</span>
         </p>
       )}
 

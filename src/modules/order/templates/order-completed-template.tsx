@@ -17,6 +17,11 @@ export default async function OrderCompletedTemplate({
   order,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
+  const salesPersonCode =
+    typeof order.metadata?.sales_person_code === "string" ||
+    typeof order.metadata?.sales_person_code === "number"
+      ? String(order.metadata.sales_person_code)
+      : null
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
 
@@ -32,12 +37,10 @@ export default async function OrderCompletedTemplate({
             <span>Thank you!</span>
             <span>Your order was placed successfully.</span>
           </div>
-          {order.metadata?.sales_person_code && (
+          {salesPersonCode && (
             <div className="rounded-md border border-ui-border-base bg-white/60 p-3 text-sm text-ui-fg-subtle">
               Sales rep:{" "}
-              <span className="font-semibold">
-                {String(order.metadata.sales_person_code)}
-              </span>
+              <span className="font-semibold">{salesPersonCode}</span>
             </div>
           )}
           <OrderDetails order={order} />

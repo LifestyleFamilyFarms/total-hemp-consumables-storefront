@@ -8,8 +8,24 @@ type ImageGalleryProps = {
 }
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
-  const primary = images?.[0]
-  const secondary = images?.slice(1, 5) ?? []
+  const orderedImages = [...(images || [])].sort((a, b) => {
+    const rankA = typeof a?.rank === "number" ? a.rank : Number.MAX_SAFE_INTEGER
+    const rankB = typeof b?.rank === "number" ? b.rank : Number.MAX_SAFE_INTEGER
+    if (rankA !== rankB) return rankA - rankB
+
+    const tokenA = extractOrderToken(a?.url || "")
+    const tokenB = extractOrderToken(b?.url || "")
+    if (tokenA !== null || tokenB !== null) {
+      if (tokenA === null) return 1
+      if (tokenB === null) return -1
+      if (tokenA !== tokenB) return tokenA - tokenB
+    }
+
+    return (a?.url || "").localeCompare(b?.url || "")
+  })
+
+  const primary = orderedImages?.[0]
+  const secondary = orderedImages?.slice(1, 5) ?? []
 
   return (
     <div className="space-y-4">
@@ -60,3 +76,16 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
 }
 
 export default ImageGallery
+
+function extractOrderToken(rawUrl: string) {
+  try {
+    const pathname = new URL(rawUrl).pathname
+    const fileName = pathname.split("/").pop() || ""
+    const match = fileName.match(/^(\d{1,3})[ _.-]/)
+    if (!match) return null
+    const value = Number.parseInt(match[1], 10)
+    return Number.isNaN(value) ? null : value
+  } catch {
+    return null
+  }
+}

@@ -18,6 +18,12 @@ type OrderCardProps = {
 }
 
 const OrderCard = ({ order }: OrderCardProps) => {
+  const salesPersonCode =
+    typeof order.metadata?.sales_person_code === "string" ||
+    typeof order.metadata?.sales_person_code === "number"
+      ? String(order.metadata.sales_person_code)
+      : null
+
   const numberOfLines = useMemo(() => {
     return (
       order.items?.reduce((acc, item) => {
@@ -55,11 +61,11 @@ const OrderCard = ({ order }: OrderCardProps) => {
               currency_code: order.currency_code,
             })}
           </span>
-          {order.metadata?.sales_person_code && (
+          {salesPersonCode && (
             <>
               <span className="h-1 w-1 rounded-full bg-border" aria-hidden />
               <span className="text-xs uppercase tracking-wide">
-                Rep {String(order.metadata.sales_person_code)}
+                Rep {salesPersonCode}
               </span>
             </>
           )}

@@ -9,6 +9,7 @@ import { getRegion, retrieveRegion } from "./regions"
 
 const resolvedSalesChannels = new Map<string, string | null>()
 let cachedDefaultSalesChannelId: string | null | undefined
+type ProductListQueryParams = HttpTypes.StoreProductListParams
 
 const getDefaultStoreSalesChannelId = async (
   headers: Record<string, string>
@@ -73,13 +74,13 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductListQueryParams
   countryCode?: string
   regionId?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductListQueryParams
 }> => {
   if (!countryCode && !regionId) {
     throw new Error("Country code or region ID is required")
@@ -142,7 +143,7 @@ export const listProducts = async ({
           region_id: region.id,
           ...(salesChannelId ? { sales_channel_id: salesChannelId } : {}),
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+variants.options,+variants.metadata,+metadata,+tags,+type",
+            "*variants.calculated_price,+variants.inventory_quantity,+variants.options,+variants.metadata,+metadata,+tags,+type,+images.url,+images.rank",
           ...queryParams,
         },
         headers,
@@ -174,13 +175,13 @@ export const listProductsWithSort = async ({
   countryCode,
 }: {
   page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductListQueryParams
   sortBy?: SortOptions
   countryCode: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductListQueryParams
 }> => {
   const limit = queryParams?.limit || 12
 
