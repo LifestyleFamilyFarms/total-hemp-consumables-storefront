@@ -14,6 +14,23 @@ const isLocalhostUrl = (url: string) => {
   }
 }
 
+const isProductionDeployment = () => {
+  if (process.env.NODE_ENV !== "production") {
+    return false
+  }
+
+  if (process.env.ENFORCE_PROD_BACKEND_URL_GUARD === "1") {
+    return true
+  }
+
+  const isVercelProd = process.env.VERCEL_ENV === "production"
+  const isRailwayProd = process.env.RAILWAY_ENVIRONMENT === "production"
+  const isNetlifyProd =
+    process.env.NETLIFY === "true" && process.env.CONTEXT === "production"
+
+  return isVercelProd || isRailwayProd || isNetlifyProd
+}
+
 const resolveBackendUrl = () => {
   const url =
     process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ||
@@ -22,9 +39,9 @@ const resolveBackendUrl = () => {
   if (url) {
     const normalized = normalizeBaseUrl(url)
 
-    if (process.env.NODE_ENV === "production" && isLocalhostUrl(normalized)) {
+    if (isProductionDeployment() && isLocalhostUrl(normalized)) {
       throw new Error(
-        "Invalid Medusa backend URL in production. NEXT_PUBLIC_MEDUSA_BACKEND_URL cannot point to localhost."
+        "Invalid Medusa backend URL in deployed production. NEXT_PUBLIC_MEDUSA_BACKEND_URL cannot point to localhost."
       )
     }
 

@@ -27,6 +27,23 @@ function isLocalhostUrl(url) {
   }
 }
 
+function isProductionDeployment() {
+  if (NODE_ENV !== "production") {
+    return false
+  }
+
+  if (process.env.ENFORCE_PROD_BACKEND_URL_GUARD === "1") {
+    return true
+  }
+
+  const isVercelProd = process.env.VERCEL_ENV === "production"
+  const isRailwayProd = process.env.RAILWAY_ENVIRONMENT === "production"
+  const isNetlifyProd =
+    process.env.NETLIFY === "true" && process.env.CONTEXT === "production"
+
+  return isVercelProd || isRailwayProd || isNetlifyProd
+}
+
 if (!process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY) {
   if (NODE_ENV === "development" && process.env.MEDUSA_DEV_PUBLISHABLE_KEY) {
     process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY =
@@ -84,11 +101,11 @@ if (!process.env.MEDUSA_BACKEND_URL) {
   }
 }
 
-if (NODE_ENV === "production") {
+if (isProductionDeployment()) {
   if (isLocalhostUrl(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL)) {
     console.error(
       c.red.bold(
-        "\n🚫 Error: NEXT_PUBLIC_MEDUSA_BACKEND_URL points to localhost in production.\n"
+        "\n🚫 Error: NEXT_PUBLIC_MEDUSA_BACKEND_URL points to localhost in deployed production.\n"
       )
     )
     process.exit(1)
@@ -97,7 +114,7 @@ if (NODE_ENV === "production") {
   if (isLocalhostUrl(process.env.MEDUSA_BACKEND_URL)) {
     console.error(
       c.red.bold(
-        "\n🚫 Error: MEDUSA_BACKEND_URL points to localhost in production.\n"
+        "\n🚫 Error: MEDUSA_BACKEND_URL points to localhost in deployed production.\n"
       )
     )
     process.exit(1)

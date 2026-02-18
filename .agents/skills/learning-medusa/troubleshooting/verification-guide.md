@@ -283,7 +283,7 @@ curl -X POST http://localhost:9000/auth/user/emailpass \
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "<jwt-token>"
 }
 ```
 
@@ -291,7 +291,7 @@ curl -X POST http://localhost:9000/auth/user/emailpass \
 
 ```bash
 # Set token as environment variable for convenience
-export AUTH_TOKEN="your-token-here"
+export AUTH_TOKEN=<paste-token-here>
 ```
 
 **Important**: All `/admin` route requests must include the authentication token in the `Authorization: Bearer` header:
@@ -307,7 +307,7 @@ Test route responds to authenticated requests:
 
 ```bash
 # First, authenticate and get token (see Step 2)
-export AUTH_TOKEN="your-token-here"
+export AUTH_TOKEN=<paste-token-here>
 
 # Then test the route
 curl -X POST http://localhost:9000/admin/brands \
@@ -738,7 +738,7 @@ All `/admin` routes require authentication. See **API Route Verification → Ste
 
 3. Use token in requests:
    ```bash
-   export AUTH_TOKEN="your-token-here"
+export AUTH_TOKEN=<paste-token-here>
    curl http://localhost:9000/admin/brands \
      -H "Authorization: Bearer $AUTH_TOKEN"
    ```

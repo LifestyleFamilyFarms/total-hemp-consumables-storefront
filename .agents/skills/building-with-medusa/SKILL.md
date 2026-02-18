@@ -253,7 +253,7 @@ If you implemented custom API routes, list them for the user to test:
 # Admin route (requires authentication)
 curl -X POST http://localhost:9000/admin/reviews/123/approve \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "$ADMIN_AUTH_HEADER" \
   --cookie "connect.sid=YOUR_SESSION_COOKIE"
 
 # Store route
