@@ -2,6 +2,10 @@
     "mcpServers": {
       "medusa": {
         "url": "https://docs.medusajs.com/mcp"
+      },
+      "next-devtools": {
+        "command":"npx",
+        "args": ["-y", "next-devtools-mcp@latest"]
       }
     }
   }
