@@ -14,7 +14,7 @@ export default function GammaHero({
   return (
     <section className="relative isolate overflow-hidden rounded-[32px] border border-border/60 bg-background/80">
       <Image
-        src="/disco_biscuits_assets/biscuits_background.png"
+        src="/disco_biscuits_assets/biscuits_background.webp"
         alt="Gamma Gummies background"
         fill
         priority
@@ -25,7 +25,7 @@ export default function GammaHero({
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center gap-8 px-6 py-20 text-center sm:px-12 lg:px-16 lg:py-24">
         <div className="w-full max-w-xl">
           <Image
-            src="/disco_biscuits_assets/title_with_gummies.png"
+            src="/disco_biscuits_assets/title_with_gummies.webp"
             alt="Gamma Gummies"
             width={560}
             height={180}

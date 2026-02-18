@@ -6,9 +6,10 @@ import sharp from "sharp"
 import { fileURLToPath } from "node:url"
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const SOURCE_DIR = path.join(ROOT, "public", "logos", "LOGOS_ICONS_WEB")
+const SOURCE_DIR = path.join(ROOT, "assets", "brand", "LOGOS_ICONS_WEB")
 const OUTPUT_DIR = path.join(ROOT, "public", "logos", "optimized")
 const MANIFEST_PATH = path.join(ROOT, "src", "lib", "brand", "brand-assets.json")
+const SOURCE_MANIFEST_DIR = "assets/brand/LOGOS_ICONS_WEB"
 
 const SUPPORTED_EXT = new Set([".gif", ".jpg", ".jpeg", ".png"])
 const SIZE_PRESETS = [
@@ -102,12 +103,21 @@ async function convertAsset(fileName) {
 
   return {
     ...descriptor,
-    source: `/logos/LOGOS_ICONS_WEB/${fileName}`,
+    source: `${SOURCE_MANIFEST_DIR}/${fileName}`,
     outputs,
   }
 }
 
 async function main() {
+  try {
+    await fs.access(SOURCE_DIR)
+  } catch {
+    throw new Error(
+      `Brand source directory is missing: ${SOURCE_DIR}\n` +
+        "Restore it or add new source assets before running `yarn brand:build`."
+    )
+  }
+
   await ensureDir(OUTPUT_DIR)
   const files = await fs.readdir(SOURCE_DIR)
   const manifestEntries = []
@@ -124,7 +134,7 @@ async function main() {
 
   const manifest = {
     generatedAt: new Date().toISOString(),
-    sourceDir: "/logos/LOGOS_ICONS_WEB",
+    sourceDir: SOURCE_MANIFEST_DIR,
     outputDir: "/logos/optimized",
     sizes: SIZE_PRESETS,
     assets: manifestEntries.sort((a, b) => a.id.localeCompare(b.id)),

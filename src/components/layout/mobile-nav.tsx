@@ -6,15 +6,27 @@ import { Menu } from "lucide-react"
 import { NAV_ITEMS } from "./nav-data"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
+import { cn } from "@lib/utils"
 
-export function MobileNav({ countryCode }: { countryCode: string }) {
+export function MobileNav({
+  countryCode,
+  triggerClassName,
+}: {
+  countryCode: string
+  triggerClassName?: string
+}) {
   const [open, setOpen] = useState(false)
   const items = NAV_ITEMS
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu">
+        <Button
+          variant="outline"
+          size="icon"
+          className={cn("md:hidden", triggerClassName)}
+          aria-label="Open menu"
+        >
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>

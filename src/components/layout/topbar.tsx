@@ -1,10 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useSidebar } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { BrandLogo } from "@/components/brand/brand-logo"
-import { Menu, ShoppingCart } from "lucide-react"
+import { ShoppingCart } from "lucide-react"
 import { useTheme } from "@/components/theme/theme-provider"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import type { BrandThemeId } from "@lib/brand"
@@ -17,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { MobileNav } from "@/components/layout/mobile-nav"
 
 type TopbarProps = {
   countryCode: string
@@ -29,7 +29,6 @@ type TopbarProps = {
 }
 
 export default function Topbar({ countryCode, user }: TopbarProps) {
-  const { toggleSidebar } = useSidebar()
   const accountHref = `/${countryCode}/account`
   const { theme } = useTheme()
   const currentTheme = theme as BrandThemeId
@@ -46,15 +45,10 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
     <div className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/85/80 backdrop-blur-lg">
       <div className="relative flex h-16 w-full items-center px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <Button
-            onClick={toggleSidebar}
-            variant="outline"
-            size="icon"
-            aria-label="Open menu"
-            className="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
-          >
-            <Menu className="h-4 w-4" />
-          </Button>
+          <MobileNav
+            countryCode={countryCode}
+            triggerClassName="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
+          />
           <ThemeSwitcher className="h-10" />
         </div>
 

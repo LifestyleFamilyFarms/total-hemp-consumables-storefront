@@ -3,9 +3,10 @@
 This guide explains how to work with the optimized logo/icon set generated from the designer package.
 
 ## Working with the source
-- Original deliverables live in `public/logos/LOGOS_ICONS_GUIDE` (AI/EPS/PDF).
-- Web-ready assets are generated from `public/logos/LOGOS_ICONS_WEB` via `yarn brand:build`, which writes optimized PNG + WebP outputs to `public/logos/optimized/**` and updates `src/lib/brand/brand-assets.json`.
-- If the design team ships new files, drop them in `LOGOS_ICONS_WEB` and re-run `yarn brand:build`.
+- Original deliverables live in `assets/brand/LOGOS_ICONS_GUIDE` (AI/EPS/PDF).
+- Source web logos live in `assets/brand/LOGOS_ICONS_WEB`.
+- Web-ready assets are generated via `yarn brand:build`, which writes optimized PNG + WebP outputs to `public/logos/optimized/**` and updates `src/lib/brand/brand-assets.json`.
+- If the design team ships new files, drop them in `assets/brand/LOGOS_ICONS_WEB` and re-run `yarn brand:build`.
 
 ## Curated variants
 The manifest contains every permutation of the logo set. For day-to-day work, stick to the curated keys below (wired up in `src/lib/brand/index.ts` and consumed by the `BrandLogo` component).

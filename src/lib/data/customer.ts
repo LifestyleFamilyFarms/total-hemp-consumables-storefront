@@ -17,6 +17,47 @@ import {
 } from "./cookies"
 import { attachSalesRep } from "./sales-people"
 
+type ActionResult = {
+  success: boolean
+  error: string | null
+}
+
+const actionSuccess: ActionResult = {
+  success: true,
+  error: null,
+}
+
+const toErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String(error)
+
+async function revalidateCustomersCache() {
+  const customerCacheTag = await getCacheTag("customers")
+  revalidateTag(customerCacheTag)
+}
+
+async function revalidateCartsCache() {
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+}
+
+async function attachSalesRepForSession(customerId?: string) {
+  const repCode = await getSalesRepCode()
+  if (!repCode) {
+    return
+  }
+
+  const cartId = await getCartId()
+
+  await attachSalesRep({
+    customerId,
+    cartId: cartId || undefined,
+    repCode,
+  })
+
+  await revalidateCustomersCache()
+  await revalidateCartsCache()
+}
+
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders()
@@ -55,8 +96,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
     .then(({ customer }) => customer)
     .catch(medusaError)
 
-  const cacheTag = await getCacheTag("customers")
-  revalidateTag(cacheTag)
+  await revalidateCustomersCache()
 
   return updateRes
 }
@@ -95,26 +135,15 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await setAuthToken(loginToken as string)
 
-    const customerCacheTag = await getCacheTag("customers")
-    revalidateTag(customerCacheTag)
+    await revalidateCustomersCache()
 
     await transferCart()
 
-    const cartId = await getCartId()
-    const repCode = await getSalesRepCode()
-    if (repCode) {
-      await attachSalesRep({
-        customerId: createdCustomer.id,
-        cartId: cartId || undefined,
-        repCode,
-      })
-      revalidateTag(await getCacheTag("customers"))
-      revalidateTag(await getCacheTag("carts"))
-    }
+    await attachSalesRepForSession(createdCustomer.id)
 
     return createdCustomer
-  } catch (error: any) {
-    return error.toString()
+  } catch (error) {
+    return toErrorMessage(error)
   }
 }
 
@@ -123,33 +152,19 @@ export async function login(_currentState: unknown, formData: FormData) {
   const password = formData.get("password") as string
 
   try {
-    await sdk.auth
-      .login("customer", "emailpass", { email, password })
-      .then(async (token) => {
-        await setAuthToken(token as string)
-        const customerCacheTag = await getCacheTag("customers")
-        revalidateTag(customerCacheTag)
-      })
-  } catch (error: any) {
-    return error.toString()
-  }
+    const token = await sdk.auth.login("customer", "emailpass", {
+      email,
+      password,
+    })
+    await setAuthToken(token as string)
+    await revalidateCustomersCache()
 
-  try {
     await transferCart()
+
     const customer = await retrieveCustomer()
-    const cartId = await getCartId()
-    const repCode = await getSalesRepCode()
-    if (customer?.id && repCode) {
-      await attachSalesRep({
-        customerId: customer.id,
-        cartId: cartId || undefined,
-        repCode,
-      })
-      revalidateTag(await getCacheTag("customers"))
-      revalidateTag(await getCacheTag("carts"))
-    }
-  } catch (error: any) {
-    return error.toString()
+    await attachSalesRepForSession(customer?.id)
+  } catch (error) {
+    return toErrorMessage(error)
   }
 }
 
@@ -158,13 +173,11 @@ export async function signout(countryCode: string) {
 
   await removeAuthToken()
 
-  const customerCacheTag = await getCacheTag("customers")
-  revalidateTag(customerCacheTag)
+  await revalidateCustomersCache()
 
   await removeCartId()
 
-  const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  await revalidateCartsCache()
 
   redirect(`/${countryCode}/account`)
 }
@@ -180,14 +193,13 @@ export async function transferCart() {
 
   await sdk.store.cart.transferCart(cartId, {}, headers)
 
-  const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  await revalidateCartsCache()
 }
 
 export const addCustomerAddress = async (
   currentState: Record<string, unknown>,
   formData: FormData
-): Promise<any> => {
+): Promise<ActionResult> => {
   const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
   const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
 
@@ -212,39 +224,37 @@ export const addCustomerAddress = async (
 
   return sdk.store.customer
     .createAddress(address, {}, headers)
-    .then(async ({ customer }) => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+    .then(async () => {
+      await revalidateCustomersCache()
+      return actionSuccess
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { success: false, error: toErrorMessage(err) }
     })
 }
 
 export const deleteCustomerAddress = async (
   addressId: string
-): Promise<void> => {
+): Promise<ActionResult> => {
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.customer
+  return sdk.store.customer
     .deleteAddress(addressId, headers)
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      await revalidateCustomersCache()
+      return actionSuccess
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { success: false, error: toErrorMessage(err) }
     })
 }
 
 export const updateCustomerAddress = async (
   currentState: Record<string, unknown>,
   formData: FormData
-): Promise<any> => {
+): Promise<ActionResult> => {
   const addressId =
     (currentState.addressId as string) || (formData.get("addressId") as string)
 
@@ -277,11 +287,10 @@ export const updateCustomerAddress = async (
   return sdk.store.customer
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      await revalidateCustomersCache()
+      return actionSuccess
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { success: false, error: toErrorMessage(err) }
     })
 }

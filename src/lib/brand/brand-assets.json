@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2025-11-08T04:58:21.571Z",
-  "sourceDir": "/logos/LOGOS_ICONS_WEB",
+  "generatedAt": "2026-02-18T02:45:28.688Z",
+  "sourceDir": "assets/brand/LOGOS_ICONS_WEB",
   "outputDir": "/logos/optimized",
   "sizes": [
     {
@@ -26,21 +26,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 1683,
           "height": 600,
           "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
-          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
-          "svg": "/logos/svg/BW_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 91,
           "png": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
-          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
-          "svg": "/logos/svg/BW_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/BW_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp"
         }
       }
     },
@@ -57,7 +55,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -86,21 +84,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_ICON_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_ICON_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 600,
           "png": "/logos/optimized/BW_ICON_NObgWEB/orig.png",
-          "webp": "/logos/optimized/BW_ICON_NObgWEB/orig.webp",
-          "svg": "/logos/svg/BW_ICON_PRINT.svg"
+          "webp": "/logos/optimized/BW_ICON_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 256,
           "png": "/logos/optimized/BW_ICON_NObgWEB/md.png",
-          "webp": "/logos/optimized/BW_ICON_NObgWEB/md.webp",
-          "svg": "/logos/svg/BW_ICON_PRINT.svg"
+          "webp": "/logos/optimized/BW_ICON_NObgWEB/md.webp"
         }
       }
     },
@@ -117,7 +113,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_ICONnoTM_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_ICONnoTM_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -146,7 +142,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_ICONnoTM_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_ICONnoTM_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -175,7 +171,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -204,7 +200,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -233,7 +229,7 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -262,21 +258,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/BW_LOGOwTAGLINE_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/orig.png",
-          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/orig.webp",
-          "svg": "/logos/svg/BW_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/md.png",
-          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/md.webp",
-          "svg": "/logos/svg/BW_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/BW_LOGOwTAGLINE_WbgWEB/md.webp"
         }
       }
     },
@@ -293,21 +287,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 1683,
           "height": 600,
           "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
-          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
-          "svg": "/logos/svg/COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 91,
           "png": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
-          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
-          "svg": "/logos/svg/COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/COLORhorizontal_FULL_COLOR_LOGO_NObgWEB/md.webp"
         }
       }
     },
@@ -324,7 +316,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -353,7 +345,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICON_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_BW_ICON_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -382,7 +374,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICON_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_BW_ICON_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -411,7 +403,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -440,7 +432,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_BW_ICONnoTM_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -469,7 +461,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -498,7 +490,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_COLORhorizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -527,21 +519,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 600,
           "png": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/orig.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/orig.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_ICON_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 256,
           "png": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/md.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/md.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_ICON_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_ICON_NObgWEB/md.webp"
         }
       }
     },
@@ -558,7 +548,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICON_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -587,7 +577,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 592,
@@ -616,7 +606,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_ICONnoTM_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -645,21 +635,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 600,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/orig.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/orig.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 256,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/md.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/md.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGO_NObgWEB/md.webp"
         }
       }
     },
@@ -676,7 +664,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -705,21 +693,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/orig.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/orig.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/md.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/md.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_NObgWEB/md.webp"
         }
       }
     },
@@ -736,21 +722,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/orig.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/orig.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/md.png",
-          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/md.webp",
-          "svg": "/logos/svg/DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/DB_FULL_COLOR_LOGOWTAGLINE_WbgWEB/md.webp"
         }
       }
     },
@@ -767,7 +751,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -796,7 +780,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -825,7 +809,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -854,7 +838,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -883,7 +867,7 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -912,7 +896,7 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/DB_GREY_LOGOwTAGLINE_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -941,21 +925,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_ICON_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_ICON_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 600,
           "png": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/orig.png",
-          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/orig.webp",
-          "svg": "/logos/svg/FULL_COLOR_ICON_PRINT.svg"
+          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 256,
           "png": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.png",
-          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.webp",
-          "svg": "/logos/svg/FULL_COLOR_ICON_PRINT.svg"
+          "webp": "/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.webp"
         }
       }
     },
@@ -972,7 +954,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_ICON_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_ICON_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1001,7 +983,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1030,7 +1012,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1059,21 +1041,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEnoBGWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEnoBGWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/orig.png",
-          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/orig.webp",
-          "svg": "/logos/svg/FULL_COLOR_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/md.png",
-          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/md.webp",
-          "svg": "/logos/svg/FULL_COLOR_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/FULL_COLOR_LOGOwTAGLINEnoBGWEB/md.webp"
         }
       }
     },
@@ -1090,7 +1070,7 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEwBGWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/FULL_COLOR_LOGOwTAGLINEwBGWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1119,21 +1099,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 1683,
           "height": 600,
           "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.png",
-          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp",
-          "svg": "/logos/svg/GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 91,
           "png": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.png",
-          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp",
-          "svg": "/logos/svg/GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg"
+          "webp": "/logos/optimized/GREY_horizontal_FULL_COLOR_LOGO_NObgWEB/md.webp"
         }
       }
     },
@@ -1150,7 +1128,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_horizontal_FULL_COLOR_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 1683,
@@ -1179,21 +1157,19 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICON_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_ICON_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 600,
           "png": "/logos/optimized/GREY_ICON_NObgWEB/orig.png",
-          "webp": "/logos/optimized/GREY_ICON_NObgWEB/orig.webp",
-          "svg": "/logos/svg/GREY_ICON_PRINT.svg"
+          "webp": "/logos/optimized/GREY_ICON_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 256,
           "png": "/logos/optimized/GREY_ICON_NObgWEB/md.png",
-          "webp": "/logos/optimized/GREY_ICON_NObgWEB/md.webp",
-          "svg": "/logos/svg/GREY_ICON_PRINT.svg"
+          "webp": "/logos/optimized/GREY_ICON_NObgWEB/md.webp"
         }
       }
     },
@@ -1210,7 +1186,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICON_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_ICON_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1239,7 +1215,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICONnoTM_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_ICONnoTM_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1268,7 +1244,7 @@
         "hasTagline": false,
         "hasTrademark": false
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_ICONnoTM_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_ICONnoTM_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1297,7 +1273,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGO_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_LOGO_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1326,7 +1302,7 @@
         "hasTagline": false,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGO_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_LOGO_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
@@ -1355,21 +1331,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_NObgWEB.gif",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_NObgWEB.gif",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/orig.png",
-          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/orig.webp",
-          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/md.png",
-          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/md.webp",
-          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_NObgWEB/md.webp"
         }
       }
     },
@@ -1386,21 +1360,19 @@
         "hasTagline": true,
         "hasTrademark": true
       },
-      "source": "/logos/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_WbgWEB.jpg",
+      "source": "assets/brand/LOGOS_ICONS_WEB/GREY_LOGOwTAGLINE_WbgWEB.jpg",
       "outputs": {
         "orig": {
           "width": 600,
           "height": 604,
           "png": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/orig.png",
-          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/orig.webp",
-          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/orig.webp"
         },
         "md": {
           "width": 256,
           "height": 258,
           "png": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/md.png",
-          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/md.webp",
-          "svg": "/logos/svg/GREY_LOGOwTAGLINE_PRINT.svg"
+          "webp": "/logos/optimized/GREY_LOGOwTAGLINE_WbgWEB/md.webp"
         }
       }
     }

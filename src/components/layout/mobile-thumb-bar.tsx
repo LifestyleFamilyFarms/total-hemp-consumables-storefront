@@ -6,7 +6,6 @@ import Link from "next/link"
 import { CreditCard, ShoppingCart, X } from "lucide-react"
 
 import { NAV_ITEMS } from "@/components/layout/nav-data"
-import { useSidebar } from "@/components/ui/sidebar"
 import { convertToLocale } from "@lib/util/money"
 import { cn } from "@lib/utils"
 
@@ -29,7 +28,6 @@ type CartPreview = {
 }
 
 export default function MobileThumbBar({ countryCode }: { countryCode: string }) {
-  const { openMobile } = useSidebar()
   const [isOpen, setIsOpen] = React.useState(false)
   const [cart, setCart] = React.useState<CartPreview | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -64,12 +62,6 @@ export default function MobileThumbBar({ countryCode }: { countryCode: string })
       fetchCartPreview()
     }
   }, [isOpen, fetchCartPreview])
-
-  React.useEffect(() => {
-    if (openMobile && isOpen) {
-      setIsOpen(false)
-    }
-  }, [openMobile, isOpen])
 
   const quickItems = React.useMemo(
     () =>
