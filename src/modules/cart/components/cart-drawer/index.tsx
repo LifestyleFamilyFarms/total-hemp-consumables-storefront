@@ -26,6 +26,9 @@ type CartDrawerProps = {
   countryCode: string
   cart: HttpTypes.StoreCart | null
   className?: string
+  compact?: boolean
+  compactOnMobile?: boolean
+  isAuthenticated?: boolean
 }
 
 const lineItemTotal = (
@@ -49,6 +52,9 @@ export default function CartDrawer({
   countryCode,
   cart,
   className,
+  compact = false,
+  compactOnMobile = false,
+  isAuthenticated = false,
 }: CartDrawerProps) {
   const isOpen = useStorefrontState(selectIsCartDrawerOpen)
   const setCartDrawerOpen = useStorefrontState(selectSetCartDrawerOpen)
@@ -67,7 +73,18 @@ export default function CartDrawer({
           aria-label={`Shopping cart with ${itemCount} item${itemCount === 1 ? "" : "s"}`}
         >
           <ShoppingCart className="h-4 w-4" />
-          Cart ({itemCount})
+          {compactOnMobile ? (
+            <>
+              <span className="min-w-[1.2rem] text-center text-xs font-bold lg:hidden">
+                {itemCount}
+              </span>
+              <span className="hidden lg:inline">Cart ({itemCount})</span>
+            </>
+          ) : compact ? (
+            <span className="min-w-[1.2rem] text-center text-xs font-bold">{itemCount}</span>
+          ) : (
+            <span>Cart ({itemCount})</span>
+          )}
           <span className="sr-only" aria-live="polite">
             Cart contains {itemCount} item{itemCount === 1 ? "" : "s"}
           </span>
@@ -127,6 +144,24 @@ export default function CartDrawer({
                   {convertToLocale({ amount: subtotal, currency_code: currencyCode })}
                 </span>
               </div>
+              {!isAuthenticated ? (
+                <div className="rounded-xl border border-border/60 bg-muted/25 p-3 lg:hidden">
+                  <p className="text-sm font-semibold text-foreground">
+                    Save your cart and speed up checkout.
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Sign in or create an account. You can still check out as a guest.
+                  </p>
+                  <Button asChild variant="secondary" className="mt-3 w-full">
+                    <Link
+                      href={`/${countryCode}/account`}
+                      onClick={() => setCartDrawerOpen(false)}
+                    >
+                      Sign in / Create account
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
               <div className="grid gap-2">
                 <Button asChild className="w-full">
                   <Link

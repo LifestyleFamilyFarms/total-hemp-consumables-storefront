@@ -58,9 +58,10 @@ const resolveBackendUrl = () => {
 }
 
 const MEDUSA_BACKEND_URL = resolveBackendUrl()
+const MEDUSA_SDK_DEBUG = process.env.MEDUSA_SDK_DEBUG === "1"
 
 export const sdk = new Medusa({
   baseUrl: MEDUSA_BACKEND_URL,
-  debug: process.env.NODE_ENV === "development",
+  debug: MEDUSA_SDK_DEBUG,
   publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
 })

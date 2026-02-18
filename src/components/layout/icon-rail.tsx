@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { User } from "lucide-react"
-import { NAV_ITEMS } from "@/components/layout/nav-data"
+import { PRIMARY_NAV_ITEMS } from "@/components/layout/nav-data"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 
 export default function IconRail() {
@@ -28,7 +28,7 @@ export default function IconRail() {
     >
       <TooltipProvider>
         <div className="flex w-full flex-col items-center gap-2">
-          {NAV_ITEMS.filter((it) => !!it.icon).map((it) => {
+          {PRIMARY_NAV_ITEMS.filter((it) => !!it.icon).map((it) => {
             const Icon = it.icon!
             const href = it.href ? it.href(cc) : "#"
             const hrefNorm = normalize(href)

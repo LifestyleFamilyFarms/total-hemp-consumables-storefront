@@ -3,7 +3,14 @@
 import { useState } from "react"
 import { SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import RefinementList from "@modules/store/components/refinement-list"
 
 export default function MobileFilters({ sortBy }: { sortBy?: string }) {
@@ -21,6 +28,9 @@ export default function MobileFilters({ sortBy }: { sortBy?: string }) {
       <SheetContent side="left" className="w-[90vw] sm:w-[420px]">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>
+            Refine products by category, sorting, and availability options.
+          </SheetDescription>
         </SheetHeader>
         <div className="mt-4">
           {/* Your existing refinement UI – unchanged */}

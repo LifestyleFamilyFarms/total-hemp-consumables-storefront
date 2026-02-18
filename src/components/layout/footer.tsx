@@ -1,7 +1,11 @@
 "use client"
 
 import Link from "next/link"
+
+import { BrandLogo } from "@/components/brand/brand-logo"
+import { useTheme } from "@/components/theme/theme-provider"
 import type { NavigationCategory } from "@lib/data/categories"
+import type { BrandThemeId } from "@lib/brand"
 
 export default function SiteFooter({
   countryCode = "us",
@@ -10,52 +14,95 @@ export default function SiteFooter({
   countryCode?: string
   categories?: NavigationCategory[]
 }) {
+  const { theme } = useTheme()
+  const currentTheme = theme as BrandThemeId
+
   return (
-    <footer className="mt-10 border-t bg-background/80 py-10 text-sm text-foreground/80">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-8">
-        <div>
-          <div className="inline-flex h-9 w-40 items-center justify-center rounded-md border border-border/60 bg-background/80 text-[10px] font-semibold tracking-[0.2em] text-foreground/80 shadow-sm">
-            HORIZONTAL LOGO
-          </div>
-          <p className="mt-3 text-xs text-foreground/60">
-            Building compliant, COA-backed hemp products. 21+ only.
+    <footer className="border-t border-border/60 bg-background/85 pb-[calc(var(--bottom-bar-height,4rem)+1.5rem)] pt-10 text-sm text-foreground/80">
+      <div className="mx-auto grid w-full max-w-8xl grid-cols-1 gap-10 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6">
+        <div className="space-y-4">
+          <Link href={`/${countryCode}`} className="block w-44">
+            <BrandLogo theme={currentTheme} slot="footer" className="w-full" />
+          </Link>
+          <p className="text-xs leading-relaxed text-foreground/65">
+            Clean, compliant hemp products with transparent sourcing and lab-backed quality.
+            Adults 21+ only.
           </p>
         </div>
 
         <div>
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground/70">Shop</h3>
-          <ul className="space-y-1">
-            {(categories.length > 0 ? categories.slice(0, 6) : []).map((category) => (
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-foreground/70">
+            Browse
+          </h3>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href={`/${countryCode}/store`} className="hover:underline">
+                Shop All
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/gamma-gummies`} className="hover:underline">
+                Gamma Gummies
+              </Link>
+            </li>
+            {categories.slice(0, 5).map((category) => (
               <li key={category.id}>
-                <Link
-                  href={`/${countryCode}/categories/${category.handle}`}
-                  className="hover:underline"
-                >
+                <Link href={`/${countryCode}/categories/${category.handle}`} className="hover:underline">
                   {category.name}
                 </Link>
               </li>
             ))}
-            {categories.length === 0 && (
-              <li>
-                <Link href={`/${countryCode}/store`} className="hover:underline">
-                  Browse Store
-                </Link>
-              </li>
-            )}
           </ul>
         </div>
 
         <div>
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground/70">Info</h3>
-          <ul className="space-y-1">
-            <li><a href="/compliance/PrintPermit.pdf" target="_blank" rel="noopener noreferrer" className="hover:underline">Permit (PDF)</a></li>
-            <li><Link href={`/${countryCode}/store`} className="hover:underline">Shipping &amp; Availability</Link></li>
-            <li><Link href={`/${countryCode}/account`} className="hover:underline">Account</Link></li>
-            <li><Link href={`/${countryCode}/store`} className="hover:underline">Contact</Link></li>
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-foreground/70">
+            Account
+          </h3>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href={`/${countryCode}/account`} className="hover:underline">
+                Sign In
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/account/orders`} className="hover:underline">
+                Order History
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/account/addresses`} className="hover:underline">
+                Address Book
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-foreground/70">
+            Compliance
+          </h3>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a href="/compliance/PrintPermit.pdf" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                Permit (PDF)
+              </a>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/store`} className="hover:underline">
+                Shipping Availability
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/account`} className="hover:underline">
+                Support
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
-      <div className="mx-auto mt-8 w-full max-w-6xl px-4 text-[11px] text-foreground/60 sm:px-6 lg:px-8">
+
+      <div className="mx-auto mt-10 w-full max-w-8xl border-t border-border/40 px-4 pt-5 text-[11px] text-foreground/60 sm:px-6">
         © {new Date().getFullYear()} Total Hemp Consumables. All rights reserved.
       </div>
     </footer>

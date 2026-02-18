@@ -10,21 +10,21 @@ export const THEMES: ThemeDefinition[] = [
   {
     id: "sativa",
     label: "Sativa",
-    description: "Sunlit butter tones energized by tangelo and teal.",
+    description: "Bright citrus-forward tones for an uplifting daytime vibe.",
   },
   {
     id: "indica",
     label: "Indica",
-    description: "Dark forest palette with teal primaries and warm gold highlights.",
+    description: "Deep resin-rich tones inspired by heavier nighttime strains.",
   },
   {
     id: "light",
     label: "Light",
-    description: "Default shadcn/Tailwind neutral light palette.",
+    description: "Clean daylight profile for bright spaces and long product browsing sessions.",
   },
   {
     id: "dark",
     label: "Dark",
-    description: "Default shadcn/Tailwind neutral dark palette.",
+    description: "Low-glare profile for late-night sessions with reduced eye strain.",
   },
 ]

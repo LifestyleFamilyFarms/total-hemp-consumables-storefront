@@ -1,67 +1,33 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useActionState } from "react"
 
-import { sdk } from "@lib/medusa-sdk"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { submitGammaSignup, type SignupActionState } from "@lib/data/signup"
 import { cn } from "@lib/utils"
 
-export default function GammaSignupCard({ id = "gamma-signup" }: { id?: string }) {
-  const [form, setForm] = useState({ first_name: "", last_name: "", email: "" })
-  const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null)
-  const [isPending, startTransition] = useTransition()
-
-  useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      try {
-        const me: any = await (sdk as any).store.customer.me()
-        const customer = me?.customer ?? me
-        if (!cancelled && customer) {
-          setForm((prev) => ({
-            first_name: customer.first_name || prev.first_name,
-            last_name: customer.last_name || prev.last_name,
-            email: customer.email || prev.email,
-          }))
-        }
-      } catch {
-        // not authenticated—ignore
-      }
-    })()
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  function handleChange(field: "first_name" | "last_name" | "email") {
-    return (event: React.ChangeEvent<HTMLInputElement>) =>
-      setForm((prev) => ({ ...prev, [field]: event.target.value }))
+type GammaSignupCardProps = {
+  id?: string
+  signupSource?: string
+  initialValues?: {
+    first_name?: string | null
+    last_name?: string | null
+    email?: string | null
   }
+}
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setStatus(null)
-
-    startTransition(async () => {
-      try {
-        const res = await fetch("/api/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...form }),
-        })
-        const payload = await res.json().catch(() => ({}))
-        if (res.ok) {
-          setForm({ first_name: "", last_name: "", email: "" })
-        }
-        setStatus({ ok: res.ok, message: payload?.message || (res.ok ? "You're on the list." : "Unable to join right now."), })
-      } catch {
-        setStatus({ ok: false, message: "Unable to submit right now. Please try again." })
-      }
-    })
-  }
+export default function GammaSignupCard({
+  id = "gamma-signup",
+  signupSource = "/us/gamma-gummies",
+  initialValues,
+}: GammaSignupCardProps) {
+  const [status, formAction, isPending] = useActionState<SignupActionState, FormData>(
+    submitGammaSignup,
+    null
+  )
 
   return (
     <section id={id} className="mx-auto w-full max-w-3xl px-6 pb-24 sm:px-10">
@@ -73,13 +39,21 @@ export default function GammaSignupCard({ id = "gamma-signup" }: { id?: string }
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
+          <form action={formAction} className="grid gap-4 sm:grid-cols-2">
+            <input type="hidden" name="signup_source" value={signupSource} />
+            <Input
+              name="hp"
+              autoComplete="off"
+              tabIndex={-1}
+              className="absolute left-[-9999px] top-auto h-0 w-0 border-0 p-0 opacity-0"
+              aria-hidden
+            />
             <div className="grid gap-2">
               <Label htmlFor="gamma-first">First name</Label>
               <Input
                 id="gamma-first"
-                value={form.first_name}
-                onChange={handleChange("first_name")}
+                name="first_name"
+                defaultValue={initialValues?.first_name ?? ""}
                 placeholder="Disco"
                 required
               />
@@ -88,8 +62,8 @@ export default function GammaSignupCard({ id = "gamma-signup" }: { id?: string }
               <Label htmlFor="gamma-last">Last name</Label>
               <Input
                 id="gamma-last"
-                value={form.last_name}
-                onChange={handleChange("last_name")}
+                name="last_name"
+                defaultValue={initialValues?.last_name ?? ""}
                 placeholder="Biscuits"
                 required
               />
@@ -98,9 +72,9 @@ export default function GammaSignupCard({ id = "gamma-signup" }: { id?: string }
               <Label htmlFor="gamma-email">Email</Label>
               <Input
                 id="gamma-email"
+                name="email"
                 type="email"
-                value={form.email}
-                onChange={handleChange("email")}
+                defaultValue={initialValues?.email ?? ""}
                 placeholder="you@email.com"
                 required
               />
@@ -109,8 +83,10 @@ export default function GammaSignupCard({ id = "gamma-signup" }: { id?: string }
               <Button type="submit" size="lg" className="w-full" disabled={isPending}>
                 {isPending ? "Joining..." : "Notify me"}
               </Button>
-              {status ? (
-                <p className={cn("mt-3 text-xs", status.ok ? "text-foreground/80" : "text-destructive")}>{status.message}</p>
+              {status?.message ? (
+                <p className={cn("mt-3 text-xs", status.success ? "text-foreground/80" : "text-destructive")}>
+                  {status.message}
+                </p>
               ) : null}
               <p className="mt-3 text-[11px] text-foreground/60">
                 By signing up you confirm you are 21+ and agree to receive emails about Gamma Gummies, future drops, and compliance updates.

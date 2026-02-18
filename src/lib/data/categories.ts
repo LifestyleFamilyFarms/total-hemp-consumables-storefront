@@ -7,6 +7,7 @@ export type NavigationCategory = {
   name: string
   handle: string
   rank?: number | null
+  children?: NavigationCategory[]
 }
 
 export const listCategories = async (query?: Record<string, any>) => {
@@ -43,24 +44,33 @@ export const listNavigationCategories = async (): Promise<NavigationCategory[]> 
       "/store/product-categories",
       {
         query: {
-          fields: "id,name,handle,parent_category_id,rank",
+          fields:
+            "id,name,handle,parent_category_id,rank,*category_children.id,*category_children.name,*category_children.handle,*category_children.rank",
           limit: 100,
         },
         next,
         cache: "force-cache",
       }
     )
-    .then(({ product_categories }) =>
-      product_categories
+    .then(({ product_categories }) => {
+      return product_categories
         .filter((category) => !category.parent_category_id)
         .map((category) => ({
           id: category.id,
           name: category.name,
           handle: category.handle,
           rank: category.rank ?? null,
+          children: (category.category_children || [])
+            .map((child) => ({
+              id: child.id,
+              name: child.name,
+              handle: child.handle,
+              rank: child.rank ?? null,
+            }))
+            .sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0)),
         }))
         .sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
-    )
+    })
 }
 
 export const getCategoryByHandle = async (categoryHandle: string[]) => {

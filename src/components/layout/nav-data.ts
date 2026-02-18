@@ -1,27 +1,30 @@
 import type { LucideIcon } from "lucide-react"
-import {
-  CircleUserRound,
-  Home,
-  ShoppingBag,
-  WalletCards,
-} from "lucide-react"
+import { CircleUserRound, Home, Sparkles, Store } from "lucide-react"
 
+export type NavItem = {
+  label: string
+  href: (countryCode: string) => string
+  icon?: LucideIcon
+}
 
-  export type NavChild = {
-    label: string
-    href: (cc: string) => string
-  }
-  
-  export type NavItem = {
-    label: string
-    href?: (cc: string) => string
-    icon?: LucideIcon
-    children?: NavChild[]
-  }
+export const PRIMARY_NAV_ITEMS: NavItem[] = [
+  { label: "Home", href: (countryCode) => `/${countryCode}`, icon: Home },
+  { label: "Shop", href: (countryCode) => `/${countryCode}/store`, icon: Store },
+  {
+    label: "Gamma Gummies",
+    href: (countryCode) => `/${countryCode}/gamma-gummies`,
+    icon: Sparkles,
+  },
+]
 
-export const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: (cc) => `/${cc}`, icon: Home },
-  { label: "Store", href: (cc) => `/${cc}/store`, icon: ShoppingBag },
-  { label: "Checkout", href: (cc) => `/${cc}/checkout`, icon: WalletCards },
-  { label: "Account", href: (cc) => `/${cc}/account`, icon: CircleUserRound },
+export const ACCOUNT_NAV_ITEMS: NavItem[] = [
+  { label: "Account", href: (countryCode) => `/${countryCode}/account`, icon: CircleUserRound },
+  {
+    label: "Orders",
+    href: (countryCode) => `/${countryCode}/account/orders`,
+  },
+  {
+    label: "Addresses",
+    href: (countryCode) => `/${countryCode}/account/addresses`,
+  },
 ]

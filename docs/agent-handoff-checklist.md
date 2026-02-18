@@ -1,5 +1,10 @@
 # Agent Handoff Checklist
 
+## Read First
+- `docs/rebuild-handoff-status.md` (current status, ownership, and no-cross-stream scope)
+- `docs/storefront-architecture.md`
+- `docs/state-architecture.md`
+
 ## Boundary Checklist
 - [ ] Route/layout logic stays in `src/app/*`.
 - [ ] All Medusa reads/writes are in `src/lib/data/*`.

@@ -2,38 +2,63 @@
 
 import { cn } from "@lib/utils"
 import { useTheme } from "@/components/theme/theme-provider"
+import { Palette } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function ThemeSwitcher({
   className,
-  id = "theme-select",
+  compact = false,
 }: {
   className?: string
-  id?: string
+  compact?: boolean
 }) {
   const { theme, setTheme, themes } = useTheme()
+  const currentTheme = themes.find((item) => item.id === theme)
 
   return (
-    <div
-      className={cn(
-        "flex h-8 font-extrabold items-center content-center justify-between gap-1 rounded-sm border border-border/50 bg-background/70 px-2 text-[10px] tracking-[0.08em] text-foreground/70 shadow-lg backdrop-blur-xl supports-[backdrop-filter]:bg-background/40",
-        className
-      )}
-    >
-      <label className="flex-1 text-center" htmlFor={id}>
-        {`Vibe  `}
-      </label>
-      <select
-        id={id}
-        value={theme}
-        onChange={(event) => setTheme(event.target.value)}
-        className="flex-1 h-5 rounded-sm border border-border/60 bg-transparent px-3 text-[10px] font-semibold tracking-[0.12em] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {themes.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.label}
-          </option>
-        ))}
-      </select>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(
+            "h-10 rounded-full border-border/50 bg-background/70 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/80 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/40",
+            compact ? "w-10 justify-center p-0" : "gap-2",
+            className
+          )}
+          aria-label="Open theme picker"
+        >
+          <Palette className="h-4 w-4" />
+          {!compact && (
+            <span className="truncate text-[10px]">{currentTheme?.label ?? "Theme"}</span>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-64">
+        <DropdownMenuLabel>Theme</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+          {themes.map((item) => (
+            <DropdownMenuRadioItem key={item.id} value={item.id} className="py-2">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold">{item.label}</span>
+                {item.description ? (
+                  <span className="text-xs text-foreground/60">{item.description}</span>
+                ) : null}
+              </div>
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

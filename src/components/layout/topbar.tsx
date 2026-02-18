@@ -1,11 +1,18 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"
+import { useTransition } from "react"
+import { Menu, UserRound } from "lucide-react"
+
+import { HttpTypes } from "@medusajs/types"
+
 import { BrandLogo } from "@/components/brand/brand-logo"
-import { useTheme } from "@/components/theme/theme-provider"
+import { MobileNav } from "@/components/layout/mobile-nav"
+import { ACCOUNT_NAV_ITEMS, PRIMARY_NAV_ITEMS } from "@/components/layout/nav-data"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
-import type { BrandThemeId } from "@lib/brand"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,11 +21,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MobileNav } from "@/components/layout/mobile-nav"
-import { HttpTypes } from "@medusajs/types"
-import CartDrawer from "@modules/cart/components/cart-drawer"
+import { signout } from "@lib/data/customer"
 import type { NavigationCategory } from "@lib/data/categories"
+import type { BrandLogoVariant, BrandThemeId } from "@lib/brand"
+import { useTheme } from "@/components/theme/theme-provider"
+import CartDrawer from "@modules/cart/components/cart-drawer"
 
 type TopbarProps = {
   countryCode: string
@@ -32,96 +39,199 @@ type TopbarProps = {
   } | null
 }
 
+const normalizePath = (path: string) => {
+  if (!path) return "/"
+  if (path === "/") return "/"
+  return path.replace(/\/+$/, "")
+}
+
+const mobileMarkForTheme: Record<BrandThemeId, BrandLogoVariant> = {
+  sativa: "navMonogram",
+  indica: "navMonogramDb",
+  light: "monoIcon",
+  dark: "navMonogramBw",
+}
+
 export default function Topbar({
   countryCode,
   cart = null,
   categories = [],
   user,
 }: TopbarProps) {
-  const accountHref = `/${countryCode}/account`
+  const [signingOut, startSignout] = useTransition()
+  const pathname = usePathname()
+  const normalizedPath = normalizePath(pathname)
+
   const { theme } = useTheme()
   const currentTheme = theme as BrandThemeId
   const desktopLogoSlot = currentTheme === "indica" ? "nav" : "hero"
-  const name = user?.name ?? "Guest"
+  const name = user?.name ?? "Account"
   const initials = (name || "TH")
     .split(" ")
-    .map((s: string) => s[0])
+    .map((segment: string) => segment[0])
     .join("")
     .slice(0, 2)
     .toUpperCase()
 
   return (
-    <div className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/85/80 backdrop-blur-lg">
-      <div className="relative flex h-16 w-full items-center px-4 sm:px-6">
-        <div className="flex items-center gap-3">
-          <MobileNav
-            countryCode={countryCode}
-            categories={categories}
-            triggerClassName="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
-          />
-          <ThemeSwitcher className="h-10" />
+    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto w-full max-w-8xl px-4 sm:px-6">
+        <div className="relative flex h-16 items-center gap-2">
+          <div className="flex items-center gap-2 lg:hidden">
+            <MobileNav
+              countryCode={countryCode}
+              categories={categories}
+              isAuthenticated={Boolean(user?.isAuthenticated)}
+              triggerAriaLabel="Open navigation menu"
+              triggerClassName="h-9 gap-2 rounded-full border-border/60 bg-background/80 px-2.5 text-foreground/80 shadow-sm transition-colors hover:border-foreground/40 hover:text-foreground md:h-10 md:px-3"
+              triggerContent={
+                <>
+                  <BrandLogo variant={mobileMarkForTheme[currentTheme]} className="w-6 md:w-7" />
+                  <Menu className="h-4 w-4" />
+                </>
+              }
+            />
+          </div>
+
+          <Link
+            href={`/${countryCode}`}
+            aria-label="Return to the homepage"
+            className="hidden w-52 items-center lg:flex"
+          >
+            <span className="sr-only">Total Hemp Consumables</span>
+            <BrandLogo
+              theme={currentTheme}
+              slot={desktopLogoSlot}
+              className="w-full"
+            />
+          </Link>
+
+          <Link
+            href={`/${countryCode}`}
+            aria-label="Return to the homepage"
+            className="absolute left-1/2 hidden w-44 -translate-x-1/2 items-center md:flex lg:hidden"
+          >
+            <span className="sr-only">Total Hemp Consumables</span>
+            <BrandLogo theme={currentTheme} slot={desktopLogoSlot} className="w-full" />
+          </Link>
+
+          <nav className="ml-2 hidden items-center gap-5 lg:flex" aria-label="Primary">
+            {PRIMARY_NAV_ITEMS.map((item) => {
+              const href = item.href(countryCode)
+              const isActive =
+                normalizedPath === normalizePath(href) ||
+                normalizedPath.startsWith(`${normalizePath(href)}/`)
+
+              return (
+                <Link
+                  key={item.label}
+                  href={href}
+                  className={[
+                    "text-sm font-semibold transition-colors",
+                    isActive ? "text-foreground" : "text-foreground/70 hover:text-foreground",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+            <ThemeSwitcher compact className="h-9 w-9 md:h-10 md:w-10" />
+
+            <CartDrawer
+              countryCode={countryCode}
+              cart={cart}
+              isAuthenticated={Boolean(user?.isAuthenticated)}
+              compactOnMobile
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border/60 bg-background/85 px-2.5 py-1.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-foreground/40 md:h-10 lg:gap-2 lg:px-3 lg:py-2"
+            />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                {user?.isAuthenticated ? (
+                  <Button
+                    variant="outline"
+                    className="hidden h-10 items-center gap-2 rounded-full border-border/60 bg-background/85 px-2 shadow-sm transition-colors hover:border-foreground/40 md:inline-flex"
+                  >
+                    <Avatar className="h-7 w-7 rounded-full">
+                      <AvatarImage src={user?.avatarUrl ?? ""} alt={name} />
+                      <AvatarFallback>{initials}</AvatarFallback>
+                    </Avatar>
+                    <span className="hidden text-sm font-semibold sm:inline-flex">{name}</span>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="hidden h-10 rounded-full border-border/60 bg-background/85 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/85 shadow-sm transition-colors hover:border-foreground/40 md:inline-flex"
+                    aria-label="Sign in or create account"
+                  >
+                    <UserRound className="h-4 w-4" />
+                    <span>Sign In</span>
+                  </Button>
+                )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuLabel className="text-foreground">{name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {user?.isAuthenticated ? (
+                  <>
+                    {ACCOUNT_NAV_ITEMS.map((item) => (
+                      <DropdownMenuItem key={item.label} asChild>
+                        <Link href={item.href(countryCode)}>{item.label}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      disabled={signingOut}
+                      onSelect={(event) => {
+                        event.preventDefault()
+                        startSignout(async () => {
+                          await signout(countryCode)
+                        })
+                      }}
+                    >
+                      {signingOut ? "Signing out..." : "Sign out"}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href={`/${countryCode}/account`}>Sign in</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={`/${countryCode}/account`}>Create account</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
-        <Link
-          href={`/${countryCode}`}
-          aria-label="Return to the homepage"
-          className="absolute left-1/2 flex w-32 -translate-x-1/2 items-center justify-center sm:w-48 lg:w-56"
-        >
-          <span className="sr-only">Total Hemp Consumables</span>
-          <BrandLogo theme={currentTheme} slot="nav" className="block w-10 sm:hidden" />
-          <BrandLogo
-            theme={currentTheme}
-            slot={desktopLogoSlot}
-            className="hidden w-full sm:block"
-          />
-        </Link>
-
-        {/* Right Side of Topbar */}
-        <div className="ml-auto flex items-center gap-3">
-          <CartDrawer
-            countryCode={countryCode}
-            cart={cart}
-            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
-          />
-          <CartDrawer
-            countryCode={countryCode}
-            cart={cart}
-            className="hidden items-center gap-2 rounded-full border border-white/15 bg-background/70 px-4 py-2 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-foreground/40 sm:inline-flex"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="hidden h-11 items-center gap-2 rounded-full border border-white/15 bg-background/70 px-3 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-white/25 sm:inline-flex"
+        <div className="hidden border-t border-border/40 lg:block">
+          <div className="flex h-12 items-center gap-2 overflow-x-auto no-scrollbar">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/${countryCode}/categories/${category.handle}`}
+                className="whitespace-nowrap rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-foreground/75 transition-colors hover:border-foreground/30 hover:text-foreground"
               >
-                <Avatar className="h-8 w-8 rounded-full">
-                  <AvatarImage src={user?.avatarUrl ?? ""} alt={name} />
-                  <AvatarFallback>{initials}</AvatarFallback>
-                </Avatar>
-                <span className="hidden sm:inline-flex">{name}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuLabel className="text-foreground">{name}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {user?.isAuthenticated ? (
-                <>
-                  <DropdownMenuItem asChild><Link href={accountHref}>Account</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href={`/${countryCode}/account/orders`}>Orders</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href={`/${countryCode}/account/addresses`}>Addresses</Link></DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild><Link href={`/${countryCode}/logout`}>Sign out</Link></DropdownMenuItem>
-                </>
-              ) : (
-                <>
-                  <DropdownMenuItem asChild><Link href={`/${countryCode}/login`}>Sign in</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href={`/${countryCode}/register`}>Create account</Link></DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                {category.name}
+              </Link>
+            ))}
+            {categories.length === 0 ? (
+                <Link
+                  href={`/${countryCode}/store`}
+                  className="whitespace-nowrap rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-foreground/75 transition-colors hover:border-foreground/30 hover:text-foreground"
+                >
+                  Browse Store
+                </Link>
+              ) : null}
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }
