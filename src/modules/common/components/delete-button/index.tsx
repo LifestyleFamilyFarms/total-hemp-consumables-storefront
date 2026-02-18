@@ -2,9 +2,10 @@
 
 import { Loader2, Trash2 } from "lucide-react"
 import { ButtonHTMLAttributes, useState } from "react"
-import { useCart } from "@lib/context/cart-context"
 import { cn } from "src/lib/utils"
 import { Button } from "@/components/ui/button"
+import { deleteLineItem } from "@lib/data/cart"
+import { useRouter } from "next/navigation"
 
 type DeleteButtonProps = {
   id: string
@@ -19,13 +20,13 @@ const DeleteButton = ({
   ...buttonProps
 }: DeleteButtonProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
-  const { removeItem, refresh } = useCart()
+  const router = useRouter()
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true)
     try {
-      await removeItem(id)
-      await refresh()
+      await deleteLineItem(id)
+      router.refresh()
     } finally {
       setIsDeleting(false)
     }

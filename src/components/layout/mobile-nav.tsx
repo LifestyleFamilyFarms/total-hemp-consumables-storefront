@@ -1,25 +1,35 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
 import { Menu } from "lucide-react"
 import { NAV_ITEMS } from "./nav-data"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { cn } from "@lib/utils"
+import type { NavigationCategory } from "@lib/data/categories"
+import {
+  selectCloseNav,
+  selectIsNavOpen,
+  selectSetNavOpen,
+  useStorefrontState,
+} from "@lib/state"
 
 export function MobileNav({
   countryCode,
+  categories = [],
   triggerClassName,
 }: {
   countryCode: string
+  categories?: NavigationCategory[]
   triggerClassName?: string
 }) {
-  const [open, setOpen] = useState(false)
+  const isOpen = useStorefrontState(selectIsNavOpen)
+  const setNavOpen = useStorefrontState(selectSetNavOpen)
+  const closeNav = useStorefrontState(selectCloseNav)
   const items = NAV_ITEMS
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={isOpen} onOpenChange={setNavOpen}>
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -52,7 +62,7 @@ export function MobileNav({
                       asChild
                       className="justify-start"
                     >
-                      <Link href={child.href(countryCode)} onClick={() => setOpen(false)}>
+                      <Link href={child.href(countryCode)} onClick={closeNav}>
                         {child.label}
                       </Link>
                     </Button>
@@ -64,7 +74,7 @@ export function MobileNav({
             if (item.href) {
               return (
                 <Button key={item.label} variant="ghost" asChild className="justify-start">
-                  <Link href={item.href(countryCode)} onClick={() => setOpen(false)}>
+                  <Link href={item.href(countryCode)} onClick={closeNav}>
                     {item.label}
                   </Link>
                 </Button>
@@ -77,6 +87,29 @@ export function MobileNav({
               </div>
             )
           })}
+
+          {categories.length > 0 && (
+            <div className="grid gap-1 border-t border-border/60 pt-4">
+              <div className="px-1 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">
+                Categories
+              </div>
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant="ghost"
+                  asChild
+                  className="justify-start"
+                >
+                  <Link
+                    href={`/${countryCode}/categories/${category.handle}`}
+                    onClick={closeNav}
+                  >
+                    {category.name}
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          )}
         </nav>
       </SheetContent>
     </Sheet>

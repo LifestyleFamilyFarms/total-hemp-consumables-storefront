@@ -19,7 +19,7 @@ import {
 import { Loader2 } from "lucide-react"
 import { cn } from "src/lib/utils"
 import { SHIPSTATION_SERVICE_ALLOWLIST_SET } from "src/lib/constants/shipping"
-import { useCart } from "@lib/context/cart-context"
+import { setShippingMethod } from "@lib/data/cart"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
@@ -138,8 +138,7 @@ const Shipping: React.FC<ShippingProps> = ({
   cart,
   availableShippingMethods,
 }) => {
-  const { cart: ctxCart, addShippingMethod, refresh } = useCart()
-  const currentCart = ctxCart ?? cart
+  const currentCart = cart
 
   const enrichedShippingOptions = useMemo<EnrichedShippingOption[]>(() => {
     return (availableShippingMethods ?? []).map(
@@ -396,14 +395,17 @@ const Shipping: React.FC<ShippingProps> = ({
         throw new Error("Unable to determine a rate for this delivery service.")
       }
 
-      await addShippingMethod(selectedOption.id)
+      await setShippingMethod({
+        cartId: currentCart.id,
+        shippingMethodId: selectedOption.id,
+      })
 
       setCalculatedPricesMap((prev) => ({
         ...prev,
         [selectedOption.id]: amountMinor as number,
       }))
       setShippingMethodId(selectedOption.id)
-      await refresh()
+      router.refresh()
       // Log for debug visibility
       // eslint-disable-next-line no-console
       console.log("[shipping] set option", selectedOption.id, "amountMinor", amountMinor)
@@ -433,9 +435,12 @@ const Shipping: React.FC<ShippingProps> = ({
       setSelectedShippingOptionId("")
 
     try {
-      await addShippingMethod(id)
+      await setShippingMethod({
+        cartId: currentCart.id,
+        shippingMethodId: id,
+      })
       setShippingMethodId(id)
-      await refresh()
+      router.refresh()
       // eslint-disable-next-line no-console
       console.log("[shipping] set pickup method", id)
     } catch (err: any) {

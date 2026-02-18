@@ -10,7 +10,7 @@ import { createToken } from "authorizenet-react"
 import SectionCard from "../section-card"
 import { Button } from "@/components/ui/button"
 import { CreditCard as CreditCardIcon, Loader2 } from "lucide-react"
-import { useCart } from "@lib/context/cart-context"
+import { initiatePaymentSession } from "@lib/data/cart"
 
 type CartSnapshot = {
   shipping_methods: Array<{ amount: number; name: string }>
@@ -76,8 +76,7 @@ const Payment = ({
   cart: any
   availablePaymentMethods: any[]
 }) => {
-  const { cart: ctxCart, refresh, initiatePaymentSession } = useCart()
-  const currentCart = ctxCart ?? cart
+  const currentCart = cart
   const authorizeNetMethods = (availablePaymentMethods || []).filter(
     (method) => isAuthorizeNet(method.id)
   )
@@ -198,7 +197,7 @@ const Payment = ({
           })
         }
 
-        await refresh()
+        router.refresh()
         router.push(
           pathname + "?" + createQueryString("step", "review"),
           {

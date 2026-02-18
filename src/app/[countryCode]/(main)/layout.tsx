@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { retrieveCart } from "@lib/data/cart"
+import { listNavigationCategories } from "@lib/data/categories"
 import { retrieveCustomer } from "@lib/data/customer"
 import { getBaseURL } from "@lib/util/env"
  
@@ -24,6 +25,7 @@ export default async function PageLayout({
   const { countryCode } = await params
   const customer = await retrieveCustomer()
   const cart = await retrieveCart()
+  const categories = await listNavigationCategories().catch(() => [])
 
   const user = customer
   ? {
@@ -40,11 +42,16 @@ export default async function PageLayout({
     }
 
   return (
-    <AppShell countryCode={countryCode} user={user} >
+    <AppShell
+      countryCode={countryCode}
+      cart={cart}
+      categories={categories}
+      user={user}
+    >
       {customer && cart && <CartMismatchBanner customer={customer} cart={cart} />}
       {/* Free shipping nudge removed */}
       {children}
-      <SiteFooter countryCode={countryCode} />
+      <SiteFooter countryCode={countryCode} categories={categories} />
     </AppShell>
   )
 }

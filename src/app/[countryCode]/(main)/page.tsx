@@ -9,6 +9,7 @@ import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import NewsletterSignup from "@modules/home/components/newsletter"
 import StrainHighlights from "@modules/home/components/strain-highlights"
+import { listNavigationCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
@@ -26,6 +27,7 @@ export default async function Home(props: {
   const { countryCode } = params
 
   const region = await getRegion(countryCode)
+  const categories = await listNavigationCategories().catch(() => [])
 
   const { collections } = await listCollections({
     fields: "id, handle, title",
@@ -103,7 +105,7 @@ export default async function Home(props: {
 
           <StrainHighlights />
 
-          <CategoryRail countryCode={countryCode} />
+          <CategoryRail countryCode={countryCode} categories={categories} />
 
           <section className="relative overflow-hidden rounded-[32px] border border-primary/45 bg-card px-6 py-10 shadow-[0_35px_70px_rgba(15,23,42,0.22)] sm:px-10">
             <div className="pointer-events-none absolute inset-0 opacity-50">

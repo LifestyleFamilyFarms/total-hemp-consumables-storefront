@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { BrandLogo } from "@/components/brand/brand-logo"
-import { ShoppingCart } from "lucide-react"
 import { useTheme } from "@/components/theme/theme-provider"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import type { BrandThemeId } from "@lib/brand"
@@ -17,9 +16,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MobileNav } from "@/components/layout/mobile-nav"
+import { HttpTypes } from "@medusajs/types"
+import CartDrawer from "@modules/cart/components/cart-drawer"
+import type { NavigationCategory } from "@lib/data/categories"
 
 type TopbarProps = {
   countryCode: string
+  cart?: HttpTypes.StoreCart | null
+  categories?: NavigationCategory[]
   user?: {
     isAuthenticated?: boolean | null
     name?: string | null
@@ -28,7 +32,12 @@ type TopbarProps = {
   } | null
 }
 
-export default function Topbar({ countryCode, user }: TopbarProps) {
+export default function Topbar({
+  countryCode,
+  cart = null,
+  categories = [],
+  user,
+}: TopbarProps) {
   const accountHref = `/${countryCode}/account`
   const { theme } = useTheme()
   const currentTheme = theme as BrandThemeId
@@ -47,6 +56,7 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
         <div className="flex items-center gap-3">
           <MobileNav
             countryCode={countryCode}
+            categories={categories}
             triggerClassName="h-11 w-11 rounded-xl border border-white/15 bg-background/70 text-foreground/80 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-colors hover:border-foreground/40 hover:text-foreground sm:hidden"
           />
           <ThemeSwitcher className="h-10" />
@@ -68,20 +78,16 @@ export default function Topbar({ countryCode, user }: TopbarProps) {
 
         {/* Right Side of Topbar */}
         <div className="ml-auto flex items-center gap-3">
-          <Link
-            href={`/${countryCode}/cart`}
+          <CartDrawer
+            countryCode={countryCode}
+            cart={cart}
             className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-foreground/50 sm:hidden"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Cart
-          </Link>
-          <Link
-            href={`/${countryCode}/cart`}
+          />
+          <CartDrawer
+            countryCode={countryCode}
+            cart={cart}
             className="hidden items-center gap-2 rounded-full border border-white/15 bg-background/70 px-4 py-2 text-sm font-semibold text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-foreground/40 sm:inline-flex"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Cart
-          </Link>
+          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

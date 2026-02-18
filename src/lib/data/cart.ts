@@ -308,6 +308,32 @@ export async function initiatePaymentSession(
     .catch(medusaError)
 }
 
+export async function completeCart(cartId?: string) {
+  const id = cartId || (await getCartId())
+
+  if (!id) {
+    throw new Error("No existing cart found when completing checkout")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const result = await sdk.store.cart.complete(id, {}, headers).catch(medusaError)
+
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  const orderCacheTag = await getCacheTag("orders")
+  revalidateTag(orderCacheTag)
+
+  if (result?.type === "order") {
+    await removeCartId()
+  }
+
+  return result
+}
+
 export async function applyPromotions(codes: string[]) {
   const cartId = await getCartId()
 

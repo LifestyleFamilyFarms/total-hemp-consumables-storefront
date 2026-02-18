@@ -1,13 +1,21 @@
 "use client"
 
 import Link from "next/link"
-import { STORE_CATEGORIES } from "@lib/constants/navigation"
+import type { NavigationCategory } from "@lib/data/categories"
 
 type CategoryTopbarProps = {
   countryCode: string
+  categories?: NavigationCategory[]
 }
 
-export default function CategoryTopbar({ countryCode }: CategoryTopbarProps) {
+export default function CategoryTopbar({
+  countryCode,
+  categories = [],
+}: CategoryTopbarProps) {
+  if (categories.length === 0) {
+    return null
+  }
+
   return (
     <div className="sticky top-16 z-30 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex w-full max-w-6xl items-center gap-4 overflow-x-auto px-4 py-3 sm:px-6">
@@ -15,13 +23,13 @@ export default function CategoryTopbar({ countryCode }: CategoryTopbarProps) {
           Shop
         </span>
         <div className="flex flex-nowrap items-center gap-3 text-sm font-semibold text-foreground/80">
-          {STORE_CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <Link
-              key={category.title}
-              href={`/${countryCode}/${category.slug}`}
+              key={category.id}
+              href={`/${countryCode}/categories/${category.handle}`}
               className="rounded-full border border-transparent px-3 py-1 transition hover:border-border/60 hover:bg-background"
             >
-              {category.title}
+              {category.name}
             </Link>
           ))}
         </div>

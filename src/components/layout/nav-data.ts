@@ -1,14 +1,9 @@
 import type { LucideIcon } from "lucide-react"
 import {
-  Amphora,
-  Candy,
-  Cannabis,
-  Cigarette,
-  FlaskConical,
-  GlassWater,
+  CircleUserRound,
   Home,
-  Shirt,
   ShoppingBag,
+  WalletCards,
 } from "lucide-react"
 
 
@@ -27,12 +22,6 @@ import {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: (cc) => `/${cc}`, icon: Home },
   { label: "Store", href: (cc) => `/${cc}/store`, icon: ShoppingBag },
-  { label: "Edibles", href: (cc) => `/${cc}/store/edibles`, icon: Candy },
-  // { label: "Gamma Gummies", href: (cc) => `/${cc}/gamma-gummies`, icon: FlaskConical },
-  { label: "Elixirs", href: (cc) => `/${cc}/store/elixirs`, icon: FlaskConical },
-  { label: "Beverages", href: (cc) => `/${cc}/store/beverages`, icon: GlassWater },
-  { label: "Flower", href: (cc) => `/${cc}/store/flower`, icon: Cannabis },
-  { label: "Prerolls", href: (cc) => `/${cc}/store/flower/prerolls`, icon: Cigarette },
-  { label: "Packages", href: (cc) => `/${cc}/store/packages`, icon: Amphora },
-  { label: "Merch", href: (cc) => `/${cc}/store/merch`, icon: Shirt },
+  { label: "Checkout", href: (cc) => `/${cc}/checkout`, icon: WalletCards },
+  { label: "Account", href: (cc) => `/${cc}/account`, icon: CircleUserRound },
 ]

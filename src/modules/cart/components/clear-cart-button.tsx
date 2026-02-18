@@ -5,16 +5,15 @@ import { Loader2, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { cn } from "src/lib/utils"
-import { useCart } from "@lib/context/cart-context"
+import { clearCart } from "@lib/data/cart"
 
 const ClearCartButton = ({ className }: { className?: string }) => {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
-  const { clear } = useCart()
 
   const handleClear = () => {
     startTransition(async () => {
-      await clear().catch(() => {
+      await clearCart().catch(() => {
         /* swallow errors for now */
       })
 

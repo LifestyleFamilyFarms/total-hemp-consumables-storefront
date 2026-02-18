@@ -1,18 +1,14 @@
 "use client"
 
-import repeat from "@lib/util/repeat"
 import { HttpTypes } from "@medusajs/types"
-import { useCart } from "@lib/context/cart-context"
 
 import Item from "@modules/cart/components/item"
-import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 import {
   Table,
   TableBody,
   TableHead,
   TableHeader,
   TableRow,
-  TableCell,
 } from "@/components/ui/table"
 
 type ItemsTemplateProps = {
@@ -20,9 +16,7 @@ type ItemsTemplateProps = {
 }
 
 const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
-  const { cart: ctxCart, loading } = useCart()
-  const currentCart = ctxCart ?? cart ?? null
-  const items = currentCart?.items
+  const items = cart?.items
   return (
     <div>
       <div className="pb-3 flex items-center">
@@ -52,13 +46,11 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
                       <Item
                         key={item.id}
                         item={item}
-                        currencyCode={currentCart?.currency_code ?? ""}
+                        currencyCode={cart?.currency_code ?? ""}
                       />
                     )
                   })
-              : loading
-                ? repeat(5).map((i) => <SkeletonLineItem key={i} />)
-                : null}
+              : null}
           </TableBody>
         </Table>
       </div>

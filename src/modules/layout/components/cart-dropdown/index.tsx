@@ -16,11 +16,9 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
-import { useCart } from "@lib/context/cart-context"
 import { Button } from "@/components/ui/button"
 
-const CartDropdown = () => {
-  const { cart: cartState } = useCart()
+const CartDropdown = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
   )
@@ -30,11 +28,11 @@ const CartDropdown = () => {
   const close = () => setCartDropdownOpen(false)
 
   const totalItems =
-    cartState?.items?.reduce((acc, item) => {
+    cart?.items?.reduce((acc, item) => {
       return acc + item.quantity
     }, 0) || 0
 
-  const subtotal = cartState?.subtotal ?? 0
+  const subtotal = cart?.subtotal ?? 0
   const itemRef = useRef<number>(totalItems || 0)
 
   const timedOpen = () => {
@@ -104,10 +102,10 @@ const CartDropdown = () => {
             <div className="p-4 flex items-center justify-center">
               <h3 className="text-large-semi">Cart</h3>
             </div>
-            {cartState && cartState.items?.length ? (
+            {cart && cart.items?.length ? (
               <>
                 <div className="overflow-y-scroll max-h-[402px] px-4 grid grid-cols-1 gap-y-8 no-scrollbar p-px">
-                  {cartState.items
+                  {cart.items
                     .sort((a, b) => {
                       return (a.created_at ?? "") > (b.created_at ?? "")
                         ? -1
@@ -157,7 +155,7 @@ const CartDropdown = () => {
                                 <LineItemPrice
                                   item={item}
                                   style="tight"
-                                  currencyCode={cartState.currency_code}
+                                  currencyCode={cart.currency_code}
                                 />
                               </div>
                             </div>
@@ -186,7 +184,7 @@ const CartDropdown = () => {
                     >
                       {convertToLocale({
                         amount: subtotal,
-                        currency_code: cartState.currency_code,
+                        currency_code: cart.currency_code,
                       })}
                     </span>
                   </div>

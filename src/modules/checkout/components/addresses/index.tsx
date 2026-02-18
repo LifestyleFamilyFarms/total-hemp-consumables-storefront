@@ -11,8 +11,8 @@ import ShippingAddress from "../shipping-address"
 import SectionCard from "../section-card"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { useCart } from "@lib/context/cart-context"
 import { z, ZodError } from "zod"
+import { updateCart } from "@lib/data/cart"
 
 const Addresses = ({
   cart,
@@ -21,8 +21,7 @@ const Addresses = ({
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
 }) => {
-  const { cart: ctxCart, updateCart, refresh } = useCart()
-  const currentCart = ctxCart ?? cart
+  const currentCart = cart
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -156,7 +155,7 @@ const Addresses = ({
       })
 
       await updateCart(parsed)
-      await refresh()
+      router.refresh()
 
       router.push(`${pathname}?step=delivery`, { scroll: false })
     } catch (e: any) {

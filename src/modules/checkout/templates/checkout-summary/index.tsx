@@ -1,14 +1,11 @@
 "use client"
 
-import { useCart } from "@lib/context/cart-context"
 import CartTotals from "@modules/common/components/cart-totals"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import ItemsPreviewTemplate from "@modules/cart/templates/preview"
 
 const CheckoutSummary = ({ cart }: { cart: any }) => {
-  const { cart: ctxCart } = useCart()
-  const currentCart = ctxCart ?? cart
-  const itemCount = currentCart?.items?.reduce(
+  const itemCount = cart?.items?.reduce(
     (sum: number, item: any) => sum + (item?.quantity ?? 0),
     0
   )
@@ -28,15 +25,15 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
         </div>
 
         <div className="px-5 pt-4 pb-1">
-          <CartTotals totals={currentCart} />
+          <CartTotals totals={cart} />
         </div>
 
         <div className="px-5 pt-2 pb-5 border-t border-border/80">
-          <DiscountCode cart={currentCart} />
+          <DiscountCode cart={cart} />
         </div>
 
         <div className="px-5 pb-5 border-t border-border/80">
-          <ItemsPreviewTemplate cart={currentCart} />
+          <ItemsPreviewTemplate cart={cart} />
         </div>
       </div>
     </aside>

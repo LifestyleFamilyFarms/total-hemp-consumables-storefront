@@ -5,7 +5,6 @@ import { HttpTypes } from "@medusajs/types"
 
 import Item from "@modules/cart/components/item"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
-import { useCart } from "@lib/context/cart-context"
 import { cn } from "src/lib/utils"
 import {
   Table,
@@ -17,9 +16,7 @@ type ItemsTemplateProps = {
 }
 
 const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
-  const { cart: ctxCart } = useCart()
-  const currentCart = ctxCart ?? cart
-  const items = currentCart.items
+  const items = cart.items
   const hasOverflow = items && items.length > 4
 
   return (
@@ -38,13 +35,13 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
                 })
                 .map((item) => {
                   return (
-                    <Item
-                      key={item.id}
-                      item={item}
-                      type="preview"
-                      currencyCode={currentCart.currency_code}
-                    />
-                  )
+                      <Item
+                        key={item.id}
+                        item={item}
+                        type="preview"
+                        currencyCode={cart.currency_code}
+                      />
+                    )
                 })
             : repeat(5).map((i) => {
                 return <SkeletonLineItem key={i} />

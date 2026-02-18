@@ -1,8 +1,15 @@
 "use client"
 
 import Link from "next/link"
+import type { NavigationCategory } from "@lib/data/categories"
 
-export default function SiteFooter({ countryCode = "us" }: { countryCode?: string }) {
+export default function SiteFooter({
+  countryCode = "us",
+  categories = [],
+}: {
+  countryCode?: string
+  categories?: NavigationCategory[]
+}) {
   return (
     <footer className="mt-10 border-t bg-background/80 py-10 text-sm text-foreground/80">
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-8">
@@ -18,12 +25,23 @@ export default function SiteFooter({ countryCode = "us" }: { countryCode?: strin
         <div>
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground/70">Shop</h3>
           <ul className="space-y-1">
-            <li><Link href={`/${countryCode}/store/flower`} className="hover:underline">Flower</Link></li>
-            <li><Link href={`/${countryCode}/store/edibles`} className="hover:underline">Edibles</Link></li>
-            <li><Link href={`/${countryCode}/gamma-gummies`} className="hover:underline">Gamma Gummies</Link></li>
-            <li><Link href={`/${countryCode}/store/vapes`} className="hover:underline">Vapes</Link></li>
-            <li><Link href={`/${countryCode}/store/concentrates`} className="hover:underline">Concentrates</Link></li>
-            <li><Link href={`/${countryCode}/store/merch`} className="hover:underline">Merch</Link></li>
+            {(categories.length > 0 ? categories.slice(0, 6) : []).map((category) => (
+              <li key={category.id}>
+                <Link
+                  href={`/${countryCode}/categories/${category.handle}`}
+                  className="hover:underline"
+                >
+                  {category.name}
+                </Link>
+              </li>
+            ))}
+            {categories.length === 0 && (
+              <li>
+                <Link href={`/${countryCode}/store`} className="hover:underline">
+                  Browse Store
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -43,4 +61,3 @@ export default function SiteFooter({ countryCode = "us" }: { countryCode?: strin
     </footer>
   )
 }
-

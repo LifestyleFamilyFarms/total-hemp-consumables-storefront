@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 
 import { listRegions } from "@lib/data/regions"
+import { retrieveCart } from "@lib/data/cart"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
@@ -8,6 +9,7 @@ import SideMenu from "@modules/layout/components/side-menu"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
+  const cart = await retrieveCart().catch(() => null)
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -50,7 +52,7 @@ export default async function Nav() {
                 </LocalizedClientLink>
               }
             >
-              <CartDropdown />
+              <CartDropdown cart={cart} />
             </Suspense>
           </div>
         </nav>

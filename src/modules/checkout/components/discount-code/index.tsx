@@ -7,8 +7,9 @@ import { HttpTypes } from "@medusajs/types"
 import Trash from "@modules/common/icons/trash"
 import ErrorMessage from "../error-message"
 import { Input } from "@/components/ui/input"
-import { useCart } from "@lib/context/cart-context"
 import { Button } from "@/components/ui/button"
+import { applyPromotions } from "@lib/data/cart"
+import { useRouter } from "next/navigation"
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart & {
@@ -18,8 +19,8 @@ type DiscountCodeProps = {
 
 const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { applyPromotions, refresh } = useCart()
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const { items = [], promotions = [] } = cart
   const removePromotionCode = async (code: string) => {
@@ -33,7 +34,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
           .filter((p) => p.code !== undefined)
           .map((p) => p.code!)
       )
-      await refresh()
+      router.refresh()
       setError(null)
     } catch (err: any) {
       setError(err?.message ?? "Unable to remove promotion.")
@@ -53,7 +54,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
     try {
       await applyPromotions(codes)
-      await refresh()
+      router.refresh()
       setError(null)
       if (input) {
         input.value = ""

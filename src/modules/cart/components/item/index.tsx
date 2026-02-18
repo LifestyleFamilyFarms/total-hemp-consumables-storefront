@@ -11,8 +11,9 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
-import { useCart } from "@lib/context/cart-context"
 import { cn } from "src/lib/utils"
+import { updateLineItem } from "@lib/data/cart"
+import { useRouter } from "next/navigation"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -23,15 +24,26 @@ type ItemProps = {
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { updateItem } = useCart()
+  const router = useRouter()
 
   const changeQuantity = async (quantity: number) => {
+    if (quantity === item.quantity) {
+      return
+    }
+
     setError(null)
     setUpdating(true)
 
-    await updateItem(item.id, quantity).catch((err: Error) => {
-      setError(err.message)
+    await updateLineItem({
+      lineId: item.id,
+      quantity,
     })
+      .then(() => {
+        router.refresh()
+      })
+      .catch((err: Error) => {
+        setError(err.message)
+      })
 
     setUpdating(false)
   }

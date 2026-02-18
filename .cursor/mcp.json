@@ -4,7 +4,10 @@
       "url": "https://docs.medusajs.com/mcp"
     },
     "context7": {
-      "url": "https://mcp.context7.com/mcp"
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-60403a2f-56f8-424f-a016-8b70784b662c"
+      }
     },
     "shadcn": {
       "command": "npx",

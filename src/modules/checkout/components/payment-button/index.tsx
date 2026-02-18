@@ -6,8 +6,8 @@ import { Loader2 } from "lucide-react"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 import { Button } from "@/components/ui/button"
-import { useCart } from "@lib/context/cart-context"
 import { useRouter } from "next/navigation"
+import { completeCart as completeCartAction } from "@lib/data/cart"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -31,6 +31,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case isAuthorizeNet(paymentSession?.provider_id):
       return (
         <AuthorizeNetPaymentButton
+          cart={cart}
           notReady={notReady}
           data-testid={dataTestId}
         />
@@ -48,15 +49,16 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 }
 
 const AuthorizeNetPaymentButton = ({
+  cart,
   notReady,
   "data-testid": dataTestId,
 }: {
+  cart: HttpTypes.StoreCart
   notReady: boolean
   "data-testid"?: string
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { cart, refresh, completeCart: complete } = useCart()
   const router = useRouter()
 
   const completeCart = async () => {
@@ -66,9 +68,9 @@ const AuthorizeNetPaymentButton = ({
       if (!cartId) {
         throw new Error("No cart id found when completing order")
       }
-      const result = await complete(cartId)
+      const result = await completeCartAction(cartId)
       if ((result as any)?.type === "order" && (result as any)?.order?.id) {
-        await refresh()
+        router.refresh()
         const order = (result as any).order
         const country =
           order?.shipping_address?.country_code?.toLowerCase() ||

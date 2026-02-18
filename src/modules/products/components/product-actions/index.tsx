@@ -10,8 +10,13 @@ import { isEqual } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-import { useCart } from "@lib/context/cart-context"
 import { toast } from "@/components/ui/sonner"
+import { addToCart } from "@lib/data/cart"
+import { useParams, useRouter } from "next/navigation"
+import {
+  selectOpenCartDrawer,
+  useStorefrontState,
+} from "@lib/state"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -34,7 +39,9 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
-  const { addItem, refresh } = useCart()
+  const router = useRouter()
+  const params = useParams<{ countryCode?: string }>()
+  const openCartDrawer = useStorefrontState(selectOpenCartDrawer)
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -174,12 +181,24 @@ export default function ProductActions({
 
     setIsAdding(true)
 
-    await addItem(selectedVariant.id, 1).catch(() => {
-      /* swallow errors for now */
-    })
-    await refresh()
-    toast.success("Added to cart")
-    setIsAdding(false)
+    try {
+      const countryCode =
+        typeof params.countryCode === "string" ? params.countryCode : "us"
+
+      await addToCart({
+        variantId: selectedVariant.id,
+        quantity: 1,
+        countryCode,
+      })
+
+      router.refresh()
+      openCartDrawer()
+      toast.success("Added to cart")
+    } catch (error: any) {
+      toast.error(error?.message ?? "Unable to add item to cart.")
+    } finally {
+      setIsAdding(false)
+    }
   }
 
   return (
