@@ -1,12 +1,18 @@
 {
-    "mcpServers": {
-      "medusa": {
-        "url": "https://docs.medusajs.com/mcp"
-      },
-      "next-devtools": {
-        "command":"npx",
-        "args": ["-y", "next-devtools-mcp@latest"]
-      }
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    },
+    "next-devtools": {
+      "command": "npx",
+      "args": ["-y", "next-devtools-mcp@latest"]
     }
   }
-  
+}
