@@ -43,6 +43,12 @@ const OPTION_VALUE_COLLATOR = new Intl.Collator(undefined, {
   numeric: true,
   sensitivity: "base",
 })
+const OPTION_TITLE_PRIORITY_RULES: Array<{ pattern: RegExp; priority: number }> = [
+  { pattern: /(dose|dosage|strength|potency|mg|milligram|concentration)/i, priority: 0 },
+  { pattern: /(count|ct|quantity|pack|pieces?)/i, priority: 1 },
+  { pattern: /(flavor|flavour|strain|type|blend)/i, priority: 2 },
+  { pattern: /(size|volume|ml|oz|weight)/i, priority: 3 },
+]
 
 const toOptionMap = (variant: HttpTypes.StoreProductVariant | undefined) => {
   return (variant?.options || []).reduce<Record<string, string>>((acc, option) => {
@@ -294,6 +300,140 @@ function sortOptionValues(values: Array<{ value: string }>) {
     .map((item) => item.entry)
 }
 
+function parseSelectorRank(metadata: unknown): number | null {
+  if (!metadata || typeof metadata !== "object") {
+    return null
+  }
+
+  const candidate = metadata as Record<string, unknown>
+  const rawRank = candidate.selector_rank ?? candidate.option_rank ?? candidate.rank
+
+  if (typeof rawRank === "number" && Number.isFinite(rawRank)) {
+    return rawRank
+  }
+
+  if (typeof rawRank === "string") {
+    const parsed = Number.parseInt(rawRank, 10)
+    if (Number.isFinite(parsed)) {
+      return parsed
+    }
+  }
+
+  return null
+}
+
+function normalizeOptionKey(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+}
+
+function parseRankValue(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number.parseInt(value, 10)
+    if (Number.isFinite(parsed)) {
+      return parsed
+    }
+  }
+
+  return null
+}
+
+function parseSelectorRankOverrides(
+  metadata: HttpTypes.StoreProduct["metadata"]
+) {
+  const map = new Map<string, number>()
+
+  const candidates = [
+    metadata?.selector_rank_map,
+    metadata?.option_selector_rank_map,
+    metadata?.option_rank_map,
+  ]
+
+  for (const candidate of candidates) {
+    let source: unknown = candidate
+
+    if (typeof source === "string") {
+      try {
+        source = JSON.parse(source)
+      } catch {
+        continue
+      }
+    }
+
+    if (!source || typeof source !== "object" || Array.isArray(source)) {
+      continue
+    }
+
+    for (const [key, value] of Object.entries(source as Record<string, unknown>)) {
+      const normalizedKey = normalizeOptionKey(key)
+      const rank = parseRankValue(value)
+
+      if (!normalizedKey || rank === null) {
+        continue
+      }
+
+      map.set(normalizedKey, rank)
+    }
+  }
+
+  return map
+}
+
+function sortProductOptions(
+  options: HttpTypes.StoreProductOption[],
+  productMetadata: HttpTypes.StoreProduct["metadata"]
+) {
+  if (options.length < 2) {
+    return options
+  }
+
+  const rankOverrides = parseSelectorRankOverrides(productMetadata)
+
+  return [...options]
+    .map((option, index) => {
+      const optionMetadataRank = parseSelectorRank((option as { metadata?: unknown }).metadata)
+      const overrideRank = rankOverrides.get(normalizeOptionKey(option.title || ""))
+      const priorityMatch = OPTION_TITLE_PRIORITY_RULES.find((rule) =>
+        rule.pattern.test(option.title || "")
+      )
+
+      return {
+        option,
+        index,
+        metadataRank:
+          optionMetadataRank ?? overrideRank ?? Number.MAX_SAFE_INTEGER,
+        titlePriority: priorityMatch ? priorityMatch.priority : 10,
+      }
+    })
+    .sort((left, right) => {
+      if (left.metadataRank !== right.metadataRank) {
+        return left.metadataRank - right.metadataRank
+      }
+
+      if (left.titlePriority !== right.titlePriority) {
+        return left.titlePriority - right.titlePriority
+      }
+
+      const titleDiff = OPTION_VALUE_COLLATOR.compare(
+        left.option.title || "",
+        right.option.title || ""
+      )
+      if (titleDiff !== 0) {
+        return titleDiff
+      }
+
+      return left.index - right.index
+    })
+    .map((entry) => entry.option)
+}
+
 function sortVariantImageSet(
   images: HttpTypes.StoreProductImage[],
   orderedImages: HttpTypes.StoreProductImage[],
@@ -433,10 +573,15 @@ export default function ProductDetailClient({
     })
   }, [options, variants])
 
+  const orderedOptions = useMemo(
+    () => sortProductOptions(product.options || [], product.metadata),
+    [product.options, product.metadata]
+  )
+
   const availableValuesByOption = useMemo(() => {
     const map = new Map<string, Set<string>>()
 
-    for (const option of product.options || []) {
+    for (const option of orderedOptions) {
       map.set(option.id, new Set<string>())
     }
 
@@ -447,7 +592,7 @@ export default function ProductDetailClient({
 
       const variantOptions = toOptionMap(variant)
 
-      for (const option of product.options || []) {
+      for (const option of orderedOptions) {
         const optionId = option.id
         const candidateValue = variantOptions[optionId]
 
@@ -470,7 +615,7 @@ export default function ProductDetailClient({
     }
 
     return map
-  }, [options, product.options, variants])
+  }, [options, orderedOptions, variants])
 
   const activeVariant = selectedVariant || defaultVariant
   const orderedImages = useMemo(() => sortImagesByRank(product.images || []), [product.images])
@@ -633,7 +778,7 @@ export default function ProductDetailClient({
           <p className="text-sm leading-relaxed text-foreground/75">{description}</p>
 
           <div className="space-y-4">
-            {(product.options || []).map((option) => {
+            {orderedOptions.map((option) => {
               const values = sortOptionValues([...(option.values || [])])
               const availableValues = availableValuesByOption.get(option.id) || new Set<string>()
               const selectedValue = options[option.id] || ""
