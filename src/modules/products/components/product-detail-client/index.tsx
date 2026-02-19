@@ -330,6 +330,22 @@ function normalizeOptionKey(value: string) {
     .replace(/\s+/g, " ")
 }
 
+function joinWithAnd(values: string[]) {
+  if (values.length === 0) {
+    return ""
+  }
+
+  if (values.length === 1) {
+    return values[0]
+  }
+
+  if (values.length === 2) {
+    return `${values[0]} and ${values[1]}`
+  }
+
+  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`
+}
+
 function parseRankValue(value: unknown): number | null {
   if (typeof value === "number" && Number.isFinite(value)) {
     return value
@@ -580,16 +596,51 @@ export default function ProductDetailClient({
     setOptions(initialOptions)
   }, [initialOptions])
 
-  const selectedVariant = useMemo(() => {
+  const selectedOptionEntries = useMemo(
+    () => Object.entries(options).filter(([, value]) => Boolean(value)),
+    [options]
+  )
+
+  const isSelectionComplete = useMemo(
+    () =>
+      orderedOptions.length > 0 &&
+      orderedOptions.every((option) => Boolean(options[option.id])),
+    [options, orderedOptions]
+  )
+
+  const matchingVariants = useMemo(() => {
     if (!variants.length) {
+      return []
+    }
+
+    return variants.filter((variant) => {
+      const variantOptions = toOptionMap(variant)
+      return selectedOptionEntries.every(([key, value]) => variantOptions[key] === value)
+    })
+  }, [selectedOptionEntries, variants])
+
+  const selectedVariant = useMemo(() => {
+    if (!isSelectionComplete) {
       return undefined
     }
 
-    return variants.find((variant) => {
-      const variantOptions = toOptionMap(variant)
-      return Object.entries(options).every(([key, value]) => variantOptions[key] === value)
-    })
-  }, [options, variants])
+    return (
+      matchingVariants.find((variant) => {
+        const variantOptions = toOptionMap(variant)
+        return orderedOptions.every(
+          (option) => variantOptions[option.id] === options[option.id]
+        )
+      }) || matchingVariants[0]
+    )
+  }, [isSelectionComplete, matchingVariants, options, orderedOptions])
+
+  const previewVariant = useMemo(
+    () =>
+      matchingVariants.find((variant) => isVariantInStock(variant)) ||
+      matchingVariants[0] ||
+      defaultVariant,
+    [defaultVariant, matchingVariants]
+  )
 
   const availableValuesByOption = useMemo(() => {
     const map = new Map<string, Set<string>>()
@@ -605,7 +656,7 @@ export default function ProductDetailClient({
 
       const variantOptions = toOptionMap(variant)
 
-      for (const option of orderedOptions) {
+      for (const [index, option] of orderedOptions.entries()) {
         const optionId = option.id
         const candidateValue = variantOptions[optionId]
 
@@ -613,15 +664,18 @@ export default function ProductDetailClient({
           continue
         }
 
-        const matchesOtherSelections = Object.entries(options).every(([key, value]) => {
-          if (!value || key === optionId) {
-            return true
-          }
+        const matchesParentSelections = orderedOptions
+          .slice(0, index)
+          .every((parentOption) => {
+            const selectedParentValue = options[parentOption.id]
+            if (!selectedParentValue) {
+              return true
+            }
 
-          return variantOptions[key] === value
-        })
+            return variantOptions[parentOption.id] === selectedParentValue
+          })
 
-        if (matchesOtherSelections) {
+        if (matchesParentSelections) {
           map.get(optionId)?.add(candidateValue)
         }
       }
@@ -630,7 +684,44 @@ export default function ProductDetailClient({
     return map
   }, [options, orderedOptions, variants])
 
-  const activeVariant = selectedVariant || defaultVariant
+  useEffect(() => {
+    setOptions((current) => {
+      let changed = false
+      const next = { ...current }
+
+      for (const [index, option] of orderedOptions.entries()) {
+        const unmetParent = orderedOptions
+          .slice(0, index)
+          .find((parentOption) => !next[parentOption.id])
+
+        if (unmetParent) {
+          if (next[option.id]) {
+            next[option.id] = ""
+            changed = true
+          }
+          continue
+        }
+
+        const availableValues = availableValuesByOption.get(option.id) || new Set<string>()
+        const selectedValue = next[option.id]
+
+        if (selectedValue && !availableValues.has(selectedValue)) {
+          next[option.id] = ""
+          changed = true
+          continue
+        }
+
+        if (!selectedValue && availableValues.size === 1) {
+          next[option.id] = Array.from(availableValues)[0]
+          changed = true
+        }
+      }
+
+      return changed ? next : current
+    })
+  }, [availableValuesByOption, orderedOptions])
+
+  const activeVariant = previewVariant
   const orderedImages = useMemo(() => sortImagesByRank(product.images || []), [product.images])
   const variantImages = useMemo(
     () => resolveVariantImages(orderedImages, activeVariant),
@@ -661,6 +752,17 @@ export default function ProductDetailClient({
     readMetadataText(activeVariant?.metadata?.variant_description) ||
     product.description ||
     "Product details are coming soon."
+  const missingOptionTitles = useMemo(
+    () =>
+      orderedOptions
+        .filter((option) => !options[option.id])
+        .map((option) => option.title || "option"),
+    [options, orderedOptions]
+  )
+  const shouldPromptDetailsSelection =
+    variants.length > 1 && !selectedVariant && matchingVariants.length > 1
+  const detailsSelectionTargets = joinWithAnd(missingOptionTitles) || "the remaining options"
+  const detailsSelectionPrompt = `Please select ${detailsSelectionTargets} to display product details.`
 
   const addToCartEnabled = Boolean(selectedVariant?.id && inStock && !isAdding)
 
@@ -806,10 +908,20 @@ export default function ProductDetailClient({
             {orderedOptions.map((option) => {
               const values = sortOptionValues([...(option.values || [])])
               const availableValues = availableValuesByOption.get(option.id) || new Set<string>()
+              const optionIndex = orderedOptions.findIndex((entry) => entry.id === option.id)
+              const unmetParent = orderedOptions
+                .slice(0, optionIndex)
+                .find((parentOption) => !options[parentOption.id])
+              const hasRequiredParentSelections = !unmetParent
+              const parentPrompt = unmetParent?.title || "required option"
+              const optionPrompt = option.title?.toLowerCase() || "option"
+              const selectPlaceholder = hasRequiredParentSelections
+                ? `Select ${optionPrompt}`
+                : `Select ${parentPrompt}`
               const visibleValues =
-                availableValues.size > 0
+                hasRequiredParentSelections && availableValues.size > 0
                   ? values.filter((valueOption) => availableValues.has(valueOption.value))
-                  : values
+                  : []
               const selectedValue = options[option.id] || ""
 
               return (
@@ -823,16 +935,16 @@ export default function ProductDetailClient({
 
                   <div data-testid="product-options">
                     <Select
-                      value={selectedValue || undefined}
+                      value={selectedValue}
                       onValueChange={(value) => handleOptionChange(option.id, value)}
-                      disabled={isAdding || visibleValues.length === 0}
+                      disabled={isAdding || !hasRequiredParentSelections || visibleValues.length === 0}
                     >
                       <SelectTrigger
                         className="h-11 w-full"
                         aria-label={option.title}
                         data-testid="option-select"
                       >
-                        <SelectValue placeholder={`Select ${option.title.toLowerCase()}`} />
+                        <SelectValue placeholder={selectPlaceholder} />
                       </SelectTrigger>
                       <SelectContent>
                         {visibleValues.map((valueOption) => {
@@ -849,7 +961,12 @@ export default function ProductDetailClient({
                         })}
                       </SelectContent>
                     </Select>
-                    {visibleValues.length === 0 ? (
+                    {!hasRequiredParentSelections && unmetParent ? (
+                      <p className="mt-2 text-xs text-foreground/60">
+                        Select {unmetParent.title} first.
+                      </p>
+                    ) : null}
+                    {hasRequiredParentSelections && visibleValues.length === 0 ? (
                       <p className="mt-2 text-xs text-foreground/60">
                         No {option.title.toLowerCase()} values available for the current selection.
                       </p>
@@ -903,7 +1020,9 @@ export default function ProductDetailClient({
                 Product Details
               </AccordionTrigger>
               <AccordionContent className="px-5 pb-5">
-                {detailList.length ? (
+                {shouldPromptDetailsSelection ? (
+                  <p className="text-sm text-foreground/70">{detailsSelectionPrompt}</p>
+                ) : detailList.length ? (
                   <ul className="list-disc space-y-1 pl-5 text-sm text-foreground/80">
                     {detailList.map((detail) => (
                       <li key={detail}>{detail}</li>
