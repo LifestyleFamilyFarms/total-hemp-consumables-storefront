@@ -553,14 +553,32 @@ export default function ProductDetailClient({
     () => variants.find((variant) => isVariantInStock(variant)) || variants[0],
     [variants]
   )
-
-  const [options, setOptions] = useState<Record<string, string>>(() =>
-    toOptionMap(defaultVariant)
+  const orderedOptions = useMemo(
+    () => sortProductOptions(product.options || [], product.metadata),
+    [product.options, product.metadata]
   )
 
+  const initialOptions = useMemo(() => {
+    const base = orderedOptions.reduce<Record<string, string>>((acc, option) => {
+      acc[option.id] = ""
+      return acc
+    }, {})
+
+    if (variants.length === 1 && defaultVariant) {
+      return {
+        ...base,
+        ...toOptionMap(defaultVariant),
+      }
+    }
+
+    return base
+  }, [defaultVariant, orderedOptions, variants.length])
+
+  const [options, setOptions] = useState<Record<string, string>>(initialOptions)
+
   useEffect(() => {
-    setOptions(toOptionMap(defaultVariant))
-  }, [defaultVariant])
+    setOptions(initialOptions)
+  }, [initialOptions])
 
   const selectedVariant = useMemo(() => {
     if (!variants.length) {
@@ -572,11 +590,6 @@ export default function ProductDetailClient({
       return Object.entries(options).every(([key, value]) => variantOptions[key] === value)
     })
   }, [options, variants])
-
-  const orderedOptions = useMemo(
-    () => sortProductOptions(product.options || [], product.metadata),
-    [product.options, product.metadata]
-  )
 
   const availableValuesByOption = useMemo(() => {
     const map = new Map<string, Set<string>>()
@@ -662,10 +675,22 @@ export default function ProductDetailClient({
         : "Add to cart"
 
   const handleOptionChange = (optionId: string, value: string) => {
-    setOptions((current) => ({
-      ...current,
-      [optionId]: value,
-    }))
+    setOptions((current) => {
+      const next = {
+        ...current,
+        [optionId]: value,
+      }
+
+      const changedIndex = orderedOptions.findIndex((option) => option.id === optionId)
+
+      if (changedIndex >= 0) {
+        for (const downstreamOption of orderedOptions.slice(changedIndex + 1)) {
+          next[downstreamOption.id] = ""
+        }
+      }
+
+      return next
+    })
   }
 
   const handleAddToCart = async () => {
@@ -781,6 +806,10 @@ export default function ProductDetailClient({
             {orderedOptions.map((option) => {
               const values = sortOptionValues([...(option.values || [])])
               const availableValues = availableValuesByOption.get(option.id) || new Set<string>()
+              const visibleValues =
+                availableValues.size > 0
+                  ? values.filter((valueOption) => availableValues.has(valueOption.value))
+                  : values
               const selectedValue = options[option.id] || ""
 
               return (
@@ -794,9 +823,9 @@ export default function ProductDetailClient({
 
                   <div data-testid="product-options">
                     <Select
-                      value={selectedValue}
+                      value={selectedValue || undefined}
                       onValueChange={(value) => handleOptionChange(option.id, value)}
-                      disabled={isAdding}
+                      disabled={isAdding || visibleValues.length === 0}
                     >
                       <SelectTrigger
                         className="h-11 w-full"
@@ -806,16 +835,13 @@ export default function ProductDetailClient({
                         <SelectValue placeholder={`Select ${option.title.toLowerCase()}`} />
                       </SelectTrigger>
                       <SelectContent>
-                        {values.map((valueOption) => {
+                        {visibleValues.map((valueOption) => {
                           const value = valueOption.value
-                          const disabled =
-                            availableValues.size > 0 && !availableValues.has(value)
 
                           return (
                             <SelectItem
                               key={valueOption.id || `${option.id}-${value}`}
                               value={value}
-                              disabled={disabled}
                             >
                               {value}
                             </SelectItem>
@@ -823,6 +849,11 @@ export default function ProductDetailClient({
                         })}
                       </SelectContent>
                     </Select>
+                    {visibleValues.length === 0 ? (
+                      <p className="mt-2 text-xs text-foreground/60">
+                        No {option.title.toLowerCase()} values available for the current selection.
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               )
