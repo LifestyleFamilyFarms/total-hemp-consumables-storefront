@@ -4,6 +4,7 @@
 - `docs/rebuild-handoff-status.md` (current status, ownership, and no-cross-stream scope)
 - `docs/storefront-architecture.md`
 - `docs/state-architecture.md`
+- `docs/agent-b-acceptance-checklist.md` (required for Agent B pass/fail signoff)
 
 ## Boundary Checklist
 - [ ] Route/layout logic stays in `src/app/*`.

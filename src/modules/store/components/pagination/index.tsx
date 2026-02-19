@@ -1,114 +1,121 @@
 "use client"
 
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { cn } from "src/lib/utils"
+
+import { Button } from "@/components/ui/button"
+import { cn } from "@lib/utils"
+import { PLP_QUERY_KEYS } from "@modules/store/lib/url-state"
 
 export function Pagination({
   page,
   totalPages,
-  'data-testid': dataTestid
+  "data-testid": dataTestid,
 }: {
   page: number
   totalPages: number
-  'data-testid'?: string
+  "data-testid"?: string
 }) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Helper function to generate an array of numbers within a range
-  const arrayRange = (start: number, stop: number) =>
-    Array.from({ length: stop - start + 1 }, (_, index) => start + index)
-
-  // Function to handle page changes
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams)
-    params.set("page", newPage.toString())
-    router.push(`${pathname}?${params.toString()}`)
+  if (totalPages <= 1) {
+    return null
   }
 
-  // Function to render a page button
-  const renderPageButton = (
-    p: number,
-    label: string | number,
-    isCurrent: boolean
-  ) => (
-    <button
-      key={p}
-      className={cn("txt-xlarge-plus text-ui-fg-muted", {
-        "text-ui-fg-base hover:text-ui-fg-subtle": isCurrent,
-      })}
-      disabled={isCurrent}
-      onClick={() => handlePageChange(p)}
-    >
-      {label}
-    </button>
-  )
+  const pushPage = (nextPage: number) => {
+    const params = new URLSearchParams(searchParams.toString())
 
-  // Function to render ellipsis
-  const renderEllipsis = (key: string) => (
-    <span
-      key={key}
-      className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
-    >
-      ...
-    </span>
-  )
-
-  // Function to render page buttons based on the current page and total pages
-  const renderPageButtons = () => {
-    const buttons = []
-
-    if (totalPages <= 7) {
-      // Show all pages
-      buttons.push(
-        ...arrayRange(1, totalPages).map((p) =>
-          renderPageButton(p, p, p === page)
-        )
-      )
+    if (nextPage <= 1) {
+      params.delete(PLP_QUERY_KEYS.page)
     } else {
-      // Handle different cases for displaying pages and ellipses
-      if (page <= 4) {
-        // Show 1, 2, 3, 4, 5, ..., lastpage
-        buttons.push(
-          ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page))
-        )
-        buttons.push(renderEllipsis("ellipsis1"))
-        buttons.push(
-          renderPageButton(totalPages, totalPages, totalPages === page)
-        )
-      } else if (page >= totalPages - 3) {
-        // Show 1, ..., lastpage - 4, lastpage - 3, lastpage - 2, lastpage - 1, lastpage
-        buttons.push(renderPageButton(1, 1, 1 === page))
-        buttons.push(renderEllipsis("ellipsis2"))
-        buttons.push(
-          ...arrayRange(totalPages - 4, totalPages).map((p) =>
-            renderPageButton(p, p, p === page)
-          )
-        )
-      } else {
-        // Show 1, ..., page - 1, page, page + 1, ..., lastpage
-        buttons.push(renderPageButton(1, 1, 1 === page))
-        buttons.push(renderEllipsis("ellipsis3"))
-        buttons.push(
-          ...arrayRange(page - 1, page + 1).map((p) =>
-            renderPageButton(p, p, p === page)
-          )
-        )
-        buttons.push(renderEllipsis("ellipsis4"))
-        buttons.push(
-          renderPageButton(totalPages, totalPages, totalPages === page)
-        )
-      }
+      params.set(PLP_QUERY_KEYS.page, nextPage.toString())
     }
 
-    return buttons
+    const query = params.toString()
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false })
   }
 
-  // Render the component
+  const pages = getVisiblePages(page, totalPages)
+
   return (
-    <div className="flex justify-center w-full mt-12">
-      <div className="flex gap-3 items-end" data-testid={dataTestid}>{renderPageButtons()}</div>
-    </div>
+    <nav
+      className="mt-10 flex flex-wrap items-center justify-center gap-2"
+      aria-label="Product pagination"
+      data-testid={dataTestid}
+    >
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => pushPage(page - 1)}
+        disabled={page <= 1}
+        className="gap-1"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Prev
+      </Button>
+
+      {pages.map((item, index) => {
+        if (item === "ellipsis") {
+          return (
+            <span
+              key={`ellipsis-${index}`}
+              className="px-2 text-sm text-foreground/60"
+            >
+              ...
+            </span>
+          )
+        }
+
+        const isActive = item === page
+
+        return (
+          <button
+            key={item}
+            type="button"
+            onClick={() => pushPage(item)}
+            aria-current={isActive ? "page" : undefined}
+            className={cn(
+              "inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition",
+              isActive
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border/60 bg-background/80 text-foreground hover:border-primary/50"
+            )}
+          >
+            {item}
+          </button>
+        )
+      })}
+
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => pushPage(page + 1)}
+        disabled={page >= totalPages}
+        className="gap-1"
+      >
+        Next
+        <ChevronRight className="h-4 w-4" />
+      </Button>
+    </nav>
   )
+}
+
+function getVisiblePages(current: number, total: number): Array<number | "ellipsis"> {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, index) => index + 1)
+  }
+
+  if (current <= 3) {
+    return [1, 2, 3, 4, "ellipsis", total]
+  }
+
+  if (current >= total - 2) {
+    return [1, "ellipsis", total - 3, total - 2, total - 1, total]
+  }
+
+  return [1, "ellipsis", current - 1, current, current + 1, "ellipsis", total]
 }

@@ -12,8 +12,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import RefinementList from "@modules/store/components/refinement-list"
+import { SortOptions } from "@modules/store/lib/sort-options"
 
-export default function MobileFilters({ sortBy }: { sortBy?: string }) {
+export default function MobileFilters({ sortBy }: { sortBy?: SortOptions }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -33,8 +34,7 @@ export default function MobileFilters({ sortBy }: { sortBy?: string }) {
           </SheetDescription>
         </SheetHeader>
         <div className="mt-4">
-          {/* Your existing refinement UI – unchanged */}
-          <RefinementList sortBy={(sortBy as any) ?? "created_at"} />
+          <RefinementList sortBy={sortBy ?? "created_at"} />
         </div>
       </SheetContent>
     </Sheet>

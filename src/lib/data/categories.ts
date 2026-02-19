@@ -34,6 +34,46 @@ export const listCategories = async (query?: Record<string, any>) => {
     .then(({ product_categories }) => product_categories)
 }
 
+export const listCatalogCategories = async () => {
+  const next = {
+    ...(await getCacheOptions("categories")),
+  }
+
+  return sdk.client
+    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
+      "/store/product-categories",
+      {
+        query: {
+          fields: "id,name,handle,parent_category_id,rank",
+          limit: 100,
+        },
+        next,
+        cache: "force-cache",
+      }
+    )
+    .then(({ product_categories }) => product_categories)
+}
+
+export const getCategoryIdsByHandles = async (handles: string[]) => {
+  if (!handles.length) {
+    return []
+  }
+
+  const normalized = Array.from(new Set(handles.map((handle) => handle.trim()))).filter(
+    Boolean
+  )
+
+  if (!normalized.length) {
+    return []
+  }
+
+  const categories = await listCatalogCategories()
+
+  return categories
+    .filter((category) => normalized.includes(category.handle))
+    .map((category) => category.id)
+}
+
 export const listNavigationCategories = async (): Promise<NavigationCategory[]> => {
   const next = {
     ...(await getCacheOptions("categories")),

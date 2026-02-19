@@ -27,28 +27,28 @@ export async function GET(req: NextRequest) {
         revalidatedTags.push(tag)
         switch (tag) {
           case "products":
-            // Revalidate main products page
-            revalidatePath("/us/store/products")
-            revalidatedPaths.push("/us/store/products")
+            // Revalidate main store listing page
+            revalidatePath("/us/store")
+            revalidatedPaths.push("/us/store")
             // Revalidate individual product pages
             revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
             revalidatedPaths.push("/[countryCode]/(main)/products/[handle]")
             break
           case "collections":
-            revalidatePath("/us/store/collections")
-            revalidatedPaths.push("/us/store/collections")
+            revalidatePath("/us/store")
+            revalidatedPaths.push("/us/store")
             revalidatePath("/[countryCode]/(main)/collections/[handle]", "page")
             revalidatedPaths.push("/[countryCode]/(main)/collections/[handle]")
             break
           case "categories":
-            revalidatePath("/us/store/categories")
-            revalidatedPaths.push("/us/store/categories")
-            revalidatePath("/[countryCode]/(main)/categories/[handle]", "page")
-            revalidatedPaths.push("/[countryCode]/(main)/categories/[handle]")
+            revalidatePath("/us/store")
+            revalidatedPaths.push("/us/store")
+            revalidatePath("/[countryCode]/(main)/categories/[...category]", "page")
+            revalidatedPaths.push("/[countryCode]/(main)/categories/[...category]")
             break
           case "cart":
-            revalidatePath("/us/store/cart")
-            revalidatedPaths.push("/us/store/cart")
+            revalidatePath("/us/cart")
+            revalidatedPaths.push("/us/cart")
             revalidatePath("/[countryCode]/(main)/cart", "page")
             revalidatedPaths.push("/[countryCode]/(main)/cart")
             break
@@ -59,20 +59,18 @@ export async function GET(req: NextRequest) {
             revalidatedPaths.push("/us")
             break
           case "search":
-            revalidatePath("/us/store/search")
-            revalidatedPaths.push("/us/store/search")
-            revalidatePath("/[countryCode]/(main)/search", "page")
-            revalidatedPaths.push("/[countryCode]/(main)/search")
+            revalidatePath("/us/store")
+            revalidatedPaths.push("/us/store")
             break
           case "account":
-            revalidatePath("/us/store/account")
-            revalidatedPaths.push("/us/store/account")
+            revalidatePath("/us/account")
+            revalidatedPaths.push("/us/account")
             revalidatePath("/[countryCode]/(main)/account", "page")
             revalidatedPaths.push("/[countryCode]/(main)/account")
             break
           case "checkout":
-            revalidatePath("/us/store/checkout")
-            revalidatedPaths.push("/us/store/checkout")
+            revalidatePath("/us/checkout")
+            revalidatedPaths.push("/us/checkout")
             revalidatePath("/[countryCode]/(main)/checkout", "page")
             revalidatedPaths.push("/[countryCode]/(main)/checkout")
             break

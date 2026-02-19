@@ -5,13 +5,20 @@ import { getCollectionByHandle, listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
 import { StoreCollection, StoreRegion } from "@medusajs/types"
 import CollectionTemplate from "@modules/collections/templates"
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { SortOptions } from "@modules/store/lib/sort-options"
+import { parsePlpUrlState } from "@modules/store/lib/url-state"
 
 type Props = {
   params: Promise<{ handle: string; countryCode: string }>
   searchParams: Promise<{
     page?: string
+    sort?: SortOptions
     sortBy?: SortOptions
+    q?: string
+    category?: string | string[]
+    type?: string | string[]
+    effect?: string | string[]
+    compound?: string | string[]
   }>
 }
 
@@ -59,7 +66,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   const metadata = {
-    title: `${collection.title} | Medusa Store`,
+    title: `${collection.title} | Total Hemp Consumables`,
     description: `${collection.title} collection`,
   } as Metadata
 
@@ -69,7 +76,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
+  const state = parsePlpUrlState(searchParams)
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: StoreCollection) => collection
@@ -82,8 +89,13 @@ export default async function CollectionPage(props: Props) {
   return (
     <CollectionTemplate
       collection={collection}
-      page={page}
-      sortBy={sortBy}
+      page={state.page}
+      sortBy={state.sort}
+      q={state.q}
+      selectedCategories={state.category}
+      selectedTypes={state.type}
+      selectedEffects={state.effect}
+      selectedCompounds={state.compound}
       countryCode={params.countryCode}
     />
   )

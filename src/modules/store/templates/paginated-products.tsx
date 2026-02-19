@@ -1,18 +1,10 @@
-import { listProductsWithSort } from "@lib/data/products"
+import { listProductsForPlp } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { SortOptions } from "@modules/store/lib/sort-options"
 
 const PRODUCT_LIMIT = 12
-
-type PaginatedProductsParams = {
-  limit: number
-  collection_id?: string[]
-  category_id?: string[]
-  id?: string[]
-  order?: string
-}
 
 export default async function PaginatedProducts({
   sortBy,
@@ -20,69 +12,87 @@ export default async function PaginatedProducts({
   collectionId,
   categoryId,
   productsIds,
+  categoryHandles,
+  typeValues,
+  effectValues,
+  compoundValues,
+  query,
   countryCode,
+  emptyStateTitle,
+  emptyStateDescription,
 }: {
   sortBy?: SortOptions
   page: number
   collectionId?: string
   categoryId?: string
   productsIds?: string[]
+  categoryHandles?: string[]
+  typeValues?: string[]
+  effectValues?: string[]
+  compoundValues?: string[]
+  query?: string
   countryCode: string
+  emptyStateTitle?: string
+  emptyStateDescription?: string
 }) {
-  const queryParams: PaginatedProductsParams = {
-    limit: 12,
-  }
-
-  if (collectionId) {
-    queryParams["collection_id"] = [collectionId]
-  }
-
-  if (categoryId) {
-    queryParams["category_id"] = [categoryId]
-  }
-
-  if (productsIds) {
-    queryParams["id"] = productsIds
-  }
-
-  if (sortBy === "created_at") {
-    queryParams["order"] = "created_at"
-  }
-
   const region = await getRegion(countryCode)
 
   if (!region) {
     return null
   }
 
-  let {
-    response: { products, count },
-  } = await listProductsWithSort({
+  const { products, count, totalPages } = await listProductsForPlp({
     page,
-    queryParams,
     sortBy,
     countryCode,
+    q: query,
+    categoryHandles,
+    typeValues,
+    effectValues,
+    compoundValues,
+    categoryId,
+    collectionId,
+    productsIds,
   })
 
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+  if (!products.length) {
+    return (
+      <div className="rounded-3xl border border-border/60 bg-card/50 px-6 py-14 text-center">
+        <p className="text-xl font-semibold text-foreground">
+          {emptyStateTitle || "No products matched this view."}
+        </p>
+        <p className="mt-2 text-sm text-foreground/70">
+          {emptyStateDescription ||
+            "Try removing one or more filters to broaden the catalog view."}
+        </p>
+      </div>
+    )
+  }
+
+  const firstItem = (page - 1) * PRODUCT_LIMIT + 1
+  const lastItem = Math.min(page * PRODUCT_LIMIT, count)
 
   return (
-    <>
+    <section className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-foreground/70">
+        <p>
+          Showing <span className="font-semibold text-foreground">{firstItem}</span>-
+          <span className="font-semibold text-foreground">{lastItem}</span> of
+          <span className="font-semibold text-foreground"> {count}</span> products
+        </p>
+        {totalPages > 1 ? <p>Page {page} of {totalPages}</p> : null}
+      </div>
+
       <div
-        className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="grid w-full gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         data-testid="products-list"
       >
-        {products.map((p) => (
-          <ProductPreview key={p.id} product={p} region={region} />
+        {products.map((product) => (
+          <ProductPreview key={product.id} product={product} region={region} />
         ))}
       </div>
-      {totalPages > 1 && (
-        <Pagination
-          data-testid="product-pagination"
-          page={page}
-          totalPages={totalPages}
-        />
-      )}
-    </>
+
+      <Pagination data-testid="product-pagination" page={page} totalPages={totalPages} />
+    </section>
   )
 }

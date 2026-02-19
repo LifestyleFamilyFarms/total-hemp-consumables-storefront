@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 
 import SortProducts, { SortOptions } from "./sort-products"
+import { PLP_QUERY_KEYS } from "@modules/store/lib/url-state"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -20,6 +21,10 @@ const RefinementList = ({ sortBy, 'data-testid': dataTestId }: RefinementListPro
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams)
       params.set(name, value)
+      if (name !== PLP_QUERY_KEYS.page) {
+        params.delete(PLP_QUERY_KEYS.page)
+      }
+      params.delete(PLP_QUERY_KEYS.legacySort)
 
       return params.toString()
     },
