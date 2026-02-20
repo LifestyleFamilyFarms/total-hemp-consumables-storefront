@@ -7,7 +7,6 @@ import useToggleState from "@lib/hooks/use-toggle-state"
 import CountrySelect from "@modules/checkout/components/country-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
-import Spinner from "@modules/common/icons/spinner"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -16,6 +15,7 @@ import {
 } from "@lib/data/customer"
 import { Button } from "@/components/ui/button"
 import { cn } from "src/lib/utils"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type EditAddressProps = {
   region: HttpTypes.StoreRegion
@@ -113,7 +113,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
             onClick={removeAddress}
             data-testid="address-delete-button"
           >
-            {removing ? <Spinner /> : <Trash2 className="h-4 w-4" aria-hidden />}
+            {removing ? <BrandSpinner /> : <Trash2 className="h-4 w-4" aria-hidden />}
             Remove
           </button>
         </div>

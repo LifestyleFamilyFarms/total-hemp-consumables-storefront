@@ -47,6 +47,8 @@ export default function CategoryTemplate({
       }
       eyebrow="Category"
       hideCategoryFilters
+      layout="split"
+      resultMode="variants"
       emptyStateTitle={`No products are currently assigned to ${category.name}.`}
       emptyStateDescription="This category is active, but the Store API returned zero products for it. Check category-product assignments in Medusa and revalidate the storefront cache."
     />

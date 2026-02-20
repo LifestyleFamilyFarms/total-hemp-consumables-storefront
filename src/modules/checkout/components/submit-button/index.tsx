@@ -3,8 +3,8 @@
 import React from "react"
 import { useFormStatus } from "react-dom"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
 import { cn } from "src/lib/utils"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type SubmitButtonVariant = "primary" | "secondary" | "transparent" | "danger" | null
 
@@ -38,7 +38,7 @@ export function SubmitButton({
       disabled={pending}
       data-testid={dataTestId}
     >
-      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {pending && <BrandSpinner className="mr-2" />}
       {children}
     </Button>
   )

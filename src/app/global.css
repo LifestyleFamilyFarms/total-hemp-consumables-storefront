@@ -45,6 +45,38 @@
     --sidebar-accent-foreground: var(--brand-forest);
     --sidebar-border: var(--brand-cocoa);
     --sidebar-ring: var(--brand-forest);
+
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-transparent.webp");
+    --app-bg-size: cover;
+    --app-bg-position: center;
+    --app-bg-pattern-opacity: .5;
+    --app-bg-filter: blur(1px) saturate(0.7) contrast(0.9) brightness(0.95);
+    --app-bg-overlay:
+      radial-gradient(100% 64% at 10% 10%, hsl(59 92% 90%) 0%, transparent 100%),
+      radial-gradient(100% 62% at top right, hsl(43 90% 76%) 0%, transparent 75%),
+      radial-gradient(74% 68% at bottom left, hsl(162 40% 36%) 0%, transparent 100%),
+      radial-gradient(78% 72% at bottom right, hsla(15, 48%, 24%, 0.727) 50%, transparent 100%),
+      linear-gradient(152deg, hsl(59 44% 78%) 0%, hsl(137 42% 23%) 100%);
+    --app-bg-overlay-opacity: 0.6;
+
+    --surface-light-angle: 145deg;
+    --surface-light-source-x: 12%;
+    --surface-light-source-y: 6%;
+    --surface-glass-top: 59 70% 92%;
+    --surface-glass-bottom: 137 34% 20%;
+    --surface-glass-glow: 162 72% 52%;
+    --surface-glass-edge: 59 72% 94%;
+    --surface-glass-shadow: 137 46% 12%;
+    --surface-border-top-left: 59 86% 90%;
+    --surface-border-top-right: 43 88% 76%;
+    --surface-border-bottom-left: 137 44% 34%;
+    --surface-border-bottom-right: 162 56% 34%;
+    --surface-border-mid: 137 34% 22%;
+    --type-shadow-color: 15 48% 18%;
+    --type-shadow-opacity: 0.34;
+    --type-shadow-x: 1px;
+    --type-shadow-y: 1px;
+
   }
 
   [data-theme="indica"] {
@@ -76,6 +108,33 @@
     --sidebar-accent-foreground: var(--brand-forest);
     --sidebar-border: 137 45% 14%;
     --sidebar-ring: var(--brand-gold);
+
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
+    --app-bg-pattern-opacity: 0.3;
+    --app-bg-filter: blur(1px) saturate(0.72) contrast(1) brightness(0.74);
+    --app-bg-overlay:
+      radial-gradient(ellipse at -15% -10%, hsla(59, 73%, 78%, 0.741) 0%, transparent 75%),
+      radial-gradient(ellipse at 85% -25%, hsl(43 82% 70%) 0%, transparent 35%),
+      radial-gradient(74% 66% at -6% 108%, hsl(162 34% 28%) 0%, transparent 70%),
+      radial-gradient(100% 100% at 106% 110%, hsl(0 0% 10%) 0%, transparent 100%),
+      linear-gradient(156deg, hsl(137 52% 16%) 0%, hsl(137 62% 8%) 100%);
+    --app-bg-overlay-opacity: 0.5;
+
+    --surface-glass-top: 59 58% 82%;
+    --surface-glass-bottom: 137 44% 12%;
+    --surface-glass-glow: 43 90% 62%;
+    --surface-glass-edge: 59 66% 88%;
+    --surface-glass-shadow: 137 56% 4%;
+    --surface-border-top-left: 59 66% 78%;
+    --surface-border-top-right: 43 82% 68%;
+    --surface-border-bottom-left: 137 44% 24%;
+    --surface-border-bottom-right: 162 46% 24%;
+    --surface-border-mid: 137 48% 16%;
+    --type-shadow-color: 0 0% 3%;
+    --type-shadow-opacity: 0.44;
+    --type-shadow-x: 1px;
+    --type-shadow-y: 1px;
+
   }
 
   [data-theme="light"] {
@@ -107,6 +166,33 @@
     --sidebar-accent-foreground: 0 0% 8%;
     --sidebar-border: 0 0% 85%;
     --sidebar-ring: 0 0% 20%;
+
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-transparent.webp");
+    --app-bg-pattern-opacity: 0.06;
+    --app-bg-filter: saturate(0.52) contrast(0.9) brightness(1.05);
+    --app-bg-overlay:
+      radial-gradient(72% 62% at -8% -10%, hsl(60 100% 98%) 0%, transparent 66%),
+      radial-gradient(70% 60% at 108% -10%, hsl(43 86% 90%) 0%, transparent 66%),
+      radial-gradient(74% 66% at -6% 108%, hsl(162 26% 72%) 0%, transparent 70%),
+      radial-gradient(78% 70% at 106% 110%, hsl(210 16% 58%) 0%, transparent 72%),
+      linear-gradient(150deg, hsl(60 42% 97%) 0%, hsl(43 55% 92%) 100%);
+    --app-bg-overlay-opacity: 0.1;
+
+    --surface-glass-top: 0 0% 100%;
+    --surface-glass-bottom: 43 28% 88%;
+    --surface-glass-glow: 162 56% 78%;
+    --surface-glass-edge: 0 0% 100%;
+    --surface-glass-shadow: 220 26% 32%;
+    --surface-border-top-left: 60 76% 98%;
+    --surface-border-top-right: 43 80% 90%;
+    --surface-border-bottom-left: 162 34% 74%;
+    --surface-border-bottom-right: 137 26% 80%;
+    --surface-border-mid: 210 24% 76%;
+    --type-shadow-color: 210 20% 38%;
+    --type-shadow-opacity: 0.22;
+    --type-shadow-x: 1px;
+    --type-shadow-y: 1px;
+
   }
 
   [data-theme="dark"] {
@@ -138,6 +224,33 @@
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 0 0% 20%;
     --sidebar-ring: 0 0% 60%;
+
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
+    --app-bg-pattern-opacity: 0.08;
+    --app-bg-filter: saturate(0.48) contrast(0.95) brightness(0.6);
+    --app-bg-overlay:
+      radial-gradient(70% 60% at -8% -10%, hsl(59 52% 70%) 0%, transparent 66%),
+      radial-gradient(70% 60% at 108% -10%, hsl(43 58% 62%) 0%, transparent 66%),
+      radial-gradient(74% 66% at -6% 108%, hsl(137 24% 24%) 0%, transparent 70%),
+      radial-gradient(78% 70% at 106% 110%, hsl(0 0% 5%) 0%, transparent 72%),
+      linear-gradient(156deg, hsl(137 24% 14%) 0%, hsl(0 0% 6%) 100%);
+    --app-bg-overlay-opacity: 0.1;
+
+    --surface-glass-top: 0 0% 96%;
+    --surface-glass-bottom: 137 18% 12%;
+    --surface-glass-glow: 162 52% 48%;
+    --surface-glass-edge: 0 0% 100%;
+    --surface-glass-shadow: 0 0% 2%;
+    --surface-border-top-left: 59 36% 68%;
+    --surface-border-top-right: 43 54% 62%;
+    --surface-border-bottom-left: 137 28% 22%;
+    --surface-border-bottom-right: 162 34% 22%;
+    --surface-border-mid: 137 20% 14%;
+    --type-shadow-color: 0 0% 2%;
+    --type-shadow-opacity: 0.56;
+    --type-shadow-x: 1px;
+    --type-shadow-y: 1px;
+
   }
 
   * {
@@ -151,31 +264,14 @@
     font-family: "clarendon-urw", "Clarendon", "Book Antiqua", "Palatino", serif;
   }
 
-.app-shell-bg::before {
-    content: "";
-    position: fixed;
-    inset: -40px;
-    z-index: -2;
-    pointer-events: none;
-    opacity: 0.12;
-    background-image:
-      url("/logos/svg/DB_FULL_COLOR_ICON_PRINT.svg");
-    background-repeat: repeat,repeat;
-    background-size: 100px 100px;
-    background-position: 0 0;
-    mix-blend-mode: normal;
-    filter: blur(1px);
-    animation: none;
-  }
-
-
-.app-shell-bg::after {
-    content: "";
-    position: fixed;
-    inset: -24px;
-    z-index: -2;
-    pointer-events: none;
-    background: none;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .text-cast-shadow {
+    text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / var(--type-shadow-opacity));
   }
 }
 
@@ -237,44 +333,144 @@
     position: fixed;
     inset: 0;
     overflow: hidden;
+    --shell-scroll-y: 0px;
   }
 
-  .app-shell-pattern {
+  .app-shell-layer {
     position: absolute;
-    inset: -40px;
-    opacity: 0;
-    background: none;
+    pointer-events: none;
+    will-change: transform;
   }
 
-  .app-shell-noise {
+  .app-shell-layer--deep {
+    inset: -32vh -16vw;
+    background-image: var(--app-bg-image);
+    background-repeat: repeat;
+    background-size: clamp(880px, 104vw, 1540px);
+    background-position: 50% 50%;
+    opacity: calc(var(--app-bg-pattern-opacity) * 0.44);
+    filter: var(--app-bg-filter);
+    transform: translate3d(0, calc(var(--shell-scroll-y) * -0.16), 0) scale(1.06);
+  }
+
+  .app-shell-layer--overlay {
+    inset: 0;
+    background: var(--app-bg-overlay);
+    opacity: var(--app-bg-overlay-opacity);
+  }
+
+  .app-shell-layer--noise {
     position: absolute;
     inset: 0;
-    opacity: 0.04;
+    opacity: 0.014;
     background: radial-gradient(circle at 18% 18%, rgba(0, 0, 0, 0.12), transparent 48%),
       radial-gradient(circle at 82% 28%, rgba(0, 0, 0, 0.1), transparent 50%);
-    animation: parallax-float 36s ease-in-out infinite alternate;
+    transform: translate3d(0, calc(var(--shell-scroll-y) * -0.01), 0);
   }
 
-.shell-surface {
+  .surface-panel {
+    background-color: hsl(var(--card) / 0.66);
+    background-image:
+      radial-gradient(
+        94% 88% at 0% 0%,
+        hsl(var(--surface-border-top-left) / 0.17) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        94% 88% at 100% 0%,
+        hsl(var(--surface-border-top-right) / 0.16) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        96% 92% at 0% 100%,
+        hsl(var(--surface-border-bottom-left) / 0.14) 0%,
+        transparent 64%
+      ),
+      radial-gradient(
+        96% 92% at 100% 100%,
+        hsl(var(--surface-border-bottom-right) / 0.14) 0%,
+        transparent 64%
+      ),
+      radial-gradient(
+        130% 110% at var(--surface-light-source-x) var(--surface-light-source-y),
+        hsl(var(--surface-glass-glow) / 0.18) 0%,
+        transparent 56%
+      ),
+      linear-gradient(
+        var(--surface-light-angle),
+        hsl(var(--surface-glass-top) / 0.28) 0%,
+        hsl(var(--surface-glass-bottom) / 0.22) 100%
+      );
+    border-color: hsl(var(--surface-border-mid) / 0.36);
+    box-shadow:
+      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
+      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.42),
+      inset 1px -1px 0 hsl(var(--surface-border-bottom-left) / 0.3),
+      inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.34),
+      0 14px 32px hsl(var(--surface-glass-shadow) / 0.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .surface-nav {
+    background-color: hsl(var(--card) / 0.68);
+    background-image:
+      radial-gradient(90% 70% at 0% 0%, hsl(var(--surface-border-top-left) / 0.14) 0%, transparent 66%),
+      radial-gradient(90% 70% at 100% 0%, hsl(var(--surface-border-top-right) / 0.13) 0%, transparent 66%),
+      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.18) 0%, hsl(var(--surface-glass-bottom) / 0.16) 100%);
+    border-color: hsl(var(--surface-border-mid) / 0.48);
+    box-shadow:
+      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
+      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.4),
+      0 8px 24px hsl(var(--surface-glass-shadow) / 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .surface-button {
+    border-color: hsl(var(--surface-border-mid) / 0.5);
+    background-color: hsl(var(--card) / 0.74);
+    background-image:
+      radial-gradient(90% 82% at 0% 0%, hsl(var(--surface-border-top-left) / 0.2) 0%, transparent 66%),
+      radial-gradient(88% 82% at 100% 0%, hsl(var(--surface-border-top-right) / 0.18) 0%, transparent 66%),
+      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.2) 0%, hsl(var(--surface-glass-bottom) / 0.18) 100%);
+    box-shadow:
+      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.42),
+      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.36),
+      inset 0 -1px 0 hsl(var(--surface-border-bottom-right) / 0.3),
+      0 4px 10px hsl(var(--surface-glass-shadow) / 0.2);
+    text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / calc(var(--type-shadow-opacity) * 0.85));
+  }
+
+  .shell-surface {
     position: relative;
+    z-index: 0;
   }
 
-.shell-surface--full {
+  .shell-surface--full {
     min-height: 100vh;
     overflow: visible;
+    isolation: isolate;
   }
 
-  .shell-surface::before {
+  .shell-surface--full::before {
     content: none;
   }
 
-  .shell-surface::after {
+  .shell-surface--full::after {
     content: none;
   }
 
   .shell-surface__content {
     position: relative;
     z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-shell-layer--deep,
+    .app-shell-layer--noise {
+      transform: none;
+    }
   }
 
   @keyframes parallax-drift {

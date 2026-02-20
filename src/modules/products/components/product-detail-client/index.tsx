@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
-import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import {
@@ -25,10 +24,12 @@ import { selectOpenCartDrawer, useStorefrontState } from "@lib/state"
 import { cn } from "@lib/utils"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type ProductDetailClientProps = {
   product: HttpTypes.StoreProduct
   countryCode: string
+  initialVariantId?: string
 }
 
 type ProductFaq = {
@@ -559,15 +560,26 @@ function resolveVariantImages(
 export default function ProductDetailClient({
   product,
   countryCode,
+  initialVariantId,
 }: ProductDetailClientProps) {
   const router = useRouter()
   const openCartDrawer = useStorefrontState(selectOpenCartDrawer)
   const [isAdding, setIsAdding] = useState(false)
 
   const variants = useMemo(() => product.variants || [], [product.variants])
+  const requestedVariant = useMemo(
+    () =>
+      initialVariantId
+        ? variants.find((variant) => variant.id === initialVariantId)
+        : undefined,
+    [initialVariantId, variants]
+  )
   const defaultVariant = useMemo(
-    () => variants.find((variant) => isVariantInStock(variant)) || variants[0],
-    [variants]
+    () =>
+      requestedVariant ||
+      variants.find((variant) => isVariantInStock(variant)) ||
+      variants[0],
+    [requestedVariant, variants]
   )
   const orderedOptions = useMemo(
     () => sortProductOptions(product.options || [], product.metadata),
@@ -580,7 +592,7 @@ export default function ProductDetailClient({
       return acc
     }, {})
 
-    if (variants.length === 1 && defaultVariant) {
+    if (defaultVariant && (variants.length === 1 || requestedVariant)) {
       return {
         ...base,
         ...toOptionMap(defaultVariant),
@@ -588,7 +600,7 @@ export default function ProductDetailClient({
     }
 
     return base
-  }, [defaultVariant, orderedOptions, variants.length])
+  }, [defaultVariant, orderedOptions, requestedVariant, variants.length])
 
   const [options, setOptions] = useState<Record<string, string>>(initialOptions)
 
@@ -824,7 +836,7 @@ export default function ProductDetailClient({
     <div className="space-y-8">
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.85fr)_minmax(0,0.85fr)] xl:items-start xl:gap-6">
         <div className="space-y-3">
-          <div className="relative aspect-[5/6] overflow-hidden rounded-3xl border border-border/60 bg-card/60">
+          <div className="surface-panel relative aspect-[5/6] overflow-hidden rounded-3xl border border-border/60">
             {activeImage?.url ? (
               <Image
                 src={activeImage.url}
@@ -870,7 +882,7 @@ export default function ProductDetailClient({
           ) : null}
         </div>
 
-        <div className="space-y-5 rounded-3xl border border-border/60 bg-card/70 p-5 sm:p-6">
+        <div className="surface-panel space-y-5 rounded-3xl border border-border/60 p-5 sm:p-6">
           <div className="space-y-2">
             <h1
               className="text-3xl font-semibold tracking-tight text-foreground"
@@ -997,19 +1009,19 @@ export default function ProductDetailClient({
               data-testid="add-product-button"
             >
               {isAdding ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                <BrandSpinner />
               ) : (
                 addButtonLabel
               )}
             </Button>
           </div>
 
-          <div className="rounded-2xl border border-border/50 bg-background/60 px-4 py-3 text-xs uppercase tracking-[0.22em] text-foreground/60">
+          <div className="surface-panel rounded-2xl border border-border/50 px-4 py-3 text-xs uppercase tracking-[0.22em] text-foreground/60">
             21+ only. Farm Bill compliant hemp products.
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border/60 bg-background/60 xl:mt-0">
+        <div className="surface-panel rounded-2xl border border-border/60 xl:mt-0">
           <Accordion
             type="multiple"
             defaultValue={["details", "faqs"]}
@@ -1042,7 +1054,7 @@ export default function ProductDetailClient({
               </AccordionTrigger>
               <AccordionContent className="space-y-3 px-5 pb-5">
                 {faqs.length ? (
-                  <Accordion type="single" collapsible className="rounded-xl border border-border/50 bg-card/70">
+                  <Accordion type="single" collapsible className="surface-panel rounded-xl border border-border/50">
                     {faqs.map((faq, index) => (
                       <AccordionItem
                         key={`${faq.question}-${index}`}

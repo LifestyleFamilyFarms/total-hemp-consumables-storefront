@@ -17,10 +17,14 @@ import { HttpTypes } from "@medusajs/types"
 import { ShoppingCart } from "lucide-react"
 import {
   selectIsCartDrawerOpen,
+  selectIsCartMutating,
   selectSetCartDrawerOpen,
   useStorefrontState,
 } from "@lib/state"
 import LineItemOptions from "@modules/common/components/line-item-options"
+import ClearCartButton from "@modules/cart/components/clear-cart-button"
+import CartDrawerItemActions from "./item-actions"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type CartDrawerProps = {
   countryCode: string
@@ -58,6 +62,7 @@ export default function CartDrawer({
 }: CartDrawerProps) {
   const isOpen = useStorefrontState(selectIsCartDrawerOpen)
   const setCartDrawerOpen = useStorefrontState(selectSetCartDrawerOpen)
+  const isCartMutating = useStorefrontState(selectIsCartMutating)
 
   const items = cart?.items ?? []
   const itemCount = items.reduce((sum, item) => sum + (item.quantity ?? 0), 0)
@@ -124,9 +129,13 @@ export default function CartDrawer({
                           <LineItemOptions variant={item.variant} />
                         </div>
                       ) : null}
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Qty {item.quantity}
-                      </p>
+                      <CartDrawerItemActions
+                        lineId={item.id}
+                        quantity={item.quantity ?? 1}
+                        variantId={item.variant_id || item.variant?.id}
+                        title={item.product_title || item.title}
+                        maxQuantity={item.variant?.manage_inventory ? 10 : 99}
+                      />
                     </div>
                     <div className="text-sm font-medium text-foreground">
                       {lineItemTotal(item, currencyCode)}
@@ -137,9 +146,20 @@ export default function CartDrawer({
             </ScrollArea>
 
             <Separator />
-            <div className="space-y-4 px-6 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
+            <div className="relative space-y-4 px-6 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
+              {isCartMutating ? (
+                <div className="absolute inset-0 z-10 flex items-center justify-center rounded-t-lg bg-background/80 backdrop-blur-[1px]">
+                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                    <BrandSpinner />
+                    Updating totals...
+                  </div>
+                </div>
+              ) : null}
+              <div className="flex items-center justify-between gap-3 text-sm">
+                <div className="flex items-center gap-3">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <ClearCartButton className="h-8 px-2 text-xs" source="drawer" />
+                </div>
                 <span className="font-semibold text-foreground">
                   {convertToLocale({ amount: subtotal, currency_code: currencyCode })}
                 </span>

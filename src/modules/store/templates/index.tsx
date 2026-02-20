@@ -26,6 +26,7 @@ type StoreTemplateProps = {
   emptyStateTitle?: string
   emptyStateDescription?: string
   layout?: "stacked" | "split"
+  resultMode?: "products" | "variants"
 }
 
 const StoreTemplate = async ({
@@ -46,6 +47,7 @@ const StoreTemplate = async ({
   emptyStateTitle,
   emptyStateDescription,
   layout = "stacked",
+  resultMode = "products",
 }: StoreTemplateProps) => {
   const facetOptions = await getPlpFacetOptions({
     countryCode,
@@ -84,6 +86,7 @@ const StoreTemplate = async ({
         productsIds={productsIds}
         emptyStateTitle={emptyStateTitle}
         emptyStateDescription={emptyStateDescription}
+        resultMode={resultMode}
       />
     </Suspense>
   )
@@ -94,7 +97,7 @@ const StoreTemplate = async ({
         <section className="mx-auto w-full max-w-[1480px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,0.33fr)_minmax(0,0.67fr)] lg:items-start">
             <aside className="space-y-4 lg:sticky lg:top-24">
-              <header className="space-y-3 rounded-3xl border border-border/60 bg-gradient-to-br from-card via-card/80 to-background p-6 shadow-[0_20px_48px_rgba(15,23,42,0.12)]">
+              <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/60">
                   {eyebrow}
                 </p>
@@ -118,7 +121,7 @@ const StoreTemplate = async ({
   return (
     <div className="pb-16" data-testid="category-container">
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-8 sm:px-10 sm:py-10">
-        <header className="space-y-3 rounded-3xl border border-border/60 bg-gradient-to-br from-card via-card/80 to-background p-6 shadow-[0_20px_48px_rgba(15,23,42,0.12)] sm:p-8">
+        <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/60">
             {eyebrow}
           </p>

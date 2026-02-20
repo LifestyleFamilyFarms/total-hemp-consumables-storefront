@@ -42,6 +42,7 @@ Note:
 - Keep `MEDUSA_ADMIN_TOKEN` server-only; never expose in client bundles or docs.
 - `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is intentionally public and expected client-visible.
 - Product media governance is now documented in `docs/product-media-ordering.md` (variant metadata + gallery rank workflow for intentional PDP primary images).
+- TODO (repo hygiene): decide asset policy to keep only production-served assets in `public/`, and gitignore raw/source design assets folder(s) once finalized.
 
 ## Agent Ownership (No Cross-Streams)
 

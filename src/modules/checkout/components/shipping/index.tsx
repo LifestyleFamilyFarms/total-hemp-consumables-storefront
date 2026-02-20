@@ -16,10 +16,10 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { Loader2 } from "lucide-react"
 import { cn } from "src/lib/utils"
 import { SHIPSTATION_SERVICE_ALLOWLIST_SET } from "src/lib/constants/shipping"
 import { setShippingMethod } from "@lib/data/cart"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
@@ -559,7 +559,7 @@ const Shipping: React.FC<ShippingProps> = ({
       ? "-"
       : isCalculatingShipping || isPrefetchingRates
         ? (
-          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          <BrandSpinner className="text-muted-foreground" />
         )
         : typeof selectedShippingPrice === "number"
           ? formatCurrencyFromMinor(
@@ -727,7 +727,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           data-testid="calculate-shipping-button"
                         >
                           {isCalculatingShipping && (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <BrandSpinner className="mr-2" />
                           )}
                           Apply shipping rate
                         </Button>
@@ -830,7 +830,7 @@ const Shipping: React.FC<ShippingProps> = ({
               data-testid="submit-delivery-option-button"
             >
               {isProcessing && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <BrandSpinner className="mr-2" />
               )}
               Continue to payment
             </Button>

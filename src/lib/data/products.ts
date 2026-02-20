@@ -31,6 +31,14 @@ export type PlpFacetGroups = {
   compound: PlpFacetOption[]
 }
 
+export type PlpVariantRecord = {
+  id: string
+  product: HttpTypes.StoreProduct
+  variant: HttpTypes.StoreProductVariant
+  priceAmount: number | null
+  currencyCode: string | null
+}
+
 type FacetRule = {
   value: string
   label: string
@@ -261,6 +269,121 @@ const dedupeProductsById = (products: HttpTypes.StoreProduct[]) => {
   }
 
   return deduped
+}
+
+const dedupeVariantRecords = (records: PlpVariantRecord[]) => {
+  const seen = new Set<string>()
+  const deduped: PlpVariantRecord[] = []
+
+  for (const record of records) {
+    if (!record.id || seen.has(record.id)) {
+      continue
+    }
+
+    seen.add(record.id)
+    deduped.push(record)
+  }
+
+  return deduped
+}
+
+const getVariantSortLabel = (record: PlpVariantRecord) => {
+  const productTitle = record.product.title || ""
+  const variantTitle = record.variant.title || ""
+  return `${productTitle} ${variantTitle}`.trim()
+}
+
+const getVariantCreatedAt = (record: PlpVariantRecord) => {
+  const variantCreatedAt =
+    (record.variant as { created_at?: string | null }).created_at || ""
+  const productCreatedAt = record.product.created_at || ""
+
+  return new Date(variantCreatedAt || productCreatedAt || 0).getTime()
+}
+
+const sortVariantRecords = (
+  records: PlpVariantRecord[],
+  sortBy: SortOptions
+): PlpVariantRecord[] => {
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: "base",
+  })
+  const sorted = [...records]
+
+  if (sortBy === "price_asc" || sortBy === "price_desc") {
+    sorted.sort((left, right) => {
+      const leftPrice = left.priceAmount
+      const rightPrice = right.priceAmount
+
+      const leftMissing = typeof leftPrice !== "number"
+      const rightMissing = typeof rightPrice !== "number"
+
+      if (leftMissing && rightMissing) {
+        return collator.compare(getVariantSortLabel(left), getVariantSortLabel(right))
+      }
+
+      if (leftMissing) {
+        return 1
+      }
+
+      if (rightMissing) {
+        return -1
+      }
+
+      if (leftPrice !== rightPrice) {
+        return sortBy === "price_asc" ? leftPrice - rightPrice : rightPrice - leftPrice
+      }
+
+      return collator.compare(getVariantSortLabel(left), getVariantSortLabel(right))
+    })
+
+    return sorted
+  }
+
+  if (sortBy === "created_at") {
+    sorted.sort((left, right) => getVariantCreatedAt(right) - getVariantCreatedAt(left))
+    return sorted
+  }
+
+  sorted.sort((left, right) => {
+    const comparison = collator.compare(getVariantSortLabel(left), getVariantSortLabel(right))
+    return sortBy === "title_za" ? -comparison : comparison
+  })
+
+  return sorted
+}
+
+const buildVariantRecords = (products: HttpTypes.StoreProduct[]) => {
+  const records: PlpVariantRecord[] = []
+
+  for (const product of products) {
+    for (const variant of product.variants || []) {
+      if (!variant?.id) {
+        continue
+      }
+
+      const priceAmount =
+        typeof variant.calculated_price?.calculated_amount === "number"
+          ? variant.calculated_price.calculated_amount
+          : null
+      const currencyCode =
+        variant.calculated_price?.currency_code ||
+        product.variants?.find((entry) => entry.calculated_price?.currency_code)
+          ?.calculated_price?.currency_code ||
+        null
+
+      records.push({
+        id: variant.id,
+        product,
+        variant,
+        priceAmount,
+        currencyCode,
+      })
+    }
+  }
+
+  return dedupeVariantRecords(records)
 }
 
 const getDefaultStoreSalesChannelId = async (
@@ -564,6 +687,89 @@ export const listProductsForPlp = async ({
     products,
     count,
     page: Math.max(page, 1),
+    sortBy,
+    q: q || "",
+    categoryIds,
+    totalPages: Math.max(1, Math.ceil(count / PRODUCT_LIMIT)),
+  }
+}
+
+export const listProductVariantsForPlp = async ({
+  countryCode,
+  page = 1,
+  sortBy = DEFAULT_SORT,
+  q,
+  categoryHandles,
+  categoryId,
+  collectionId,
+  productsIds,
+  typeValues,
+  effectValues,
+  compoundValues,
+}: {
+  countryCode: string
+  page?: number
+  sortBy?: SortOptions
+  q?: string
+  categoryHandles?: string[]
+  categoryId?: string
+  collectionId?: string
+  productsIds?: string[]
+  typeValues?: string[]
+  effectValues?: string[]
+  compoundValues?: string[]
+}) => {
+  const categoryIds = await resolvePlpCategoryIds({
+    categoryHandles,
+    categoryId,
+  })
+
+  const baseQueryParams = buildPlpBaseQueryParams({
+    q,
+    categoryIds,
+    collectionId,
+    productsIds,
+  })
+
+  let typeIds: string[] = []
+  let tagIds: string[] = []
+
+  if (typeValues?.length || effectValues?.length || compoundValues?.length) {
+    const { typeMap, effectMap, compoundMap } = await getPlpFacetIndex({
+      countryCode,
+      queryParams: baseQueryParams,
+    })
+
+    typeIds = resolveFacetIds(typeValues, typeMap)
+
+    tagIds = Array.from(
+      new Set([
+        ...resolveFacetIds(effectValues, effectMap),
+        ...resolveFacetIds(compoundValues, compoundMap),
+      ])
+    )
+  }
+
+  const queryParams: ProductListQueryParams = {
+    ...baseQueryParams,
+    ...(typeIds.length ? { type_id: typeIds } : {}),
+    ...(tagIds.length ? { tag_id: tagIds } : {}),
+  }
+
+  const { products } = await collectProductsForSort({
+    countryCode,
+    queryParams,
+  })
+
+  const variantRecords = sortVariantRecords(buildVariantRecords(products), sortBy)
+  const count = variantRecords.length
+  const currentPage = Math.max(page, 1)
+  const offset = (currentPage - 1) * PRODUCT_LIMIT
+
+  return {
+    variants: variantRecords.slice(offset, offset + PRODUCT_LIMIT),
+    count,
+    page: currentPage,
     sortBy,
     q: q || "",
     categoryIds,

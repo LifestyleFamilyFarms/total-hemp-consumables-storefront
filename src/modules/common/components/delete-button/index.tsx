@@ -1,11 +1,12 @@
 "use client"
 
-import { Loader2, Trash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import { ButtonHTMLAttributes, useState } from "react"
 import { cn } from "src/lib/utils"
 import { Button } from "@/components/ui/button"
 import { deleteLineItem } from "@lib/data/cart"
 import { useRouter } from "next/navigation"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type DeleteButtonProps = {
   id: string
@@ -44,7 +45,7 @@ const DeleteButton = ({
         {...buttonProps}
       >
         {isDeleting ? (
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          <BrandSpinner />
         ) : (
           <Trash2 className="h-4 w-4" aria-hidden />
         )}

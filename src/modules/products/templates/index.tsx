@@ -9,16 +9,25 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   countryCode: string
+  initialVariantId?: string
 }
 
-const ProductTemplate = ({ product, countryCode }: ProductTemplateProps) => {
+const ProductTemplate = ({
+  product,
+  countryCode,
+  initialVariantId,
+}: ProductTemplateProps) => {
   if (!product?.id) {
     return notFound()
   }
 
   return (
     <div className="mx-auto w-full max-w-[1480px] space-y-12 px-4 pb-20 pt-8 sm:px-6 lg:px-8 sm:pt-10">
-      <ProductDetailClient product={product} countryCode={countryCode} />
+      <ProductDetailClient
+        product={product}
+        countryCode={countryCode}
+        initialVariantId={initialVariantId}
+      />
 
       <section data-testid="related-products-container" className="space-y-4">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">

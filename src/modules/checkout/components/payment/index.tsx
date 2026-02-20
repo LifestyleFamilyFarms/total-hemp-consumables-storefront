@@ -9,8 +9,9 @@ import { useCallback, useEffect, useState } from "react"
 import { createToken } from "authorizenet-react"
 import SectionCard from "../section-card"
 import { Button } from "@/components/ui/button"
-import { CreditCard as CreditCardIcon, Loader2 } from "lucide-react"
+import { CreditCard as CreditCardIcon } from "lucide-react"
 import { initiatePaymentSession } from "@lib/data/cart"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type CartSnapshot = {
   shipping_methods: Array<{ amount: number; name: string }>
@@ -308,7 +309,7 @@ const Payment = ({
             }
             data-testid="submit-payment-button"
           >
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <BrandSpinner className="mr-2" />}
             {requiresCardEntry ? "Enter card details" : "Continue to review"}
           </Button>
         </div>

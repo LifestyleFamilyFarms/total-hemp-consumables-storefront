@@ -3,6 +3,7 @@
 import { HttpTypes } from "@medusajs/types"
 
 import Item from "@modules/cart/components/item"
+import ClearCartButton from "@modules/cart/components/clear-cart-button"
 import {
   Table,
   TableBody,
@@ -19,8 +20,9 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
   const items = cart?.items
   return (
     <div>
-      <div className="pb-3 flex items-center">
+      <div className="flex items-center justify-between gap-3 pb-3">
         <h2 className="text-[2rem] leading-[2.75rem] font-semibold">Cart</h2>
+        <ClearCartButton />
       </div>
       <div className="overflow-x-auto rounded-lg border border-border/60 bg-background">
         <Table className="min-w-full">

@@ -25,6 +25,14 @@ export const selectSetOverlayVisible = (state: StorefrontState) =>
 export const selectToastEnabled = (state: StorefrontState) => state.toastEnabled
 export const selectSetToastEnabled = (state: StorefrontState) =>
   state.setToastEnabled
+export const selectCartMutationCount = (state: StorefrontState) =>
+  state.cartMutationCount
+export const selectIsCartMutating = (state: StorefrontState) =>
+  state.cartMutationCount > 0
+export const selectBeginCartMutation = (state: StorefrontState) =>
+  state.beginCartMutation
+export const selectEndCartMutation = (state: StorefrontState) =>
+  state.endCartMutation
 
 export const selectCheckoutDraft = (state: StorefrontState) => state.checkoutDraft
 export const selectSetCheckoutDraftField = (state: StorefrontState) =>

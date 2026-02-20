@@ -2,7 +2,6 @@
 
 import compareAddresses from "@lib/util/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
-import Spinner from "@modules/common/icons/spinner"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import BillingAddress from "../billing_address"
@@ -10,9 +9,9 @@ import ErrorMessage from "../error-message"
 import ShippingAddress from "../shipping-address"
 import SectionCard from "../section-card"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
 import { z, ZodError } from "zod"
 import { updateCart } from "@lib/data/cart"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 const Addresses = ({
   cart,
@@ -205,7 +204,7 @@ const Addresses = ({
               data-testid="submit-address-button"
               disabled={submitting}
             >
-              {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {submitting && <BrandSpinner className="mr-2" />}
               Continue to delivery
             </Button>
             <ErrorMessage
@@ -276,7 +275,7 @@ const Addresses = ({
               </button>
             </div>
           ) : (
-            <Spinner />
+            <BrandSpinner />
           )}
         </div>
       )}

@@ -5,6 +5,7 @@ import { Metadata } from "next"
 import { Providers } from "../providers"
 import { Toaster } from "@/components/ui/sonner"
 import { DEFAULT_THEME_ID } from "@/themes/config"
+import ShellParallaxBackground from "@/components/layout/shell-parallax-background"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -25,10 +26,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
       <body className="app-shell-bg">
         <div className="relative">
-          <div className="pointer-events-none fixed inset-0 -z-10 app-shell-parallax">
-            <div className="app-shell-pattern" />
-            <div className="app-shell-noise" />
-          </div>
+          <ShellParallaxBackground />
           <Providers>
             <main className="relative">{props.children}</main>
             <Toaster />

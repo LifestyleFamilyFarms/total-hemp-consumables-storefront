@@ -6,6 +6,7 @@ import ProductTemplate from "@modules/products/templates"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
+  searchParams: Promise<{ variant?: string }>
 }
 
 export async function generateStaticParams() {
@@ -81,6 +82,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ProductPage(props: Props) {
   const params = await props.params
+  const searchParams = await props.searchParams
   const region = await getRegion(params.countryCode)
 
   if (!region) {
@@ -100,6 +102,9 @@ export default async function ProductPage(props: Props) {
     <ProductTemplate
       product={pricedProduct}
       countryCode={params.countryCode}
+      initialVariantId={
+        typeof searchParams.variant === "string" ? searchParams.variant : undefined
+      }
     />
   )
 }

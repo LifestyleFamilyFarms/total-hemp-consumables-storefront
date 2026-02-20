@@ -2,12 +2,12 @@
 
 import { isAuthorizeNet } from "@lib/constants"
 import { HttpTypes } from "@medusajs/types"
-import { Loader2 } from "lucide-react"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { completeCart as completeCartAction } from "@lib/data/cart"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -102,7 +102,7 @@ const AuthorizeNetPaymentButton = ({
         className="h-11 px-6 text-sm font-medium"
         data-testid={dataTestId ?? "submit-order-button"}
       >
-        {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {submitting && <BrandSpinner className="mr-2" />}
         Place order
       </Button>
       <ErrorMessage

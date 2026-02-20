@@ -337,7 +337,7 @@ export default function PlpControls({
   }
 
   return (
-    <section className="space-y-4 rounded-3xl border border-border/60 bg-card/60 p-4 shadow-[0_12px_36px_rgba(15,23,42,0.12)]">
+    <section className="surface-panel space-y-4 rounded-3xl border border-border/60 p-4">
       <div className="hidden space-y-4 lg:block">
         <div className="space-y-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/60">

@@ -9,6 +9,7 @@ export type UiSlice = {
   activeModal: UiModalId
   isOverlayVisible: boolean
   toastEnabled: boolean
+  cartMutationCount: number
   openNav: () => void
   closeNav: () => void
   setNavOpen: (open: boolean) => void
@@ -19,6 +20,8 @@ export type UiSlice = {
   closeModal: () => void
   setOverlayVisible: (visible: boolean) => void
   setToastEnabled: (enabled: boolean) => void
+  beginCartMutation: () => void
+  endCartMutation: () => void
 }
 
 export const createUiSlice: StateCreator<StorefrontState, [], [], UiSlice> = (
@@ -29,6 +32,7 @@ export const createUiSlice: StateCreator<StorefrontState, [], [], UiSlice> = (
   activeModal: null,
   isOverlayVisible: false,
   toastEnabled: true,
+  cartMutationCount: 0,
   openNav: () => set({ isNavOpen: true }),
   closeNav: () => set({ isNavOpen: false }),
   setNavOpen: (open) => set({ isNavOpen: open }),
@@ -39,4 +43,10 @@ export const createUiSlice: StateCreator<StorefrontState, [], [], UiSlice> = (
   closeModal: () => set({ activeModal: null }),
   setOverlayVisible: (visible) => set({ isOverlayVisible: visible }),
   setToastEnabled: (enabled) => set({ toastEnabled: enabled }),
+  beginCartMutation: () =>
+    set((state) => ({ cartMutationCount: state.cartMutationCount + 1 })),
+  endCartMutation: () =>
+    set((state) => ({
+      cartMutationCount: Math.max(0, state.cartMutationCount - 1),
+    })),
 })

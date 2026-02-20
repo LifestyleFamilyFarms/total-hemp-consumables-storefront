@@ -9,7 +9,7 @@ export type NavItem = {
 
 export const PRIMARY_NAV_ITEMS: NavItem[] = [
   { label: "Home", href: (countryCode) => `/${countryCode}`, icon: Home },
-  { label: "Shop", href: (countryCode) => `/${countryCode}/store`, icon: Store },
+  { label: "Shop All", href: (countryCode) => `/${countryCode}/store`, icon: Store },
   {
     label: "Gamma Gummies",
     href: (countryCode) => `/${countryCode}/gamma-gummies`,
