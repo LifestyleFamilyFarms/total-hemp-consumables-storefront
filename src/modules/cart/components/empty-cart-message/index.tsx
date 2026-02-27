@@ -2,7 +2,10 @@ import InteractiveLink from "@modules/common/components/interactive-link"
 
 const EmptyCartMessage = () => {
   return (
-    <div className="py-48 px-2 flex flex-col justify-center items-start" data-testid="empty-cart-message">
+    <div
+      className="flex flex-col items-start justify-center px-2 py-20 small:py-28 large:py-36"
+      data-testid="empty-cart-message"
+    >
       <h1 className="flex flex-row text-3xl-regular gap-x-2 items-baseline">
         Cart
       </h1>

@@ -34,8 +34,16 @@ export default async function Checkout({
   const currentStep = resolvedSearch?.step || "address"
 
   return (
-    <div className="bg-ui-bg-subtle min-h-screen py-12 sm:py-16">
-      <div className="content-container max-w-[1440px]">
+    <div className="w-full py-3 sm:py-4">
+      <div className="mx-auto w-full max-w-[1440px]">
+        <div className="mb-4 flex flex-col gap-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            Checkout
+          </h1>
+          <p className="text-sm text-foreground/75">
+            Complete your order details to place your purchase securely.
+          </p>
+        </div>
         <CheckoutSteps />
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.5fr)_380px] lg:gap-14 xl:grid-cols-[minmax(0,1.7fr)_400px] xl:gap-20">
           <PaymentWrapper cart={cart}>

@@ -1,11 +1,12 @@
 # Brand Asset Usage Guide
 
-This guide explains how to work with the optimized logo/icon set generated from the designer package.
+This guide explains how to work with the SVG-only logo/icon set generated from the designer package.
 
 ## Working with the source
 - Original deliverables live in `assets/brand/LOGOS_ICONS_GUIDE` (AI/EPS/PDF).
 - Source web logos live in `assets/brand/LOGOS_ICONS_WEB`.
-- Web-ready assets are generated via `yarn brand:build`, which writes optimized PNG + WebP outputs to `public/logos/optimized/**` and updates `src/lib/brand/brand-assets.json`.
+- Runtime logo assets live in `public/logos/svg`.
+- `yarn brand:build` is SVG-only and updates `src/lib/brand/brand-assets.json` with SVG paths + intrinsic dimensions.
 - If the design team ships new files, drop them in `assets/brand/LOGOS_ICONS_WEB` and re-run `yarn brand:build`.
 
 ## Curated variants
@@ -27,7 +28,7 @@ If you need something outside this list (e.g., no-TM or GREY horizontal), import
   - `getBrandVariant(variant)` – returns the curated config + manifest entry
   - `listBrandVariants()` – handy for docs or admin dashboards
   - `brandAssets` / `brandManifestMeta` – raw manifest data
-- `src/components/brand/brand-logo.tsx` is the single place to render logos. It handles selecting the right PNG/WebP, wiring intrinsic dimensions, and provides optional caption/shadow props for animations later.
+- `src/components/brand/brand-logo.tsx` is the single place to render logos. It resolves SVG first and uses intrinsic dimensions from the manifest.
 
 ### Example
 ```tsx

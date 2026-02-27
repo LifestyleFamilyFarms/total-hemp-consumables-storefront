@@ -29,8 +29,8 @@ const Review = ({ cart }: { cart: any }) => {
               <p className="text-sm font-medium leading-6 text-foreground">
                 By clicking the Place Order button, you confirm that you have
                 read, understand and accept our Terms of Use, Terms of Sale and
-                Returns Policy and acknowledge that you have read Medusa
-                Store&apos;s Privacy Policy.
+                Returns Policy and acknowledge that you have read Total Hemp
+                Consumables&apos; Privacy Policy.
               </p>
             </div>
           </div>

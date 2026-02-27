@@ -8,6 +8,19 @@ const MAX_AGE_DAYS = 30
 
 const getExpiry = () => Date.now() + MAX_AGE_DAYS * 24 * 60 * 60 * 1000
 
+const hasQaBypass = () => {
+  if (typeof window === "undefined") {
+    return false
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    return false
+  }
+
+  const searchParams = new URLSearchParams(window.location.search)
+  return searchParams.get("qa_age_verified") === "1"
+}
+
 const readStoredTimestamp = () => {
   if (typeof window === "undefined") return null
   const stored = window.localStorage.getItem(STORAGE_KEY)
@@ -31,6 +44,12 @@ export default function AgeGate({ className }: AgeGateProps) {
   const confirmRef = useRef<HTMLButtonElement | null>(null)
 
   const shouldShow = useMemo(() => {
+    if (hasQaBypass()) {
+      const expiry = getExpiry()
+      writeStoredTimestamp(expiry)
+      return false
+    }
+
     const stored = readStoredTimestamp()
     if (!stored) return true
     return stored < Date.now()

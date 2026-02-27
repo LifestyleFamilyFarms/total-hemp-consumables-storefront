@@ -1,4 +1,5 @@
 import { DEFAULT_SORT, SortOptions, isSortOption } from "./sort-options"
+import { PlpCardStyle, normalizePlpCardStyle } from "./card-style"
 
 type QueryValue = string | string[] | undefined
 
@@ -13,6 +14,7 @@ export const PLP_QUERY_KEYS = {
   type: "type",
   effect: "effect",
   compound: "compound",
+  cardStyle: "cardStyle",
 } as const
 
 export type PlpUrlState = {
@@ -23,6 +25,7 @@ export type PlpUrlState = {
   type: string[]
   effect: string[]
   compound: string[]
+  cardStyle: PlpCardStyle
 }
 
 const readFirst = (value: QueryValue) =>
@@ -76,5 +79,6 @@ export const parsePlpUrlState = (searchParams: PlpSearchParams): PlpUrlState => 
     type,
     effect,
     compound,
+    cardStyle: normalizePlpCardStyle(searchParams[PLP_QUERY_KEYS.cardStyle]),
   }
 }

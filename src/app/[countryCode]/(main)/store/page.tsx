@@ -4,11 +4,6 @@ import StoreTemplate from "@modules/store/templates"
 import { SortOptions } from "@modules/store/lib/sort-options"
 import { parsePlpUrlState } from "@modules/store/lib/url-state"
 
-export const metadata: Metadata = {
-  title: "Store",
-  description: "Explore all of our products.",
-}
-
 type Params = {
   searchParams: Promise<{
     sort?: SortOptions
@@ -19,10 +14,23 @@ type Params = {
     type?: string | string[]
     effect?: string | string[]
     compound?: string | string[]
+    cardStyle?: string | string[]
   }>
   params: Promise<{
     countryCode: string
   }>
+}
+
+export async function generateMetadata(props: Params): Promise<Metadata> {
+  const params = await props.params
+
+  return {
+    title: "Store",
+    description: "Explore all of our products.",
+    alternates: {
+      canonical: `/${params.countryCode}/store`,
+    },
+  }
 }
 
 export default async function StorePage(props: Params) {
@@ -39,6 +47,7 @@ export default async function StorePage(props: Params) {
       type={state.type}
       effect={state.effect}
       compound={state.compound}
+      cardStyle={state.cardStyle}
       countryCode={params.countryCode}
       layout="split"
     />

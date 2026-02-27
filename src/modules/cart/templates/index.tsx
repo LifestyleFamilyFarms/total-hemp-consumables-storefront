@@ -5,6 +5,10 @@ import SignInPrompt from "../components/sign-in-prompt"
 import Divider from "@modules/common/components/divider"
 import { HttpTypes } from "@medusajs/types"
 
+type CartWithPromotions = HttpTypes.StoreCart & {
+  promotions: HttpTypes.StoreCartPromotion[]
+}
+
 const CartTemplate = ({
   cart,
   customer,
@@ -31,7 +35,12 @@ const CartTemplate = ({
                 {cart && cart.region && (
                   <>
                     <div className="bg-white py-6">
-                      <Summary cart={cart as any} />
+                      <Summary
+                        cart={{
+                          ...cart,
+                          promotions: cart.promotions ?? [],
+                        } as CartWithPromotions}
+                      />
                     </div>
                   </>
                 )}

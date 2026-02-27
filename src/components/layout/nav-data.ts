@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import { CircleUserRound, Home, Sparkles, Store } from "lucide-react"
+import { CircleUserRound, Gift, Home, Sparkles, Store } from "lucide-react"
 
 export type NavItem = {
   label: string
@@ -15,6 +15,11 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
     href: (countryCode) => `/${countryCode}/gamma-gummies`,
     icon: Sparkles,
   },
+  {
+    label: "Rewards",
+    href: (countryCode) => `/${countryCode}/content/loyalty-rewards`,
+    icon: Gift,
+  },
 ]
 
 export const ACCOUNT_NAV_ITEMS: NavItem[] = [
@@ -26,5 +31,9 @@ export const ACCOUNT_NAV_ITEMS: NavItem[] = [
   {
     label: "Addresses",
     href: (countryCode) => `/${countryCode}/account/addresses`,
+  },
+  {
+    label: "Loyalty",
+    href: (countryCode) => `/${countryCode}/account/loyalty`,
   },
 ]

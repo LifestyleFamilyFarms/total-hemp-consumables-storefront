@@ -2,6 +2,7 @@
 import type { ReactNode } from "react"
 import { HttpTypes } from "@medusajs/types"
 import ComplianceBar from "@/components/layout/compliance-bar"
+import MemberRewardsBanner from "@/components/layout/member-rewards-banner"
 import Topbar from "@/components/layout/topbar"
 import AgeGate from "@/components/layout/age-gate"
 import type { NavigationCategory } from "@lib/data/categories"
@@ -36,6 +37,10 @@ export default function AppShell({
           cart={cart}
           categories={categories}
           user={user}
+        />
+        <MemberRewardsBanner
+          countryCode={countryCode}
+          isAuthenticated={Boolean(user?.isAuthenticated)}
         />
 
         <div className="relative isolate px-0 pb-[calc(var(--bottom-bar-height,4rem)+2rem)] pt-3 sm:px-6 md:pt-5">

@@ -109,6 +109,14 @@ export const BRAND_VARIANT_CONFIG = {
     minWidthPx: 200,
     background: "dark",
   },
+  roundFullColorLogo: {
+    id: "full-color-logo-nobgweb",
+    label: "Round full-color logo",
+    description: "Primary circular brand logo without background for large watermark and hero treatments.",
+    recommendedUsage: ["Auth backgrounds", "Large watermark surfaces", "Brand-forward highlights"],
+    minWidthPx: 220,
+    background: "either",
+  },
   complianceSeal: {
     id: "bw-logowtagline-wbgweb",
     label: "Compliance seal",
@@ -199,6 +207,69 @@ const THEME_LOGO_MAP: Record<BrandThemeId, Record<BrandLogoSlot, BrandLogoVarian
     footer: "complianceSeal",
     compliance: "complianceSeal",
   },
+}
+
+export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
+  sativa: [
+    "COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_ICON_PRINT.svg",
+    "FULL_COLOR_ICONnoTM_PRINT.svg",
+    "FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_LOGOwTAGLINE_PRINT.svg",
+  ],
+  indica: [
+    "DB_COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_FULL_COLOR_ICON_PRINT.svg",
+    "DB_FULL_COLOR_ICONnoTM_PRINT.svg",
+    "DB_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg",
+  ],
+  light: [
+    "BW_ICON_PRINT.svg",
+    "BW_ICONnoTM_PRINT.svg",
+    "GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "GREY_ICON_PRINT.svg",
+    "GREY_ICONnoTM_PRINT.svg",
+    "GREY_LOGO_PRINT.svg",
+    "GREY_LOGOwTAGLINE_PRINT.svg",
+  ],
+  dark: [
+    "BW_horizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "BW_LOGO_PRINT.svg",
+    "BW_LOGOwTAGLINE_PRINT.svg",
+    "DB_BW_ICON_PRINT.svg",
+    "DB_BW_ICONnoTM_PRINT.svg",
+    "DB_GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_GREY_LOGO_PRINT.svg",
+  ],
+}
+
+const manifestSvgFileNames = new Set(
+  brandManifest.assets.flatMap((asset) =>
+    Object.values(asset.outputs)
+      .map((output) => {
+        const svgPath = (output as { svg?: string }).svg
+        if (typeof svgPath !== "string") {
+          return null
+        }
+
+        return svgPath.split("/").pop() ?? null
+      })
+      .filter((value): value is string => Boolean(value))
+  )
+)
+
+const invalidThemeLogoFamilyEntries = Object.entries(THEME_LOGO_FAMILY_SVGS)
+  .flatMap(([theme, fileNames]) =>
+    fileNames
+      .filter((fileName) => !manifestSvgFileNames.has(fileName))
+      .map((fileName) => `${theme}: ${fileName}`)
+  )
+
+if (invalidThemeLogoFamilyEntries.length > 0) {
+  throw new Error(
+    `Invalid THEME_LOGO_FAMILY_SVGS entries detected:\n${invalidThemeLogoFamilyEntries.join("\n")}`
+  )
 }
 
 export function getLogoVariantForTheme(slot: BrandLogoSlot, theme: BrandThemeId): BrandLogoVariant {

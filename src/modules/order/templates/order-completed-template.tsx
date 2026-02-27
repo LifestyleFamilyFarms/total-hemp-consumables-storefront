@@ -1,10 +1,11 @@
 import { cookies as nextCookies } from "next/headers"
 
-import CartTotals from "@modules/common/components/cart-totals"
 import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
+import NextSteps from "@modules/order/components/next-steps"
 import OnboardingCta from "@modules/order/components/onboarding-cta"
 import OrderDetails from "@modules/order/components/order-details"
+import OrderSummary from "@modules/order/components/order-summary"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
@@ -48,11 +49,10 @@ export default async function OrderCompletedTemplate({
             Summary
           </h2>
           <Items order={order} />
-          <CartTotals
-            totals={{ ...order, shipping_methods: order.shipping_methods ?? [] }}
-          />
+          <OrderSummary order={order} />
           <ShippingDetails order={{ ...order, shipping_methods: order.shipping_methods ?? [] }} />
           <PaymentDetails order={order} />
+          <NextSteps order={order} />
           <Help />
         </div>
       </div>

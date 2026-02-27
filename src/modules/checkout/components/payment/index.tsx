@@ -253,7 +253,7 @@ const Payment = ({
       }
       className={
         isOpen
-          ? "bg-green-50 border border-green-200"
+          ? "border-primary/50 bg-primary/10"
           : undefined
       }
     >

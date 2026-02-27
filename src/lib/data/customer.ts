@@ -22,6 +22,12 @@ type ActionResult = {
   error: string | null
 }
 
+export type CustomerAddressActionState = ActionResult & {
+  isDefaultBilling?: boolean
+  isDefaultShipping?: boolean
+  addressId?: string
+}
+
 const actionSuccess: ActionResult = {
   success: true,
   error: null,
@@ -86,6 +92,76 @@ export const retrieveCustomer =
       .catch(() => null)
   }
 
+export type LoyaltyHistoryItem = {
+  id: string
+  type: string
+  points: number
+  balance_after: number
+  reason?: string | null
+  order_id?: string | null
+  created_at: string
+}
+
+export const getLoyaltyPoints = async (): Promise<number | null> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<{ points: number }>(`/store/customers/me/loyalty-points`, {
+      method: "GET",
+      headers,
+    })
+    .then(({ points }) => points)
+    .catch(() => null)
+}
+
+export const getLoyaltyPointsHistory = async ({
+  limit = 10,
+  offset = 0,
+}: {
+  limit?: number
+  offset?: number
+} = {}): Promise<{
+  history: LoyaltyHistoryItem[]
+  count: number
+  limit: number
+  offset: number
+} | null> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<{
+      history: LoyaltyHistoryItem[]
+      count: number
+      limit: number
+      offset: number
+    }>(`/store/customers/me/loyalty-points/history`, {
+      method: "GET",
+      headers,
+      query: {
+        limit,
+        offset,
+      },
+    })
+    .catch(() => null)
+}
+
+export const getLoyaltySummary = async () => {
+  const [points, historyResponse] = await Promise.all([
+    getLoyaltyPoints(),
+    getLoyaltyPointsHistory({ limit: 5, offset: 0 }),
+  ])
+
+  return {
+    points,
+    history: historyResponse?.history || [],
+    count: historyResponse?.count || 0,
+  }
+}
+
 export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -101,7 +177,10 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   return updateRes
 }
 
-export async function signup(_currentState: unknown, formData: FormData) {
+export async function signup(
+  _currentState: string | null,
+  formData: FormData
+): Promise<string | null> {
   const password = formData.get("password") as string
   const customerForm = {
     email: formData.get("email") as string,
@@ -141,7 +220,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await attachSalesRepForSession(createdCustomer.id)
 
-    return createdCustomer
+    return null
   } catch (error) {
     return toErrorMessage(error)
   }
@@ -197,11 +276,11 @@ export async function transferCart() {
 }
 
 export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressActionState,
   formData: FormData
-): Promise<ActionResult> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
+): Promise<CustomerAddressActionState> => {
+  const isDefaultBilling = currentState.isDefaultBilling || false
+  const isDefaultShipping = currentState.isDefaultShipping || false
 
   const address = {
     first_name: formData.get("first_name") as string,
@@ -226,10 +305,19 @@ export const addCustomerAddress = async (
     .createAddress(address, {}, headers)
     .then(async () => {
       await revalidateCustomersCache()
-      return actionSuccess
+      return {
+        ...actionSuccess,
+        isDefaultBilling,
+        isDefaultShipping,
+      }
     })
     .catch((err) => {
-      return { success: false, error: toErrorMessage(err) }
+      return {
+        success: false,
+        error: toErrorMessage(err),
+        isDefaultBilling,
+        isDefaultShipping,
+      }
     })
 }
 
@@ -252,14 +340,16 @@ export const deleteCustomerAddress = async (
 }
 
 export const updateCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressActionState,
   formData: FormData
-): Promise<ActionResult> => {
-  const addressId =
-    (currentState.addressId as string) || (formData.get("addressId") as string)
+): Promise<CustomerAddressActionState> => {
+  const addressId = currentState.addressId || (formData.get("addressId") as string)
 
   if (!addressId) {
-    return { success: false, error: "Address ID is required" }
+    return {
+      success: false,
+      error: "Address ID is required",
+    }
   }
 
   const address = {
@@ -288,9 +378,16 @@ export const updateCustomerAddress = async (
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       await revalidateCustomersCache()
-      return actionSuccess
+      return {
+        ...actionSuccess,
+        addressId,
+      }
     })
     .catch((err) => {
-      return { success: false, error: toErrorMessage(err) }
+      return {
+        success: false,
+        error: toErrorMessage(err),
+        addressId,
+      }
     })
 }

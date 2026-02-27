@@ -1,12 +1,18 @@
 import Image from "next/image"
 
 import { PlpVariantRecord } from "@lib/data/products"
+import { cn } from "@lib/utils"
 import { convertToLocale } from "@lib/util/money"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import {
+  DEFAULT_PLP_CARD_STYLE,
+  ResolvedPlpCardStyle,
+} from "@modules/store/lib/card-style"
 
 const LABEL_IMAGE_PATTERN = /(nute|nutrition|label|ingredient|supplement|facts)/i
 const HERO_IMAGE_PATTERN = /(front|hero|main|primary|pack|bottle|product|angle)/i
 const SECONDARY_IMAGE_PATTERN = /(back|rear|side)/i
+const STRENGTH_LABEL_PATTERN = /(strength|potency|dose|dosage|mg|milligram)/i
 
 function normalizeStringList(input: unknown): string[] {
   if (!input) {
@@ -151,11 +157,35 @@ const getVariantOptionSummary = (record: PlpVariantRecord) => {
     })
 }
 
-export default function VariantPreview({ record }: { record: PlpVariantRecord }) {
+const getStrengthSummary = (record: PlpVariantRecord) => {
+  const optionTitleById = getOptionTitleById(record)
+
+  for (const option of record.variant.options || []) {
+    const label = optionTitleById.get(option.option_id || "") || "Option"
+    if (option.value && STRENGTH_LABEL_PATTERN.test(label)) {
+      return option.value
+    }
+  }
+
+  const titleMatch = record.variant.title?.match(/\b\d+(\.\d+)?\s?(mg|mcg|g|ml)\b/i)
+  return titleMatch?.[0] || null
+}
+
+export default function VariantPreview({
+  record,
+  cardStyle = DEFAULT_PLP_CARD_STYLE,
+  styleLabel,
+}: {
+  record: PlpVariantRecord
+  cardStyle?: ResolvedPlpCardStyle
+  styleLabel?: string
+}) {
   const { product, variant, priceAmount, currencyCode } = record
   const image = resolveVariantPreviewImage(record)
   const optionSummary = getVariantOptionSummary(record)
   const variantTitle = variant.title?.trim()
+  const strengthSummary = getStrengthSummary(record)
+  const detailSummary = optionSummary.filter((entry) => !STRENGTH_LABEL_PATTERN.test(entry)).join(" • ")
   const priceLabel =
     typeof priceAmount === "number" && currencyCode
       ? convertToLocale({
@@ -169,48 +199,67 @@ export default function VariantPreview({ record }: { record: PlpVariantRecord })
       href={`/products/${product.handle}?variant=${variant.id}`}
       className="group block h-full"
     >
-      <article className="surface-panel flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 transition hover:-translate-y-1">
-        <div className="relative aspect-[4/5] overflow-hidden bg-background/60">
+      <article className={cn("surface-panel plp-card", `plp-card--${cardStyle}`)}>
+        <div className="plp-card__media">
           {image ? (
             <Image
               src={image}
               alt={product.title}
               fill
-              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              className="plp-card__image"
               sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
+            <div className="flex h-full w-full items-center justify-center bg-muted/70 text-muted-foreground">
               No image
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+          <div className="plp-card__media-vignette" />
+          <div className="plp-card__media-glass" />
+          <div className="plp-card__media-glow" />
+          {styleLabel ? (
+            <span className="absolute right-3 top-3 rounded-full border border-border/60 bg-card/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/78">
+              {styleLabel}
+            </span>
+          ) : null}
         </div>
 
-        <div className="flex flex-1 flex-col gap-3 px-4 py-4">
-          <div className="space-y-1">
-            <h3 className="line-clamp-2 text-base font-semibold tracking-tight text-foreground">
+        <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-3">
+          <div className="space-y-2">
+            <h3 className="plp-card__title line-clamp-2 text-[1.02rem] font-semibold tracking-tight text-foreground">
               {product.title}
             </h3>
             {variantTitle ? (
-              <p className="text-xs text-foreground/75">{variantTitle}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/72">
+                {variantTitle}
+              </p>
             ) : null}
-            {optionSummary.length ? (
-              <p className="line-clamp-2 text-xs text-foreground/65">{optionSummary.join(" • ")}</p>
+
+            {strengthSummary ? (
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/78">
+                Strength: <span className="normal-case tracking-normal">{strengthSummary}</span>
+              </p>
+            ) : null}
+
+            {detailSummary ? (
+              <div className="rounded-xl border border-border/55 bg-background/55 px-2.5 py-2 text-[11px] text-foreground/68">
+                {detailSummary}
+              </div>
             ) : null}
           </div>
 
-          {priceLabel ? (
-            <span className="text-sm font-semibold text-foreground" data-testid="variant-price">
-              {priceLabel}
-            </span>
-          ) : (
-            <span className="text-sm text-foreground/60">Pricing unavailable</span>
-          )}
-
-          <p className="mt-auto text-xs uppercase tracking-[0.23em] text-foreground/60">
-            View offering
-          </p>
+          <div className="mt-auto space-y-2">
+            {priceLabel ? (
+              <span className="plp-card__price mt-1 text-lg font-semibold text-foreground" data-testid="variant-price">
+                {priceLabel}
+              </span>
+            ) : (
+              <span className="text-sm text-foreground/60">Pricing unavailable</span>
+            )}
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/62">
+              View details
+            </p>
+          </div>
         </div>
       </article>
     </LocalizedClientLink>

@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url"
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const SOURCE_DIR = path.join(ROOT, "assets", "brand", "LOGOS_ICONS_WEB")
-const OUTPUT_DIR = path.join(ROOT, "public", "logos", "optimized")
+const SVG_DIR = path.join(ROOT, "public", "logos", "svg")
 const MANIFEST_PATH = path.join(ROOT, "src", "lib", "brand", "brand-assets.json")
 const SOURCE_MANIFEST_DIR = "assets/brand/LOGOS_ICONS_WEB"
 
@@ -19,6 +19,63 @@ const SIZE_PRESETS = [
 
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true })
+}
+
+function getSvgCandidates(baseName) {
+  const normalized = baseName
+    .replace(/_(?:NObgWEB|WbgWEB)$/i, "_PRINT")
+    .replace(/(?:noBGWEB|wBGWEB)$/i, "_PRINT")
+
+  const candidates = new Set([`${normalized}.svg`])
+
+  if (normalized.startsWith("DB_GREY_")) {
+    candidates.add(`${normalized.replace(/^DB_GREY_/, "GREY_")}.svg`)
+  }
+  if (normalized.startsWith("DB_")) {
+    candidates.add(`${normalized.replace(/^DB_/, "")}.svg`)
+  }
+
+  return [...candidates]
+}
+
+function resolveSvgPath(baseName, availableSvgFiles) {
+  const svgFile = getSvgCandidates(baseName).find((candidate) =>
+    availableSvgFiles.has(candidate)
+  )
+
+  if (!svgFile) {
+    return null
+  }
+
+  return `/logos/svg/${svgFile}`
+}
+
+function toAbsolutePublicPath(publicPath) {
+  return path.join(ROOT, "public", publicPath.replace(/^\//, ""))
+}
+
+function deriveSizeFromMeta(meta, targetWidth) {
+  if (!meta.width || !meta.height) {
+    return {
+      width: targetWidth ?? 0,
+      height: targetWidth ?? 0,
+    }
+  }
+
+  if (!targetWidth) {
+    return {
+      width: meta.width,
+      height: meta.height,
+    }
+  }
+
+  const width = Math.min(targetWidth, meta.width)
+  const ratio = meta.height / meta.width
+
+  return {
+    width,
+    height: Math.max(1, Math.round(width * ratio)),
+  }
 }
 
 function describeAsset(baseName) {
@@ -63,41 +120,29 @@ function describeAsset(baseName) {
   }
 }
 
-async function convertAsset(fileName) {
+async function convertAsset(fileName, availableSvgFiles) {
   const ext = path.extname(fileName)
   if (!SUPPORTED_EXT.has(ext.toLowerCase())) return null
 
-  const inputPath = path.join(SOURCE_DIR, fileName)
   const baseName = path.basename(fileName, ext)
-  const outputDir = path.join(OUTPUT_DIR, baseName)
-  await ensureDir(outputDir)
+  const svgPath = resolveSvgPath(baseName, availableSvgFiles)
+  if (!svgPath) {
+    throw new Error(
+      `Missing matching SVG for ${fileName}. Add SVG export in public/logos/svg before running brand:build.`
+    )
+  }
+  const svgMeta = await sharp(toAbsolutePublicPath(svgPath)).metadata()
 
   const descriptor = describeAsset(baseName)
   const outputs = {}
 
   for (const preset of SIZE_PRESETS) {
     const sizeLabel = preset.label
-    const pngPath = path.join(outputDir, `${sizeLabel}.png`)
-    const webpPath = path.join(outputDir, `${sizeLabel}.webp`)
-
-    let pipeline = sharp(inputPath, { animated: true }).ensureAlpha()
-    if (preset.width) {
-      pipeline = pipeline.resize({ width: preset.width, withoutEnlargement: true })
-    }
-    await pipeline.png({ compressionLevel: 9, adaptiveFiltering: true }).toFile(pngPath)
-
-    pipeline = sharp(inputPath, { animated: true }).ensureAlpha()
-    if (preset.width) {
-      pipeline = pipeline.resize({ width: preset.width, withoutEnlargement: true })
-    }
-    await pipeline.webp({ quality: 90, effort: 6 }).toFile(webpPath)
-
-    const meta = await sharp(pngPath).metadata()
+    const derivedSize = deriveSizeFromMeta(svgMeta, preset.width)
     outputs[sizeLabel] = {
-      width: meta.width,
-      height: meta.height,
-      png: `/logos/optimized/${baseName}/${sizeLabel}.png`,
-      webp: `/logos/optimized/${baseName}/${sizeLabel}.webp`,
+      width: derivedSize.width,
+      height: derivedSize.height,
+      svg: svgPath,
     }
   }
 
@@ -118,12 +163,20 @@ async function main() {
     )
   }
 
-  await ensureDir(OUTPUT_DIR)
+  const availableSvgFiles = new Set(
+    await fs.readdir(SVG_DIR).catch(() => [])
+  )
+  if (availableSvgFiles.size === 0) {
+    throw new Error(
+      `SVG directory is missing or empty: ${SVG_DIR}\n` +
+        "Add logo SVG exports in public/logos/svg before running `yarn brand:build`."
+    )
+  }
   const files = await fs.readdir(SOURCE_DIR)
   const manifestEntries = []
 
   for (const file of files) {
-    const entry = await convertAsset(file)
+    const entry = await convertAsset(file, availableSvgFiles)
     if (entry) {
       manifestEntries.push(entry)
       console.log(`✔ Processed ${file}`)
@@ -135,7 +188,7 @@ async function main() {
   const manifest = {
     generatedAt: new Date().toISOString(),
     sourceDir: SOURCE_MANIFEST_DIR,
-    outputDir: "/logos/optimized",
+    outputDir: "/logos/svg",
     sizes: SIZE_PRESETS,
     assets: manifestEntries.sort((a, b) => a.id.localeCompare(b.id)),
   }

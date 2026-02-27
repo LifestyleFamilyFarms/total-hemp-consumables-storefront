@@ -5,12 +5,30 @@ import { listNavigationCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { listProductsForPlp } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { getBaseURL } from "@lib/util/env"
 import { HttpTypes } from "@medusajs/types"
 import ProductPreview from "@modules/products/components/product-preview"
 
 export const metadata: Metadata = {
   title: "Total Hemp Consumables",
   description: "Farm to consumer cannabis products.",
+}
+
+const normalizeBaseUrl = (value: string) => value.replace(/\/+$/, "")
+
+const buildOrganizationSchema = (countryCode: string) => {
+  const baseUrl = normalizeBaseUrl(getBaseURL())
+  const storefrontUrl = `${baseUrl}/${countryCode}`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Total Hemp Consumables",
+    url: storefrontUrl,
+    logo: `${baseUrl}/opengraph-image.jpg`,
+    email: "support@totalhemp.co",
+    sameAs: [],
+  }
 }
 
 export default async function Home(props: {
@@ -44,9 +62,16 @@ export default async function Home(props: {
 
   const spotlightCategories = categories.slice(0, 6)
   const spotlightCollections = collectionsResponse.collections.slice(0, 3)
+  const organizationSchema = buildOrganizationSchema(countryCode)
 
   return (
     <div className="pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+      />
       <section className="mx-auto w-full max-w-6xl px-6 pt-10 sm:px-10">
         <div className="relative overflow-hidden rounded-[36px] border border-border/60 bg-gradient-to-br from-card via-card/85 to-background px-6 py-12 shadow-[0_30px_60px_rgba(15,23,42,0.16)] sm:px-10 sm:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(18,165,120,0.18),transparent_40%),radial-gradient(circle_at_85%_15%,rgba(245,158,11,0.22),transparent_45%)]" />

@@ -8,7 +8,7 @@ type BrandSpinnerProps = {
 export function BrandSpinner({ className }: BrandSpinnerProps) {
   return (
     <Image
-      src="/logos/optimized/FULL_COLOR_ICON_NObgWEB/md.webp"
+      src="/logos/svg/FULL_COLOR_ICON_PRINT.svg"
       alt=""
       aria-hidden
       width={16}
@@ -17,4 +17,3 @@ export function BrandSpinner({ className }: BrandSpinnerProps) {
     />
   )
 }
-

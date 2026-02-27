@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation"
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart & {
-    promotions: HttpTypes.StorePromotion[]
+    promotions: HttpTypes.StoreCartPromotion[]
   }
 }
 
@@ -23,6 +23,10 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const router = useRouter()
 
   const { items = [], promotions = [] } = cart
+  const visiblePromotions = promotions.filter(
+    (promotion) => promotion.id !== cart.metadata?.loyalty_promo_id
+  )
+
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
@@ -66,8 +70,8 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   }
 
   return (
-    <div className="w-full bg-white flex flex-col">
-      <div className="txt-medium">
+    <div className="flex w-full flex-col">
+      <div className="text-sm">
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -111,13 +115,13 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
           )}
         </form>
 
-        {promotions.length > 0 && (
+        {visiblePromotions.length > 0 && (
           <div className="flex w-full flex-col">
             <h3 className="mb-2 text-sm font-medium text-foreground">
               Promotion(s) applied:
             </h3>
 
-            {promotions.map((promotion) => (
+            {visiblePromotions.map((promotion) => (
               <div
                 key={promotion.id}
                 className="mb-2 flex w-full items-center justify-between gap-4"
@@ -125,7 +129,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
               >
                 <div className="flex w-4/5 items-baseline gap-2 text-sm text-muted-foreground">
                   <span className="truncate" data-testid="discount-code">
-                    <span className="mr-2 inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-2 py-1 text-xs font-semibold text-primary">
+                    <span className="mr-2 inline-flex items-center rounded-full border border-primary/40 bg-primary/15 px-2 py-1 text-xs font-semibold text-primary">
                       {promotion.code}
                     </span>
                     (

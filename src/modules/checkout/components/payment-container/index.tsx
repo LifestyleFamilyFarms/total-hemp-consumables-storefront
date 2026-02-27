@@ -37,7 +37,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
       className={cn(
         "flex flex-col gap-2 text-sm cursor-pointer rounded-2xl border border-border px-6 py-4 mb-3 transition-all duration-200 bg-card hover:border-primary hover:bg-accent/5",
         selectedPaymentOptionId === paymentProviderId &&
-          "border-green-200 bg-green-50",
+          "border-primary/50 bg-primary/10",
         disabled && "opacity-60 cursor-not-allowed"
       )}
     >

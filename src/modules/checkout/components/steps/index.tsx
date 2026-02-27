@@ -17,7 +17,7 @@ export function CheckoutSteps() {
 
   return (
     <div className="mb-6 flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3 shadow-sm">
+      <div className="surface-panel flex flex-wrap items-center gap-3 rounded-2xl border border-border/60 bg-card/80 px-4 py-3 shadow-[0_12px_28px_hsl(var(--surface-glass-shadow)/0.15)]">
         {steps.map((step, idx) => {
           const Icon = step.icon ?? Circle
           const isActive = step.id === current
@@ -30,10 +30,10 @@ export function CheckoutSteps() {
                 className={cn(
                   "inline-flex h-9 w-9 items-center justify-center rounded-full border text-sm font-semibold transition-colors",
                   isActive
-                    ? "border-primary bg-primary/10 text-primary"
+                    ? "border-primary bg-primary/15 text-primary"
                     : isComplete
-                      ? "border-primary/60 bg-primary/10 text-primary"
-                      : "border-border bg-muted text-foreground"
+                      ? "border-primary/60 bg-primary/12 text-primary"
+                      : "border-border bg-card/80 text-foreground/80"
                 )}
               >
                 <Icon className="h-4 w-4" />

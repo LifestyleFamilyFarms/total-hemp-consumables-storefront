@@ -39,6 +39,11 @@
 - `yarn lint`
 - `yarn build`
 
+## Responsive Verification Before Handoff (Required)
+- [ ] Check `360x800`, `390x844`, `768x1024`, `1024x768`, `1280x800`, `1440x900`.
+- [ ] Verify `/[countryCode]/store`, `/[countryCode]/categories/[handle]`, `/[countryCode]/products/[handle]`.
+- [ ] Verify Topbar, MobileNav, and CartDrawer behavior at each size.
+
 ## Notes for Next Feature Agents
 - Add-to-cart flow is already scaffolded end-to-end using server actions + cache revalidation + Zustand UI drawer state.
 - Use this pattern for future cart, PLP/PDP, and checkout enhancements.

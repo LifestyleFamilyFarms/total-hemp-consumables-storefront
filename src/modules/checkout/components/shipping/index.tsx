@@ -1,25 +1,28 @@
 "use client"
 
-import { RadioGroup, Radio } from "@headlessui/react"
+import { Radio, RadioGroup } from "@headlessui/react"
 import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
+import { setShippingMethod } from "@lib/data/cart"
+import {
+  CHECKOUT_SHIPPING_MODE,
+  SHIPSTATION_SERVICE_ALLOWLIST_SET,
+} from "@lib/constants/shipping"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
-import SectionCard from "../section-card"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { BrandSpinner } from "@/components/brand/brand-spinner"
 import { Button } from "@/components/ui/button"
 import {
   Select,
-  SelectTrigger,
   SelectContent,
   SelectItem,
+  SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "src/lib/utils"
-import { SHIPSTATION_SERVICE_ALLOWLIST_SET } from "src/lib/constants/shipping"
-import { setShippingMethod } from "@lib/data/cart"
-import { BrandSpinner } from "@/components/brand/brand-spinner"
+import SectionCard from "../section-card"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
@@ -28,7 +31,7 @@ const Dot = ({ checked }: { checked: boolean }) => (
   <span
     className={cn(
       "inline-block h-4 w-4 rounded-full border border-border",
-      checked ? "bg-primary border-primary" : "bg-white"
+      checked ? "border-primary bg-primary" : "bg-background"
     )}
   />
 )
@@ -50,48 +53,22 @@ type EnrichedShippingOption = HttpTypes.StoreCartShippingOption & {
 
 const gramsToPounds = (grams: number) => grams / 453.59237
 const gramsToKilograms = (grams: number) => grams / 1000
-const formatCurrencyFromMinor = (
-  value: number,
-  currency: string | undefined
-) =>
-  convertToLocale({
-    amount: value / 100,
-    currency_code: currency ?? "usd",
-  })
-
-const normalizeToMinorUnits = (amount?: number | null) => {
-  if (typeof amount !== "number" || Number.isNaN(amount)) {
-    return undefined
-  }
-  // If the value looks like dollars (e.g., 9.1 -> $9.10), convert to cents.
-  // If it's already in cents (e.g., 910), leave as-is.
-  return Math.abs(amount) < 1000 ? Math.round(amount * 100) : Math.round(amount)
-}
 
 function formatAddress(address?: HttpTypes.StoreCartAddress | null) {
   if (!address) {
     return ""
   }
 
-  let ret = ""
+  const parts = [
+    address.address_1,
+    address.address_2,
+    address.postal_code && address.city
+      ? `${address.postal_code} ${address.city}`
+      : undefined,
+    address.country_code ? address.country_code.toUpperCase() : undefined,
+  ].filter(Boolean)
 
-  if (address.address_1) {
-    ret += ` ${address.address_1}`
-  }
-
-  if (address.address_2) {
-    ret += `, ${address.address_2}`
-  }
-
-  if (address.postal_code) {
-    ret += `, ${address.postal_code} ${address.city}`
-  }
-
-  if (address.country_code) {
-    ret += `, ${address.country_code.toUpperCase()}`
-  }
-
-  return ret
+  return parts.join(", ")
 }
 
 const isShipstationOptionAllowed = (
@@ -114,16 +91,17 @@ const isShipstationOptionAllowed = (
     typeof option.data === "object" && option.data !== null
       ? (option.data as Record<string, unknown>)
       : undefined
+
   const serviceCode =
     typeof data?.carrier_service_code === "string"
       ? data.carrier_service_code.toLowerCase()
       : undefined
 
-  if (code && SHIPSTATION_SERVICE_ALLOWLIST_SET?.has(code)) {
+  if (code && SHIPSTATION_SERVICE_ALLOWLIST_SET.has(code)) {
     return true
   }
 
-  if (serviceCode && SHIPSTATION_SERVICE_ALLOWLIST_SET?.has(serviceCode)) {
+  if (serviceCode && SHIPSTATION_SERVICE_ALLOWLIST_SET.has(serviceCode)) {
     return true
   }
 
@@ -132,13 +110,14 @@ const isShipstationOptionAllowed = (
 
 const hasInsufficientInventory = (
   option?: HttpTypes.StoreCartShippingOption | null
-) => Boolean((option as any)?.insufficient_inventory)
+) => Boolean((option as EnrichedShippingOption | undefined)?.insufficient_inventory)
 
 const Shipping: React.FC<ShippingProps> = ({
   cart,
   availableShippingMethods,
 }) => {
   const currentCart = cart
+  const isPickupOnlyMode = CHECKOUT_SHIPPING_MODE === "pickup_only"
 
   const enrichedShippingOptions = useMemo<EnrichedShippingOption[]>(() => {
     return (availableShippingMethods ?? []).map(
@@ -146,10 +125,46 @@ const Shipping: React.FC<ShippingProps> = ({
     )
   }, [availableShippingMethods])
 
+  const pickupOptions = useMemo<EnrichedShippingOption[]>(() => {
+    return (
+      enrichedShippingOptions.filter(
+        (option) => option.service_zone?.fulfillment_set?.type === "pickup"
+      ) ?? []
+    )
+  }, [enrichedShippingOptions])
+
+  const prioritise = (option: HttpTypes.StoreCartShippingOption) => {
+    if (option.provider_id?.includes("shipstation")) {
+      return 0
+    }
+
+    if (option.price_type === "calculated") {
+      return 1
+    }
+
+    return 2
+  }
+
+  const shippingOptions = useMemo<EnrichedShippingOption[]>(() => {
+    if (isPickupOnlyMode) {
+      return []
+    }
+
+    return (
+      enrichedShippingOptions
+        .filter(
+          (option) => option.service_zone?.fulfillment_set?.type !== "pickup"
+        )
+        .filter((option) => isShipstationOptionAllowed(option))
+        .sort((a, b) => prioritise(a) - prioritise(b)) ?? []
+    )
+  }, [enrichedShippingOptions, isPickupOnlyMode])
+
+  const hasPickupOptions = pickupOptions.length > 0
+
   const totalWeightGrams = useMemo(() => {
     return (currentCart?.items ?? []).reduce((sum, item) => {
-      const weight =
-        Number((item as any)?.variant?.weight ?? (item as any)?.weight ?? 0)
+      const weight = Number((item as any)?.variant?.weight ?? (item as any)?.weight ?? 0)
       const quantity = Number(item?.quantity ?? 0)
       return sum + weight * quantity
     }, 0)
@@ -162,42 +177,37 @@ const Shipping: React.FC<ShippingProps> = ({
 
   const weightSummary =
     totalWeightGrams > 0
-      ? `${totalWeightPounds >= 10 ? totalWeightPounds.toFixed(1) : totalWeightPounds.toFixed(2)} lb (${totalWeightKilograms.toFixed(2)} kg)`
+      ? `${
+          totalWeightPounds >= 10
+            ? totalWeightPounds.toFixed(1)
+            : totalWeightPounds.toFixed(2)
+        } lb (${totalWeightKilograms.toFixed(2)} kg)`
       : "Not provided"
 
   const initialShippingMethodId =
-    currentCart?.shipping_methods?.at(-1)?.shipping_option_id ?? null
-  const initialShippingAmount =
-    normalizeToMinorUnits(currentCart?.shipping_methods?.at(-1)?.amount) ?? null
+    currentCart?.shipping_methods?.at(-1)?.shipping_option_id ?? ""
+  const initialShippingAmount = currentCart?.shipping_methods?.at(-1)?.amount
 
   const initialPickupSelected = Boolean(
-    enrichedShippingOptions.some(
-      (method) =>
-        method.id === initialShippingMethodId &&
-        method.service_zone?.fulfillment_set?.type === "pickup"
-    )
+    pickupOptions.some((method) => method.id === initialShippingMethodId)
   )
 
   const [shippingMethodId, setShippingMethodId] = useState<string>(
-    initialShippingMethodId || ""
+    initialShippingMethodId
   )
   const [selectedShippingOptionId, setSelectedShippingOptionId] =
-    useState<string>(initialPickupSelected ? "" : initialShippingMethodId || "")
+    useState<string>(initialPickupSelected ? "" : initialShippingMethodId)
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
     Record<string, number>
   >(() => {
-    if (
-      initialShippingMethodId &&
-      !initialPickupSelected &&
-      typeof initialShippingAmount === "number"
-    ) {
+    if (initialShippingMethodId && typeof initialShippingAmount === "number") {
       return { [initialShippingMethodId]: initialShippingAmount }
     }
 
     return {}
   })
   const [showPickupOptions, setShowPickupOptions] = useState<string>(
-    initialPickupSelected ? PICKUP_OPTION_ON : PICKUP_OPTION_OFF
+    isPickupOnlyMode || initialPickupSelected ? PICKUP_OPTION_ON : PICKUP_OPTION_OFF
   )
   const [isProcessing, setIsProcessing] = useState(false)
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false)
@@ -211,54 +221,30 @@ const Shipping: React.FC<ShippingProps> = ({
   const isOpen = searchParams.get("step") === "delivery"
 
   useEffect(() => {
-    setShippingMethodId(initialShippingMethodId || "")
-    setSelectedShippingOptionId(
-      initialPickupSelected ? "" : initialShippingMethodId || ""
-    )
-    setShowPickupOptions(initialPickupSelected ? PICKUP_OPTION_ON : PICKUP_OPTION_OFF)
+    setShippingMethodId(initialShippingMethodId)
 
-    if (
-      initialShippingMethodId &&
-      !initialPickupSelected &&
-      typeof initialShippingAmount === "number"
-    ) {
+    if (isPickupOnlyMode) {
+      setShowPickupOptions(PICKUP_OPTION_ON)
+      setSelectedShippingOptionId("")
+    } else {
+      setSelectedShippingOptionId(
+        initialPickupSelected ? "" : initialShippingMethodId
+      )
+      setShowPickupOptions(initialPickupSelected ? PICKUP_OPTION_ON : PICKUP_OPTION_OFF)
+    }
+
+    if (initialShippingMethodId && typeof initialShippingAmount === "number") {
       setCalculatedPricesMap({ [initialShippingMethodId]: initialShippingAmount })
     } else {
       setCalculatedPricesMap({})
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialPickupSelected, initialShippingAmount, initialShippingMethodId, isOpen])
-
-  const prioritise = (option: HttpTypes.StoreCartShippingOption) => {
-    if (option.provider_id?.includes("shipstation")) {
-      return 0
-    }
-    if (option.price_type === "calculated") {
-      return 1
-    }
-    return 2
-  }
-
-  const shippingOptions = useMemo<EnrichedShippingOption[]>(() => {
-    return (
-      enrichedShippingOptions
-        .filter(
-          (option) => option.service_zone?.fulfillment_set?.type !== "pickup"
-        )
-        .filter((option) => isShipstationOptionAllowed(option))
-        .sort((a, b) => prioritise(a) - prioritise(b)) ?? []
-    )
-  }, [enrichedShippingOptions])
-
-  const pickupOptions = useMemo<EnrichedShippingOption[]>(() => {
-    return (
-      enrichedShippingOptions.filter(
-        (option) => option.service_zone?.fulfillment_set?.type === "pickup"
-      ) ?? []
-    )
-  }, [enrichedShippingOptions])
-
-  const hasPickupOptions = pickupOptions.length > 0
+  }, [
+    initialPickupSelected,
+    initialShippingAmount,
+    initialShippingMethodId,
+    isOpen,
+    isPickupOnlyMode,
+  ])
 
   const hasCompleteShippingAddress = useMemo(() => {
     const address = currentCart?.shipping_address
@@ -292,7 +278,7 @@ const Shipping: React.FC<ShippingProps> = ({
   }, [currentCart?.shipping_address])
 
   useEffect(() => {
-    if (showPickupOptions === PICKUP_OPTION_ON) {
+    if (isPickupOnlyMode || showPickupOptions === PICKUP_OPTION_ON) {
       return
     }
 
@@ -315,7 +301,7 @@ const Shipping: React.FC<ShippingProps> = ({
     if (!exists) {
       setSelectedShippingOptionId(shippingOptions[0].id)
     }
-  }, [shippingOptions, selectedShippingOptionId, showPickupOptions])
+  }, [isPickupOnlyMode, shippingOptions, selectedShippingOptionId, showPickupOptions])
 
   useEffect(() => {
     if (!hasCompleteShippingAddress) {
@@ -323,12 +309,32 @@ const Shipping: React.FC<ShippingProps> = ({
     }
   }, [hasCompleteShippingAddress])
 
+  const activeShippingMethodId =
+    shippingMethodId || currentCart?.shipping_methods?.at(-1)?.shipping_option_id || ""
+
   const handleEdit = () => {
     router.push(pathname + "?step=delivery", { scroll: false })
   }
 
-  const handleSubmit = () => {
-    router.push(pathname + "?step=payment", { scroll: false })
+  const handleSubmit = async () => {
+    if (activeShippingMethodId) {
+      router.push(pathname + "?step=payment", { scroll: false })
+      return
+    }
+
+    if (isPickupOnlyMode && hasPickupOptions) {
+      const firstPickup = pickupOptions.find(
+        (option) => !hasInsufficientInventory(option)
+      )
+
+      if (firstPickup) {
+        await handleSetPickupMethod(firstPickup.id)
+        router.push(pathname + "?step=payment", { scroll: false })
+        return
+      }
+    }
+
+    setError("Select a delivery method before continuing to payment.")
   }
 
   const handleSelectShippingOption = (value: string) => {
@@ -338,6 +344,10 @@ const Shipping: React.FC<ShippingProps> = ({
   }
 
   const handleCalculateShipping = async () => {
+    if (isPickupOnlyMode) {
+      return
+    }
+
     if (!selectedShippingOptionId) {
       setError("Select a delivery service before calculating shipping.")
       return
@@ -358,9 +368,7 @@ const Shipping: React.FC<ShippingProps> = ({
     }
 
     if (!hasCompleteShippingAddress) {
-      setError(
-        "Enter your shipping address before calculating a delivery rate."
-      )
+      setError("Enter your shipping address before calculating a delivery rate.")
       return
     }
 
@@ -370,9 +378,9 @@ const Shipping: React.FC<ShippingProps> = ({
     setShowPickupOptions(PICKUP_OPTION_OFF)
 
     try {
-      let amountMinor: number | undefined =
+      let amount: number | undefined =
         selectedOption.price_type === "flat"
-          ? normalizeToMinorUnits(selectedOption.amount ?? undefined)
+          ? selectedOption.amount ?? undefined
           : calculatedPricesMap[selectedOption.id]
 
       if (
@@ -381,17 +389,17 @@ const Shipping: React.FC<ShippingProps> = ({
       ) {
         const calculated = await calculatePriceForShippingOption(
           selectedOption.id,
-          currentCart?.id as string
+          currentCart.id
         )
 
         if (!calculated || typeof calculated.amount !== "number") {
           throw new Error("ShipStation did not return a rate for this service.")
         }
 
-        amountMinor = normalizeToMinorUnits(calculated.amount)
+        amount = calculated.amount
       }
 
-      if (typeof amountMinor !== "number") {
+      if (typeof amount !== "number") {
         throw new Error("Unable to determine a rate for this delivery service.")
       }
 
@@ -402,14 +410,10 @@ const Shipping: React.FC<ShippingProps> = ({
 
       setCalculatedPricesMap((prev) => ({
         ...prev,
-        [selectedOption.id]: amountMinor as number,
+        [selectedOption.id]: amount as number,
       }))
       setShippingMethodId(selectedOption.id)
       router.refresh()
-      // Log for debug visibility
-      // eslint-disable-next-line no-console
-      console.log("[shipping] set option", selectedOption.id, "amountMinor", amountMinor)
-      // Auto-advance to payment after applying shipping
       router.push(`${pathname}?step=payment`, { scroll: false })
     } catch (err: any) {
       setError(
@@ -422,85 +426,119 @@ const Shipping: React.FC<ShippingProps> = ({
     }
   }
 
-  const handleSetPickupMethod = async (id: string) => {
-    if (!hasCompleteShippingAddress) {
-      setError("Enter your shipping address before selecting a delivery method.")
+  const handleSetPickupMethod = useCallback(
+    async (id: string) => {
+      if (!hasCompleteShippingAddress) {
+        setError("Enter your shipping address before selecting a delivery method.")
+        return
+      }
+
+      setError(null)
+      setIsProcessing(true)
+      setShowPickupOptions(PICKUP_OPTION_ON)
+      setSelectedShippingOptionId("")
+
+      try {
+        await setShippingMethod({
+          cartId: currentCart.id,
+          shippingMethodId: id,
+        })
+        setShippingMethodId(id)
+        router.refresh()
+      } catch (err: any) {
+        setError(
+          err?.message ||
+            "Unable to select store pickup. Please try again or choose shipping."
+        )
+      } finally {
+        setIsProcessing(false)
+      }
+    },
+    [currentCart.id, hasCompleteShippingAddress, router]
+  )
+
+  useEffect(() => {
+    if (
+      !isOpen ||
+      !isPickupOnlyMode ||
+      !hasPickupOptions ||
+      activeShippingMethodId ||
+      isProcessing
+    ) {
       return
     }
 
-    setError(null)
+    const firstPickup = pickupOptions.find(
+      (option) => !hasInsufficientInventory(option)
+    )
 
-    setIsProcessing(true)
-    setShowPickupOptions(PICKUP_OPTION_ON)
-      setSelectedShippingOptionId("")
-
-    try {
-      await setShippingMethod({
-        cartId: currentCart.id,
-        shippingMethodId: id,
-      })
-      setShippingMethodId(id)
-      router.refresh()
-      // eslint-disable-next-line no-console
-      console.log("[shipping] set pickup method", id)
-    } catch (err: any) {
-      setError(
-        err?.message ||
-          "Unable to select store pickup. Please try again or choose shipping."
-      )
-    } finally {
-      setIsProcessing(false)
+    if (firstPickup) {
+      void handleSetPickupMethod(firstPickup.id)
     }
-  }
+  }, [
+    activeShippingMethodId,
+    hasPickupOptions,
+    isOpen,
+    isPickupOnlyMode,
+    isProcessing,
+    pickupOptions,
+    handleSetPickupMethod,
+  ])
 
   useEffect(() => {
     setError(null)
   }, [isOpen])
 
-  // Prefetch rates for all available shipping options when address is complete.
   useEffect(() => {
     const prefetch = async () => {
-      if (!hasCompleteShippingAddress || !shippingOptions.length) return
+      if (isPickupOnlyMode || !hasCompleteShippingAddress || !shippingOptions.length) {
+        return
+      }
+
       setIsPrefetchingRates(true)
+
       try {
         const entries = await Promise.all(
           shippingOptions.map(async (option) => {
             if (option.price_type === "flat" && typeof option.amount === "number") {
-              return [option.id, normalizeToMinorUnits(option.amount)] as const
+              return [option.id, option.amount] as const
             }
+
             if (option.price_type === "calculated") {
               const calculated = await calculatePriceForShippingOption(
                 option.id,
-                currentCart?.id as string
+                currentCart.id
               )
               return [
                 option.id,
-                normalizeToMinorUnits(
-                  typeof calculated?.amount === "number" ? calculated.amount : undefined
-                ),
+                typeof calculated?.amount === "number" ? calculated.amount : undefined,
               ] as const
             }
+
             return [option.id, undefined] as const
           })
         )
+
         const next: Record<string, number> = {}
-        entries.forEach(([id, amt]) => {
-          if (typeof amt === "number") {
-            next[id] = amt
+
+        entries.forEach(([id, amount]) => {
+          if (typeof amount === "number") {
+            next[id] = amount
           }
         })
+
         if (Object.keys(next).length) {
           setCalculatedPricesMap((prev) => ({ ...prev, ...next }))
         }
-      } catch (err) {
-        // swallow prefetch errors; user can still click Apply to fetch a rate
-        console.warn("[shipping] prefetch rates error", err)
+      } catch {
+        // no-op; user can still calculate manually
       } finally {
         setIsPrefetchingRates(false)
       }
     }
+
     void prefetch()
-  }, [currentCart?.id, hasCompleteShippingAddress, shippingOptions])
+  }, [currentCart.id, hasCompleteShippingAddress, isPickupOnlyMode, shippingOptions])
 
   const selectedShippingOption = selectedShippingOptionId
     ? shippingOptions.find((option) => option.id === selectedShippingOptionId)
@@ -515,12 +553,12 @@ const Shipping: React.FC<ShippingProps> = ({
   }, [currentCart?.payment_collection?.payment_sessions])
 
   const selectedShippingPrice =
-    selectedShippingOptionId
+    selectedShippingOptionId && selectedShippingOption
       ? typeof calculatedPricesMap[selectedShippingOptionId] === "number"
         ? calculatedPricesMap[selectedShippingOptionId]
-        : selectedShippingOption?.price_type === "flat" &&
+        : selectedShippingOption.price_type === "flat" &&
             typeof selectedShippingOption.amount === "number"
-          ? normalizeToMinorUnits(selectedShippingOption.amount)
+          ? selectedShippingOption.amount
           : undefined
       : undefined
 
@@ -541,31 +579,28 @@ const Shipping: React.FC<ShippingProps> = ({
       return "Calculated rate returned by ShipStation (no item weight on file)."
     }
 
-    const totalDisplay = formatCurrencyFromMinor(
-      selectedShippingPrice,
-      cart?.currency_code
-    )
+    const totalDisplay = convertToLocale({
+      amount: selectedShippingPrice,
+      currency_code: cart?.currency_code,
+    })
 
-    return `Calculated by ShipStation for ${totalWeightPounds >= 10 ? totalWeightPounds.toFixed(1) : totalWeightPounds.toFixed(2)} lb — ${totalDisplay}.`
-  }, [
-    cart?.currency_code,
-    selectedShippingOption,
-    selectedShippingPrice,
-    totalWeightPounds,
-  ])
+    return `Calculated by ShipStation for ${
+      totalWeightPounds >= 10
+        ? totalWeightPounds.toFixed(1)
+        : totalWeightPounds.toFixed(2)
+    } lb — ${totalDisplay}.`
+  }, [cart?.currency_code, selectedShippingOption, selectedShippingPrice, totalWeightPounds])
 
   const shippingRateDisplay =
     selectedShippingOption === null
       ? "-"
       : isCalculatingShipping || isPrefetchingRates
-        ? (
-          <BrandSpinner className="text-muted-foreground" />
-        )
+        ? <BrandSpinner className="text-muted-foreground" />
         : typeof selectedShippingPrice === "number"
-          ? formatCurrencyFromMinor(
-              selectedShippingPrice,
-              cart?.currency_code
-            )
+          ? convertToLocale({
+              amount: selectedShippingPrice,
+              currency_code: cart?.currency_code,
+            })
           : "-"
 
   const isCalculateDisabled =
@@ -608,17 +643,17 @@ const Shipping: React.FC<ShippingProps> = ({
                 Shipping method
               </span>
               <span className="mb-4 text-sm text-muted-foreground">
-                How would you like you order delivered
+                How would you like your order delivered?
               </span>
             </div>
+
             <div data-testid="delivery-options-container">
               <div className="pb-8 md:pt-0 pt-2">
                 <div className="mb-4 rounded-xl border border-dashed border-border bg-muted/30 p-4 text-sm text-muted-foreground">
-                  <p className="font-medium text-foreground">
-                    Total package weight
-                  </p>
+                  <p className="font-medium text-foreground">Total package weight</p>
                   <p>{weightSummary}</p>
                 </div>
+
                 {hasPickupOptions && (
                   <RadioGroup
                     value={showPickupOptions}
@@ -629,9 +664,9 @@ const Shipping: React.FC<ShippingProps> = ({
                         )?.id
 
                         if (id) {
-                          handleSetPickupMethod(id)
+                          void handleSetPickupMethod(id)
                         }
-                      } else {
+                      } else if (!isPickupOnlyMode) {
                         setShowPickupOptions(PICKUP_OPTION_OFF)
                       }
                     }}
@@ -646,22 +681,24 @@ const Shipping: React.FC<ShippingProps> = ({
                       )}
                     >
                       <div className="flex items-center gap-x-4">
-                        <Dot
-                          checked={showPickupOptions === PICKUP_OPTION_ON}
-                        />
+                        <Dot checked={showPickupOptions === PICKUP_OPTION_ON} />
                         <span className="text-base font-medium text-foreground">
                           Pick up your order
                         </span>
                       </div>
-                      <span className="justify-self-end text-foreground">
-                        -
-                      </span>
+                      <span className="justify-self-end text-foreground">-</span>
                     </Radio>
                   </RadioGroup>
                 )}
 
-                {shippingOptions.length ? (
-                  <div className="rounded-2xl border border-border bg-card p-6">
+                {isPickupOnlyMode && (
+                  <div className="mt-4 rounded-2xl border border-border bg-card/60 p-4 text-sm text-muted-foreground">
+                    Pickup-only checkout is active while carrier shipping options are unavailable.
+                  </div>
+                )}
+
+                {!isPickupOnlyMode && shippingOptions.length ? (
+                  <div className="mt-4 rounded-2xl border border-border bg-card p-6">
                     <div className="flex flex-col gap-4">
                       <Select
                         value={selectedShippingOptionId}
@@ -677,30 +714,29 @@ const Shipping: React.FC<ShippingProps> = ({
                         </SelectTrigger>
                         <SelectContent>
                           {shippingOptions.map((option) => {
-                            const amountMinor =
+                            const amount =
                               option.price_type === "flat" &&
                               typeof option.amount === "number"
-                                ? normalizeToMinorUnits(option.amount)
-                                : typeof calculatedPricesMap[option.id] ===
-                                    "number"
+                                ? option.amount
+                                : typeof calculatedPricesMap[option.id] === "number"
                                   ? calculatedPricesMap[option.id]
                                   : undefined
+
                             const priceLabel =
-                              typeof amountMinor === "number"
-                                ? formatCurrencyFromMinor(
-                                    amountMinor,
-                                    cart?.currency_code
-                                  )
+                              typeof amount === "number"
+                                ? convertToLocale({
+                                    amount,
+                                    currency_code: cart?.currency_code,
+                                  })
                                 : ""
+
                             return (
                               <SelectItem
                                 key={option.id}
                                 value={option.id}
                                 disabled={hasInsufficientInventory(option)}
                               >
-                                {priceLabel
-                                  ? `${option.name} — ${priceLabel}`
-                                  : option.name}
+                                {priceLabel ? `${option.name} — ${priceLabel}` : option.name}
                               </SelectItem>
                             )
                           })}
@@ -726,92 +762,70 @@ const Shipping: React.FC<ShippingProps> = ({
                           disabled={isCalculateDisabled}
                           data-testid="calculate-shipping-button"
                         >
-                          {isCalculatingShipping && (
-                            <BrandSpinner className="mr-2" />
-                          )}
+                          {isCalculatingShipping && <BrandSpinner className="mr-2" />}
                           Apply shipping rate
                         </Button>
                       </div>
-
-                      {hasInsufficientInventory(selectedShippingOption) && (
-                        <p className="text-sm text-destructive">
-                          This delivery service is currently unavailable.
-                        </p>
-                      )}
-
-                      {!hasCompleteShippingAddress && (
-                        <p className="text-sm text-muted-foreground">
-                          Enter your complete shipping address to enable rate
-                          calculation.
-                        </p>
-                      )}
                     </div>
                   </div>
-                ) : (
-                  <div className="rounded-2xl border border-dashed border-border bg-card/50 p-6 text-sm text-muted-foreground">
-                    No delivery services are available right now. Please verify
-                    your address or try again later.
+                ) : null}
+
+                {!isPickupOnlyMode && !shippingOptions.length && !hasPickupOptions && (
+                  <div className="mt-4 rounded-2xl border border-dashed border-border bg-card/50 p-6 text-sm text-muted-foreground">
+                    No delivery services are available right now. Please verify your address or try again later.
                   </div>
                 )}
               </div>
             </div>
           </div>
 
-          {showPickupOptions === PICKUP_OPTION_ON && (
+          {showPickupOptions === PICKUP_OPTION_ON && hasPickupOptions && (
             <div className="grid">
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground">
-                  Store
-                </span>
+                <span className="text-sm font-medium text-foreground">Store</span>
                 <span className="mb-4 text-sm text-muted-foreground">
                   Choose a store near you
                 </span>
               </div>
               <div data-testid="delivery-options-container">
                 <div className="pb-8 md:pt-0 pt-2">
-                    <RadioGroup
-                      value={shippingMethodId ?? ""}
-                      onChange={(value) => handleSetPickupMethod(value)}
-                    >
-                      {pickupOptions.map((option) => {
-                        return (
-                          <Radio
-                            key={option.id}
-                            value={option.id}
-                            disabled={hasInsufficientInventory(option)}
-                          data-testid="delivery-option-radio"
-                          className={cn(
-                            "flex items-center justify-between rounded-2xl border border-border px-6 py-4 text-sm transition-all duration-200 bg-card hover:border-primary hover:bg-accent/5",
-                            option.id === shippingMethodId &&
-                              "border-primary bg-accent/10",
-                            hasInsufficientInventory(option) &&
-                              "cursor-not-allowed opacity-60"
-                          )}
-                        >
-                          <div className="flex items-start gap-x-4">
-                            <Dot checked={option.id === shippingMethodId} />
-                            <div className="flex flex-col">
-                              <span className="text-base font-medium text-foreground">
-                                {option.name}
-                              </span>
-                              <span className="text-sm text-muted-foreground">
-                                {formatAddress(
-                                  option.service_zone?.fulfillment_set?.location
-                                    ?.address
-                                )}
-                              </span>
-                            </div>
+                  <RadioGroup
+                    value={shippingMethodId || ""}
+                    onChange={(value) => void handleSetPickupMethod(value)}
+                  >
+                    {pickupOptions.map((option) => (
+                      <Radio
+                        key={option.id}
+                        value={option.id}
+                        disabled={hasInsufficientInventory(option)}
+                        data-testid="delivery-option-radio"
+                        className={cn(
+                          "mb-2 flex items-center justify-between rounded-2xl border border-border px-6 py-4 text-sm transition-all duration-200 bg-card hover:border-primary hover:bg-accent/5",
+                          option.id === shippingMethodId && "border-primary bg-accent/10",
+                          hasInsufficientInventory(option) && "cursor-not-allowed opacity-60"
+                        )}
+                      >
+                        <div className="flex items-start gap-x-4">
+                          <Dot checked={option.id === shippingMethodId} />
+                          <div className="flex flex-col">
+                            <span className="text-base font-medium text-foreground">
+                              {option.name}
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              {formatAddress(
+                                option.service_zone?.fulfillment_set?.location?.address
+                              )}
+                            </span>
                           </div>
-                          <span className="justify-self-end text-foreground">
-                            {convertToLocale({
-                              amount:
-                                normalizeToMinorUnits(option.amount ?? 0) ?? 0,
-                              currency_code: cart?.currency_code,
-                            })}
-                          </span>
-                        </Radio>
-                      )
-                    })}
+                        </div>
+                        <span className="justify-self-end text-foreground">
+                          {convertToLocale({
+                            amount: option.amount ?? 0,
+                            currency_code: cart?.currency_code,
+                          })}
+                        </span>
+                      </Radio>
+                    ))}
                   </RadioGroup>
                 </div>
               </div>
@@ -825,13 +839,11 @@ const Shipping: React.FC<ShippingProps> = ({
             />
             <Button
               className="h-11 w-full px-6 text-sm font-medium md:w-auto"
-              onClick={handleSubmit}
-              disabled={!shippingMethodId || isProcessing}
+              onClick={() => void handleSubmit()}
+              disabled={(!activeShippingMethodId && !hasPickupOptions) || isProcessing}
               data-testid="submit-delivery-option-button"
             >
-              {isProcessing && (
-                <BrandSpinner className="mr-2" />
-              )}
+              {isProcessing && <BrandSpinner className="mr-2" />}
               Continue to payment
             </Button>
           </div>
@@ -844,12 +856,10 @@ const Shipping: React.FC<ShippingProps> = ({
                 <span className="text-foreground font-medium">Method</span>
                 <span className="text-sm text-muted-foreground">
                   {currentCart.shipping_methods?.at(-1)?.name}{" "}
-                  {formatCurrencyFromMinor(
-                    normalizeToMinorUnits(
-                      currentCart.shipping_methods?.at(-1)?.amount ?? 0
-                    ) ?? 0,
-                    currentCart?.currency_code
-                  )}
+                  {convertToLocale({
+                    amount: currentCart.shipping_methods?.at(-1)?.amount ?? 0,
+                    currency_code: currentCart?.currency_code,
+                  })}
                 </span>
               </div>
               {showContinueToPaymentCTA && (

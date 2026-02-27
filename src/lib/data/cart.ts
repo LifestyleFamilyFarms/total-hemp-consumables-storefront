@@ -308,7 +308,9 @@ export async function initiatePaymentSession(
     .catch(medusaError)
 }
 
-export async function completeCart(cartId?: string) {
+export async function completeCart(
+  cartId?: string
+): Promise<HttpTypes.StoreCompleteCartResponse> {
   const id = cartId || (await getCartId())
 
   if (!id) {
@@ -331,7 +333,7 @@ export async function completeCart(cartId?: string) {
     await removeCartId()
   }
 
-  return result
+  return result as HttpTypes.StoreCompleteCartResponse
 }
 
 export async function applyPromotions(codes: string[]) {
@@ -355,6 +357,70 @@ export async function applyPromotions(codes: string[]) {
       revalidateTag(fulfillmentCacheTag)
     })
     .catch(medusaError)
+}
+
+export async function applyLoyaltyPointsOnCart() {
+  const cartId = await getCartId()
+
+  if (!cartId) {
+    throw new Error("No existing cart found")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<{
+      cart: HttpTypes.StoreCart & {
+        promotions: HttpTypes.StorePromotion[]
+      }
+    }>(`/store/carts/${cartId}/loyalty-points`, {
+      method: "POST",
+      headers,
+      body: {},
+    })
+    .then(async (result) => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment")
+      revalidateTag(fulfillmentCacheTag)
+
+      return result
+    })
+}
+
+export async function removeLoyaltyPointsOnCart() {
+  const cartId = await getCartId()
+
+  if (!cartId) {
+    throw new Error("No existing cart found")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<{
+      cart: HttpTypes.StoreCart & {
+        promotions: HttpTypes.StorePromotion[]
+      }
+    }>(`/store/carts/${cartId}/loyalty-points`, {
+      method: "DELETE",
+      headers,
+      body: {},
+    })
+    .then(async (result) => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment")
+      revalidateTag(fulfillmentCacheTag)
+
+      return result
+    })
 }
 
 export async function applyGiftCard(code: string) {

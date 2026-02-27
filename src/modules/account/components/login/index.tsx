@@ -14,12 +14,14 @@ const Login = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm w-full flex flex-col items-center"
+      className="flex w-full flex-col items-center"
       data-testid="login-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-8">
-        Sign in to access an enhanced shopping experience.
+      <h1 className="mb-3 text-center text-2xl font-semibold tracking-tight text-ui-fg-base">
+        Welcome back
+      </h1>
+      <p className="mb-6 text-center text-sm leading-6 text-ui-fg-subtle small:mb-8">
+        Sign in to track orders, redeem loyalty points, and check out faster.
       </p>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -47,13 +49,14 @@ const Login = ({ setCurrentView }: Props) => {
         </SubmitButton>
       </form>
       <span className="text-center text-ui-fg-base text-small-regular mt-6">
-        Not a member?{" "}
+        New here?{" "}
         <button
+          type="button"
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline"
+          className="font-medium text-ui-fg-interactive underline underline-offset-4 hover:text-ui-fg-interactive-hover"
           data-testid="register-button"
         >
-          Join us
+          Sign up
         </button>
         .
       </span>

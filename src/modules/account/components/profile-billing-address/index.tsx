@@ -7,7 +7,11 @@ import NativeSelect from "@modules/common/components/native-select"
 
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
+import {
+  addCustomerAddress,
+  CustomerAddressActionState,
+  updateCustomerAddress,
+} from "@lib/data/customer"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
@@ -37,10 +41,10 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
     (addr) => addr.is_default_billing
   )
 
-  const initialState: Record<string, any> = {
+  const initialState: CustomerAddressActionState = {
     isDefaultBilling: true,
     isDefaultShipping: false,
-    error: false,
+    error: null,
     success: false,
   }
 

@@ -9,6 +9,35 @@ import ShellParallaxBackground from "@/components/layout/shell-parallax-backgrou
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  title: {
+    default: "Total Hemp Consumables",
+    template: "%s | Total Hemp Consumables",
+  },
+  description:
+    "Shop compliant hemp-derived products with transparent sourcing, tested ingredients, and customer-first support.",
+  openGraph: {
+    type: "website",
+    siteName: "Total Hemp Consumables",
+    title: "Total Hemp Consumables",
+    description:
+      "Shop compliant hemp-derived products with transparent sourcing, tested ingredients, and customer-first support.",
+    images: [
+      {
+        url: "/opengraph-image.jpg",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Total Hemp Consumables",
+    description:
+      "Shop compliant hemp-derived products with transparent sourcing, tested ingredients, and customer-first support.",
+    images: ["/twitter-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

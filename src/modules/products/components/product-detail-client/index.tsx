@@ -668,12 +668,12 @@ export default function ProductDetailClient({
 
       const variantOptions = toOptionMap(variant)
 
-      for (const [index, option] of orderedOptions.entries()) {
+      orderedOptions.forEach((option, index) => {
         const optionId = option.id
         const candidateValue = variantOptions[optionId]
 
         if (!candidateValue) {
-          continue
+          return
         }
 
         const matchesParentSelections = orderedOptions
@@ -690,7 +690,7 @@ export default function ProductDetailClient({
         if (matchesParentSelections) {
           map.get(optionId)?.add(candidateValue)
         }
-      }
+      })
     }
 
     return map
@@ -701,7 +701,7 @@ export default function ProductDetailClient({
       let changed = false
       const next = { ...current }
 
-      for (const [index, option] of orderedOptions.entries()) {
+      orderedOptions.forEach((option, index) => {
         const unmetParent = orderedOptions
           .slice(0, index)
           .find((parentOption) => !next[parentOption.id])
@@ -711,7 +711,7 @@ export default function ProductDetailClient({
             next[option.id] = ""
             changed = true
           }
-          continue
+          return
         }
 
         const availableValues = availableValuesByOption.get(option.id) || new Set<string>()
@@ -720,14 +720,14 @@ export default function ProductDetailClient({
         if (selectedValue && !availableValues.has(selectedValue)) {
           next[option.id] = ""
           changed = true
-          continue
+          return
         }
 
         if (!selectedValue && availableValues.size === 1) {
           next[option.id] = Array.from(availableValues)[0]
           changed = true
         }
-      }
+      })
 
       return changed ? next : current
     })
@@ -959,12 +959,12 @@ export default function ProductDetailClient({
                         <SelectValue placeholder={selectPlaceholder} />
                       </SelectTrigger>
                       <SelectContent>
-                        {visibleValues.map((valueOption) => {
+                        {visibleValues.map((valueOption, valueOptionIndex) => {
                           const value = valueOption.value
 
                           return (
                             <SelectItem
-                              key={valueOption.id || `${option.id}-${value}`}
+                              key={`${option.id}-${value}-${valueOptionIndex}`}
                               value={value}
                             >
                               {value}

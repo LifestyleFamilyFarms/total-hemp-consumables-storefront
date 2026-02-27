@@ -11,7 +11,7 @@ import { BrandSpinner } from "@/components/brand/brand-spinner"
 
 type SummaryProps = {
   cart: HttpTypes.StoreCart & {
-    promotions: HttpTypes.StorePromotion[]
+    promotions: HttpTypes.StoreCartPromotion[]
   }
 }
 

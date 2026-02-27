@@ -61,6 +61,11 @@ const AuthorizeNetPaymentButton = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const router = useRouter()
 
+  const isOrderResponse = (
+    response: HttpTypes.StoreCompleteCartResponse
+  ): response is Extract<HttpTypes.StoreCompleteCartResponse, { type: "order" }> =>
+    response.type === "order"
+
   const completeCart = async () => {
     try {
       setSubmitting(true)
@@ -69,22 +74,26 @@ const AuthorizeNetPaymentButton = ({
         throw new Error("No cart id found when completing order")
       }
       const result = await completeCartAction(cartId)
-      if ((result as any)?.type === "order" && (result as any)?.order?.id) {
+      if (isOrderResponse(result) && result.order?.id) {
         router.refresh()
-        const order = (result as any).order
+        const order = result.order
         const country =
           order?.shipping_address?.country_code?.toLowerCase() ||
-          order?.region?.countries?.[0]?.iso_2 ||
           "us"
         router.push(`/${country}/order/${order.id}/confirmed`)
-      } else if ((result as any)?.cart) {
-        const msg =
-          (result as any)?.error?.message ||
-          "Could not complete order. Please try again."
-        setErrorMessage(msg)
+      } else {
+        if (!isOrderResponse(result)) {
+          const msg =
+            result.error?.message || "Could not complete order. Please try again."
+          setErrorMessage(msg)
+        }
       }
-    } catch (err: any) {
-      setErrorMessage(err?.message || "Could not complete order")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message)
+      } else {
+        setErrorMessage("Could not complete order")
+      }
     } finally {
       setSubmitting(false)
     }

@@ -46,36 +46,43 @@
     --sidebar-border: var(--brand-cocoa);
     --sidebar-ring: var(--brand-forest);
 
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-transparent.webp");
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
     --app-bg-size: cover;
     --app-bg-position: center;
     --app-bg-pattern-opacity: .5;
     --app-bg-filter: blur(1px) saturate(0.7) contrast(0.9) brightness(0.95);
+    --scene-grad-tl: 52 92% 84%;
+    --scene-grad-tr: 24 88% 58%;
+    --scene-grad-bl: 162 62% 34%;
+    --scene-grad-br: 137 48% 15%;
+    --scene-grad-base-start: 59 44% 78%;
+    --scene-grad-base-end: 137 42% 23%;
     --app-bg-overlay:
-      radial-gradient(100% 64% at 10% 10%, hsl(59 92% 90%) 0%, transparent 100%),
-      radial-gradient(100% 62% at top right, hsl(43 90% 76%) 0%, transparent 75%),
-      radial-gradient(74% 68% at bottom left, hsl(162 40% 36%) 0%, transparent 100%),
-      radial-gradient(78% 72% at bottom right, hsla(15, 48%, 24%, 0.727) 50%, transparent 100%),
-      linear-gradient(152deg, hsl(59 44% 78%) 0%, hsl(137 42% 23%) 100%);
+      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 1) 0%, transparent 75%),
+      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
+      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
+      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 0.82) 50%, transparent 100%),
+      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
     --app-bg-overlay-opacity: 0.6;
 
-    --surface-light-angle: 145deg;
+    --surface-light-angle: 156deg;
     --surface-light-source-x: 12%;
     --surface-light-source-y: 6%;
-    --surface-glass-top: 59 70% 92%;
-    --surface-glass-bottom: 137 34% 20%;
-    --surface-glass-glow: 162 72% 52%;
+    --surface-glass-top: var(--scene-grad-tl);
+    --surface-glass-bottom: var(--scene-grad-base-end);
+    --surface-glass-glow: var(--scene-grad-tr);
     --surface-glass-edge: 59 72% 94%;
     --surface-glass-shadow: 137 46% 12%;
-    --surface-border-top-left: 59 86% 90%;
-    --surface-border-top-right: 43 88% 76%;
-    --surface-border-bottom-left: 137 44% 34%;
-    --surface-border-bottom-right: 162 56% 34%;
-    --surface-border-mid: 137 34% 22%;
+    --surface-border-top-left: var(--scene-grad-tl);
+    --surface-border-top-right: var(--scene-grad-tr);
+    --surface-border-bottom-left: var(--scene-grad-bl);
+    --surface-border-bottom-right: var(--scene-grad-br);
+    --surface-border-mid: var(--scene-grad-base-end);
     --type-shadow-color: 15 48% 18%;
     --type-shadow-opacity: 0.34;
     --type-shadow-x: 1px;
     --type-shadow-y: 1px;
+    
 
   }
 
@@ -112,24 +119,30 @@
     --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
     --app-bg-pattern-opacity: 0.3;
     --app-bg-filter: blur(1px) saturate(0.72) contrast(1) brightness(0.74);
+    --scene-grad-tl: 59 73% 78%;
+    --scene-grad-tr: 43 82% 70%;
+    --scene-grad-bl: 162 34% 28%;
+    --scene-grad-br: 0 0% 10%;
+    --scene-grad-base-start: 137 52% 16%;
+    --scene-grad-base-end: 137 62% 8%;
     --app-bg-overlay:
-      radial-gradient(ellipse at -15% -10%, hsla(59, 73%, 78%, 0.741) 0%, transparent 75%),
-      radial-gradient(ellipse at 85% -25%, hsl(43 82% 70%) 0%, transparent 35%),
-      radial-gradient(74% 66% at -6% 108%, hsl(162 34% 28%) 0%, transparent 70%),
-      radial-gradient(100% 100% at 106% 110%, hsl(0 0% 10%) 0%, transparent 100%),
-      linear-gradient(156deg, hsl(137 52% 16%) 0%, hsl(137 62% 8%) 100%);
+      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 0.741) 0%, transparent 75%),
+      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
+      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
+      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 1) 50%, transparent 100%),
+      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
     --app-bg-overlay-opacity: 0.5;
 
-    --surface-glass-top: 59 58% 82%;
-    --surface-glass-bottom: 137 44% 12%;
-    --surface-glass-glow: 43 90% 62%;
+    --surface-glass-top: var(--scene-grad-tl);
+    --surface-glass-bottom: var(--scene-grad-base-end);
+    --surface-glass-glow: var(--scene-grad-tr);
     --surface-glass-edge: 59 66% 88%;
     --surface-glass-shadow: 137 56% 4%;
-    --surface-border-top-left: 59 66% 78%;
-    --surface-border-top-right: 43 82% 68%;
-    --surface-border-bottom-left: 137 44% 24%;
-    --surface-border-bottom-right: 162 46% 24%;
-    --surface-border-mid: 137 48% 16%;
+    --surface-border-top-left: var(--scene-grad-tl);
+    --surface-border-top-right: var(--scene-grad-tr);
+    --surface-border-bottom-left: var(--scene-grad-bl);
+    --surface-border-bottom-right: var(--scene-grad-br);
+    --surface-border-mid: var(--scene-grad-base-end);
     --type-shadow-color: 0 0% 3%;
     --type-shadow-opacity: 0.44;
     --type-shadow-x: 1px;
@@ -167,27 +180,33 @@
     --sidebar-border: 0 0% 85%;
     --sidebar-ring: 0 0% 20%;
 
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-transparent.webp");
-    --app-bg-pattern-opacity: 0.06;
-    --app-bg-filter: saturate(0.52) contrast(0.9) brightness(1.05);
+    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
+    --app-bg-pattern-opacity: 0.5;
+    --app-bg-filter: blur(1px) saturate(0.55) contrast(0.92) brightness(1.02);
+    --scene-grad-tl: 60 100% 98%;
+    --scene-grad-tr: 43 86% 90%;
+    --scene-grad-bl: 162 26% 72%;
+    --scene-grad-br: 210 16% 58%;
+    --scene-grad-base-start: 60 42% 97%;
+    --scene-grad-base-end: 43 55% 92%;
     --app-bg-overlay:
-      radial-gradient(72% 62% at -8% -10%, hsl(60 100% 98%) 0%, transparent 66%),
-      radial-gradient(70% 60% at 108% -10%, hsl(43 86% 90%) 0%, transparent 66%),
-      radial-gradient(74% 66% at -6% 108%, hsl(162 26% 72%) 0%, transparent 70%),
-      radial-gradient(78% 70% at 106% 110%, hsl(210 16% 58%) 0%, transparent 72%),
-      linear-gradient(150deg, hsl(60 42% 97%) 0%, hsl(43 55% 92%) 100%);
-    --app-bg-overlay-opacity: 0.1;
+      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 1) 0%, transparent 75%),
+      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
+      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
+      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 0.727) 50%, transparent 100%),
+      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
+    --app-bg-overlay-opacity: 0.6;
 
-    --surface-glass-top: 0 0% 100%;
-    --surface-glass-bottom: 43 28% 88%;
-    --surface-glass-glow: 162 56% 78%;
+    --surface-glass-top: var(--scene-grad-tl);
+    --surface-glass-bottom: var(--scene-grad-base-end);
+    --surface-glass-glow: var(--scene-grad-tr);
     --surface-glass-edge: 0 0% 100%;
     --surface-glass-shadow: 220 26% 32%;
-    --surface-border-top-left: 60 76% 98%;
-    --surface-border-top-right: 43 80% 90%;
-    --surface-border-bottom-left: 162 34% 74%;
-    --surface-border-bottom-right: 137 26% 80%;
-    --surface-border-mid: 210 24% 76%;
+    --surface-border-top-left: var(--scene-grad-tl);
+    --surface-border-top-right: var(--scene-grad-tr);
+    --surface-border-bottom-left: var(--scene-grad-bl);
+    --surface-border-bottom-right: var(--scene-grad-br);
+    --surface-border-mid: var(--scene-grad-base-end);
     --type-shadow-color: 210 20% 38%;
     --type-shadow-opacity: 0.22;
     --type-shadow-x: 1px;
@@ -226,26 +245,32 @@
     --sidebar-ring: 0 0% 60%;
 
     --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
-    --app-bg-pattern-opacity: 0.08;
-    --app-bg-filter: saturate(0.48) contrast(0.95) brightness(0.6);
+    --app-bg-pattern-opacity: 0.3;
+    --app-bg-filter: blur(1px) saturate(0.5) contrast(1) brightness(0.6);
+    --scene-grad-tl: 59 52% 70%;
+    --scene-grad-tr: 43 58% 62%;
+    --scene-grad-bl: 137 24% 24%;
+    --scene-grad-br: 0 0% 5%;
+    --scene-grad-base-start: 137 24% 14%;
+    --scene-grad-base-end: 0 0% 6%;
     --app-bg-overlay:
-      radial-gradient(70% 60% at -8% -10%, hsl(59 52% 70%) 0%, transparent 66%),
-      radial-gradient(70% 60% at 108% -10%, hsl(43 58% 62%) 0%, transparent 66%),
-      radial-gradient(74% 66% at -6% 108%, hsl(137 24% 24%) 0%, transparent 70%),
-      radial-gradient(78% 70% at 106% 110%, hsl(0 0% 5%) 0%, transparent 72%),
-      linear-gradient(156deg, hsl(137 24% 14%) 0%, hsl(0 0% 6%) 100%);
-    --app-bg-overlay-opacity: 0.1;
+      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 0.741) 0%, transparent 75%),
+      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
+      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
+      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 1) 0%, transparent 100%),
+      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
+    --app-bg-overlay-opacity: 0.5;
 
-    --surface-glass-top: 0 0% 96%;
-    --surface-glass-bottom: 137 18% 12%;
-    --surface-glass-glow: 162 52% 48%;
+    --surface-glass-top: var(--scene-grad-tl);
+    --surface-glass-bottom: var(--scene-grad-base-end);
+    --surface-glass-glow: var(--scene-grad-tr);
     --surface-glass-edge: 0 0% 100%;
     --surface-glass-shadow: 0 0% 2%;
-    --surface-border-top-left: 59 36% 68%;
-    --surface-border-top-right: 43 54% 62%;
-    --surface-border-bottom-left: 137 28% 22%;
-    --surface-border-bottom-right: 162 34% 22%;
-    --surface-border-mid: 137 20% 14%;
+    --surface-border-top-left: var(--scene-grad-tl);
+    --surface-border-top-right: var(--scene-grad-tr);
+    --surface-border-bottom-left: var(--scene-grad-bl);
+    --surface-border-bottom-right: var(--scene-grad-br);
+    --surface-border-mid: var(--scene-grad-base-end);
     --type-shadow-color: 0 0% 2%;
     --type-shadow-opacity: 0.56;
     --type-shadow-x: 1px;
@@ -369,7 +394,7 @@
   }
 
   .surface-panel {
-    background-color: hsl(var(--card) / 0.66);
+    background-color: hsl(var(--card) / 0.66) !important;
     background-image:
       radial-gradient(
         94% 88% at 0% 0%,
@@ -400,46 +425,202 @@
         var(--surface-light-angle),
         hsl(var(--surface-glass-top) / 0.28) 0%,
         hsl(var(--surface-glass-bottom) / 0.22) 100%
-      );
-    border-color: hsl(var(--surface-border-mid) / 0.36);
+      ) !important;
+    background-blend-mode: screen, screen, screen, multiply, soft-light, normal !important;
+    border-color: hsl(var(--surface-border-mid) / 0.36) !important;
     box-shadow:
       inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
       inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.42),
       inset 1px -1px 0 hsl(var(--surface-border-bottom-left) / 0.3),
       inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.34),
-      0 14px 32px hsl(var(--surface-glass-shadow) / 0.22);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+      0 14px 32px hsl(var(--surface-glass-shadow) / 0.22) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
   }
 
   .surface-nav {
-    background-color: hsl(var(--card) / 0.68);
+    background-color: hsl(var(--card) / 0.68) !important;
     background-image:
       radial-gradient(90% 70% at 0% 0%, hsl(var(--surface-border-top-left) / 0.14) 0%, transparent 66%),
       radial-gradient(90% 70% at 100% 0%, hsl(var(--surface-border-top-right) / 0.13) 0%, transparent 66%),
-      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.18) 0%, hsl(var(--surface-glass-bottom) / 0.16) 100%);
-    border-color: hsl(var(--surface-border-mid) / 0.48);
+      radial-gradient(95% 80% at 0% 100%, hsl(var(--surface-border-bottom-left) / 0.1) 0%, transparent 70%),
+      radial-gradient(95% 80% at 100% 100%, hsl(var(--surface-border-bottom-right) / 0.1) 0%, transparent 70%),
+      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.18) 0%, hsl(var(--surface-glass-bottom) / 0.16) 100%) !important;
+    background-blend-mode: screen, screen, multiply, multiply, normal !important;
+    border-color: hsl(var(--surface-border-mid) / 0.48) !important;
     box-shadow:
       inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
       inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.4),
-      0 8px 24px hsl(var(--surface-glass-shadow) / 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+      0 8px 24px hsl(var(--surface-glass-shadow) / 0.18) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
   }
 
   .surface-button {
-    border-color: hsl(var(--surface-border-mid) / 0.5);
-    background-color: hsl(var(--card) / 0.74);
+    border-color: hsl(var(--surface-border-mid) / 0.5) !important;
+    background-color: hsl(var(--card) / 0.74) !important;
     background-image:
       radial-gradient(90% 82% at 0% 0%, hsl(var(--surface-border-top-left) / 0.2) 0%, transparent 66%),
       radial-gradient(88% 82% at 100% 0%, hsl(var(--surface-border-top-right) / 0.18) 0%, transparent 66%),
-      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.2) 0%, hsl(var(--surface-glass-bottom) / 0.18) 100%);
+      radial-gradient(92% 84% at 0% 100%, hsl(var(--surface-border-bottom-left) / 0.12) 0%, transparent 70%),
+      radial-gradient(92% 84% at 100% 100%, hsl(var(--surface-border-bottom-right) / 0.14) 0%, transparent 70%),
+      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.2) 0%, hsl(var(--surface-glass-bottom) / 0.18) 100%) !important;
+    background-blend-mode: screen, screen, multiply, multiply, normal !important;
     box-shadow:
       inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.42),
       inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.36),
       inset 0 -1px 0 hsl(var(--surface-border-bottom-right) / 0.3),
-      0 4px 10px hsl(var(--surface-glass-shadow) / 0.2);
+      0 4px 10px hsl(var(--surface-glass-shadow) / 0.2) !important;
     text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / calc(var(--type-shadow-opacity) * 0.85));
+  }
+
+  .shell-surface:has([data-auth-isolated="true"]) footer {
+    display: none;
+  }
+
+  .plp-card {
+    position: relative;
+    display: flex;
+    min-height: 430px;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 30px;
+    border: 1px solid hsl(var(--border) / 0.6);
+    transition: transform 300ms ease, box-shadow 300ms ease;
+  }
+
+  .plp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 52px hsl(var(--surface-glass-shadow) / 0.26);
+  }
+
+  .plp-card__media {
+    position: relative;
+    margin: 0.5rem 0.5rem 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid hsl(var(--border) / 0.5);
+    isolation: isolate;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  .plp-card__image {
+    border-radius: 18px;
+    object-fit: contain;
+    padding: 0.7rem;
+    transition: transform 500ms ease, filter 350ms ease;
+    filter: drop-shadow(0 16px 24px hsl(var(--surface-glass-shadow) / 0.2));
+  }
+
+  .group:hover .plp-card__image {
+    transform: scale(1.04);
+  }
+
+  .plp-card__media-vignette,
+  .plp-card__media-glass,
+  .plp-card__media-glow {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+  }
+
+  .plp-card__media-vignette {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--background) / 0.05) 0%,
+      transparent 36%,
+      hsl(var(--background) / 0.42) 100%
+    );
+  }
+
+  .plp-card__media-glass {
+    border-radius: 24px;
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--surface-border-mid) / 0.45),
+      inset 0 18px 36px hsl(var(--surface-border-bottom-right) / 0.16),
+      inset 0 -14px 28px hsl(var(--surface-border-top-left) / 0.12);
+  }
+
+  .plp-card__media-glow {
+    inset: auto 1rem 0.75rem;
+    height: 2.8rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary) / 0.12);
+    filter: blur(22px);
+  }
+
+  .plp-card__title {
+    text-shadow: none;
+  }
+
+  .plp-card__price {
+    letter-spacing: 0.01em;
+  }
+
+  .plp-card--minimal .plp-card__media {
+    background:
+      radial-gradient(124% 98% at 8% 4%, hsl(var(--surface-glass-edge) / 0.36) 0%, transparent 56%),
+      radial-gradient(136% 112% at 100% 100%, hsl(var(--surface-glass-shadow) / 0.2) 0%, transparent 72%),
+      linear-gradient(to bottom right, hsl(var(--card) / 0.82) 0%, hsl(var(--background) / 0.52) 100%);
+  }
+
+  .plp-card--minimal .plp-card__image {
+    mix-blend-mode: normal;
+    filter: saturate(1.04) contrast(1.02) brightness(1.05)
+      drop-shadow(0 14px 20px hsl(var(--surface-glass-shadow) / 0.16));
+  }
+
+  .plp-card--cinematic .plp-card__media {
+    background:
+      radial-gradient(130% 92% at 8% 4%, hsl(var(--surface-glass-edge) / 0.44) 0%, transparent 58%),
+      radial-gradient(150% 118% at 100% 100%, hsl(var(--surface-glass-shadow) / 0.34) 0%, transparent 70%),
+      linear-gradient(to bottom right, hsl(var(--card) / 0.84) 0%, hsl(var(--surface-glass-bottom) / 0.62) 100%);
+  }
+
+  .plp-card--cinematic .plp-card__image {
+    object-fit: contain;
+    padding: 0.55rem;
+    filter: saturate(1.08) contrast(1.02) brightness(1.06)
+      drop-shadow(0 20px 28px hsl(var(--surface-glass-shadow) / 0.24));
+  }
+
+  .plp-card--cinematic .plp-card__media-vignette {
+    background: linear-gradient(to bottom right,
+      hsl(var(--surface-glass-edge) / 0.2) 0%,
+      transparent 48%,
+      hsl(var(--surface-glass-shadow) / 0.28) 100%);
+  }
+
+  .plp-card--cinematic .plp-card__media-glass {
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--surface-border-mid) / 0.42),
+      inset 12px 12px 24px hsl(var(--surface-glass-edge) / 0.14),
+      inset -14px -14px 26px hsl(var(--surface-glass-shadow) / 0.2);
+  }
+
+  .plp-card--cinematic .plp-card__media-glow {
+    background: hsl(var(--accent) / 0.15);
+    filter: blur(20px);
+  }
+
+  .plp-card--natural .plp-card__media {
+    background:
+      radial-gradient(96% 86% at 0% 0%, hsl(var(--brand-butter) / 0.38) 0%, transparent 62%),
+      radial-gradient(100% 80% at 100% 100%, hsl(var(--brand-teal) / 0.22) 0%, transparent 66%),
+      linear-gradient(154deg, hsl(var(--card) / 0.7) 0%, hsl(var(--background) / 0.6) 100%);
+  }
+
+  .plp-card--natural .plp-card__image {
+    mix-blend-mode: multiply;
+    filter: saturate(1.1) contrast(1.04)
+      drop-shadow(0 16px 24px hsl(var(--surface-glass-shadow) / 0.24));
+  }
+
+  .plp-card--natural .plp-card__media-glow {
+    background: hsl(var(--secondary) / 0.16);
   }
 
   .shell-surface {

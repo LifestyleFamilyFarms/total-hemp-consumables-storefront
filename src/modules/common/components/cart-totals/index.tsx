@@ -33,45 +33,27 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const hasShippingMethod =
     Array.isArray(shipping_methods) && shipping_methods.length > 0
 
-  /**
-   * Shipping amounts from the API can occasionally arrive in minor units
-   * (cents). If we see a clearly out-of-range value, normalise by 100 to
-   * avoid showing $900+ rates to the shopper. We also fall back gracefully
-   * when no shipping method has been selected yet.
-   */
-  const normalizeShipping = (amount?: number | null) => {
-    if (typeof amount !== "number" || Number.isNaN(amount)) {
-      return 0
-    }
-    // Heuristic: if the value looks 100x too large, scale it down.
-    return amount >= 200 ? amount / 100 : amount
-  }
-
   const shippingAmountFromMethod = (() => {
     if (!hasShippingMethod) return 0
     const latest =
       Array.isArray(shipping_methods) && shipping_methods.length > 0
         ? (shipping_methods as any)[shipping_methods.length - 1]
         : null
-    return normalizeShipping(
-      typeof latest?.amount === "number" ? latest.amount : undefined
-    )
+    return typeof latest?.amount === "number" ? latest.amount : 0
   })()
 
   const shippingDisplay = hasShippingMethod
     ? shippingAmountFromMethod ||
-      normalizeShipping(
-        typeof shipping_total === "number"
-          ? shipping_total
-          : typeof shipping_subtotal === "number"
-            ? shipping_subtotal
-            : 0
-      )
+      (typeof shipping_total === "number"
+        ? shipping_total
+        : typeof shipping_subtotal === "number"
+          ? shipping_subtotal
+          : 0)
     : 0
 
   return (
     <div>
-      <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
+      <div className="flex flex-col gap-y-2 text-sm text-muted-foreground">
         <div className="flex items-center justify-between">
           <span className="flex gap-x-1 items-center">
             Subtotal (excl. shipping and taxes)
@@ -84,7 +66,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           <div className="flex items-center justify-between">
             <span>Discount</span>
             <span
-              className="text-ui-fg-interactive"
+              className="text-primary"
               data-testid="cart-discount"
               data-value={discount_total || 0}
             >
@@ -114,7 +96,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           <div className="flex items-center justify-between">
             <span>Gift card</span>
             <span
-              className="text-ui-fg-interactive"
+              className="text-primary"
               data-testid="cart-gift-card-amount"
               data-value={gift_card_total || 0}
             >
@@ -124,18 +106,18 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           </div>
         )}
       </div>
-      <div className="h-px w-full border-b border-gray-200 my-4" />
-      <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
+      <div className="my-4 h-px w-full border-b border-border/70" />
+      <div className="mb-2 flex items-center justify-between text-base font-semibold text-foreground">
         <span>Total</span>
         <span
-          className="txt-xlarge-plus"
+          className="text-2xl font-semibold"
           data-testid="cart-total"
           data-value={total || 0}
         >
           {convertToLocale({ amount: total ?? 0, currency_code })}
         </span>
       </div>
-      <div className="h-px w-full border-b border-gray-200 mt-4" />
+      <div className="mt-4 h-px w-full border-b border-border/70" />
     </div>
   )
 }

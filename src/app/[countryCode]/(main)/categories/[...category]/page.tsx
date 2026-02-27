@@ -19,6 +19,7 @@ type Props = {
     type?: string | string[]
     effect?: string | string[]
     compound?: string | string[]
+    cardStyle?: string | string[]
   }>
 }
 
@@ -62,7 +63,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: `/${params.countryCode}/categories/${params.category.join("/")}`,
       },
     }
   } catch (error) {
@@ -91,6 +92,7 @@ export default async function CategoryPage(props: Props) {
       selectedTypes={state.type}
       selectedEffects={state.effect}
       selectedCompounds={state.compound}
+      cardStyle={state.cardStyle}
       countryCode={params.countryCode}
     />
   )

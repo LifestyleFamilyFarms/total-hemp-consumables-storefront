@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
 import { US_STATES } from "src/lib/constants/us-states"
+import AddressAutocompleteInput from "./address-autocomplete-input"
 
 const ShippingAddress = ({
   customer,
@@ -107,6 +108,48 @@ const ShippingAddress = ({
   const isUsAddress =
     (formData["shipping_address.country_code"] || "").toLowerCase() === "us"
 
+  const handleAutocompleteSelection = (suggestion: {
+    address1?: string
+    city?: string
+    province?: string
+    postalCode?: string
+    countryCode?: string
+  }) => {
+    setFormData((prev) => {
+      const next = { ...prev }
+      const allowedCountries = new Set(
+        (cart?.region?.countries ?? []).map((country) =>
+          country.iso_2?.toLowerCase()
+        )
+      )
+
+      if (suggestion.address1) {
+        next["shipping_address.address_1"] = suggestion.address1
+      }
+
+      if (suggestion.city) {
+        next["shipping_address.city"] = suggestion.city
+      }
+
+      if (suggestion.province) {
+        next["shipping_address.province"] = suggestion.province
+      }
+
+      if (suggestion.postalCode) {
+        next["shipping_address.postal_code"] = suggestion.postalCode
+      }
+
+      if (
+        suggestion.countryCode &&
+        (allowedCountries.size === 0 || allowedCountries.has(suggestion.countryCode))
+      ) {
+        next["shipping_address.country_code"] = suggestion.countryCode
+      }
+
+      return next
+    })
+  }
+
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
@@ -146,15 +189,20 @@ const ShippingAddress = ({
             data-testid="shipping-last-name-input"
           />
           <div className="md:col-span-2">
-            <Input
-              label="Address"
+            <AddressAutocompleteInput
               name="shipping_address.address_1"
-              autoComplete="address-line1"
+              autoComplete="street-address"
               value={formData["shipping_address.address_1"]}
               onChange={handleChange}
+              onAddressSelected={handleAutocompleteSelection}
               required
-              data-testid="shipping-address-input"
+              dataTestId="shipping-address-input"
             />
+            {process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY ? (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Start typing your address and choose a suggestion to reduce entry errors.
+              </p>
+            ) : null}
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

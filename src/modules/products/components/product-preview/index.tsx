@@ -1,21 +1,29 @@
 import Image from "next/image"
 
 import { HttpTypes } from "@medusajs/types"
+import { cn } from "@lib/utils"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { subtitleForProduct } from "@lib/mappers/product-labels"
 import { convertToLocale } from "@lib/util/money"
+import {
+  DEFAULT_PLP_CARD_STYLE,
+  ResolvedPlpCardStyle,
+} from "@modules/store/lib/card-style"
 
 const BADGES: Record<string, string> = {
   sativa: "Sativa",
   indica: "Indica",
   hybrid: "Hybrid",
 }
-const MAX_TAG_PILLS = 3
+const MAX_TAG_PILLS = 2
 const EXCLUDED_TAG_PILLS = new Set([
   "proleve",
   "barney's botanicals",
   "barneys botanicals",
 ])
+
+const STRENGTH_LABEL_PATTERN = /(strength|potency|dose|dosage|mg|milligram)/i
+const STRENGTH_VALUE_PATTERN = /\b\d+(\.\d+)?\s?(mg|mcg|g|ml)\b/i
 
 const TAG_PRIORITY_RULES: Array<{ pattern: RegExp; priority: number }> = [
   {
@@ -101,7 +109,7 @@ function getPriceSummary(product: HttpTypes.StoreProduct) {
         entry
       ): entry is {
         calculated: number
-        original?: number | null
+        original: number | null | undefined
         currencyCode: string
       } => typeof entry.calculated === "number" && typeof entry.currencyCode === "string"
     )
@@ -231,11 +239,46 @@ function getVariantPreview(product: HttpTypes.StoreProduct) {
   }
 }
 
+function getStrengthSummary({
+  variantPreview,
+  tags,
+}: {
+  variantPreview: ReturnType<typeof getVariantPreview>
+  tags: HttpTypes.StoreProduct["tags"]
+}) {
+  if (variantPreview && STRENGTH_LABEL_PATTERN.test(variantPreview.label)) {
+    const base = variantPreview.values.join(", ")
+    return variantPreview.remaining > 0 ? `${base} +${variantPreview.remaining} more` : base
+  }
+
+  const tagStrength = (tags || [])
+    .map((tag) => tag.value?.trim())
+    .filter((value): value is string => Boolean(value))
+    .find((value) => STRENGTH_VALUE_PATTERN.test(value))
+
+  return tagStrength || null
+}
+
+function getVariantDetailSummary(variantPreview: ReturnType<typeof getVariantPreview>) {
+  if (!variantPreview || STRENGTH_LABEL_PATTERN.test(variantPreview.label)) {
+    return null
+  }
+
+  const base = variantPreview.values.join(", ")
+  return `${variantPreview.label}: ${base}${
+    variantPreview.remaining > 0 ? ` +${variantPreview.remaining} more` : ""
+  }`
+}
+
 export default function ProductPreview({
   product,
+  cardStyle = DEFAULT_PLP_CARD_STYLE,
+  styleLabel,
 }: {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
+  cardStyle?: ResolvedPlpCardStyle
+  styleLabel?: string
 }) {
   const badge = getBadge(product)
   const subtitle = subtitleForProduct(product)
@@ -243,100 +286,121 @@ export default function ProductPreview({
   const price = getPriceSummary(product)
   const tagPills = getTagPills(product, badge)
   const variantPreview = getVariantPreview(product)
+  const strengthSummary = getStrengthSummary({
+    variantPreview,
+    tags: product.tags,
+  })
+  const variantDetailSummary = getVariantDetailSummary(variantPreview)
 
   return (
     <LocalizedClientLink href={`/products/${product.handle}`} className="group block h-full">
-      <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 bg-card/80 shadow-[0_16px_36px_rgba(15,23,42,0.14)] transition hover:-translate-y-1 hover:shadow-[0_20px_44px_rgba(15,23,42,0.2)]">
-        <div className="relative aspect-[4/5] overflow-hidden bg-background/60">
+      <article className={cn("surface-panel plp-card", `plp-card--${cardStyle}`)}>
+        <div className="plp-card__media">
           {image ? (
             <Image
               src={image}
               alt={product.title}
               fill
-              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              className="plp-card__image"
               sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
+            <div className="flex h-full w-full items-center justify-center bg-muted/70 text-muted-foreground">
               No image
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+          <div className="plp-card__media-vignette" />
+          <div className="plp-card__media-glass" />
+          <div className="plp-card__media-glow" />
 
-          <div className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-2">
+          <div className="absolute left-3 top-3 flex max-w-[80%] flex-wrap items-center gap-1.5">
             {tagPills.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border/60 bg-background/85 px-2.5 py-1 text-[10px] font-semibold text-foreground/85"
+                className="surface-button rounded-full px-2.5 py-1 text-[10px] font-semibold text-foreground/85"
               >
                 {tag}
               </span>
             ))}
             {badge ? (
-              <span className="rounded-full border border-border/60 bg-background/90 px-2.5 py-1 text-[10px] font-semibold text-primary">
+              <span className="surface-button rounded-full px-2.5 py-1 text-[10px] font-semibold text-primary">
                 {badge}
               </span>
             ) : null}
           </div>
+          {styleLabel ? (
+            <span className="absolute right-3 top-3 rounded-full border border-border/60 bg-card/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/78">
+              {styleLabel}
+            </span>
+          ) : null}
         </div>
 
-        <div className="flex flex-1 flex-col gap-3 px-4 py-4">
-          <div className="space-y-1">
-            <h3 className="line-clamp-2 text-base font-semibold tracking-tight text-foreground">
+        <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-3">
+          <div className="space-y-2">
+            <h3 className="plp-card__title line-clamp-2 text-[1.02rem] font-semibold tracking-tight text-foreground">
               {product.title}
             </h3>
-            {subtitle ? (
-              <p className="text-xs text-foreground/70">{subtitle}</p>
-            ) : null}
-            {variantPreview ? (
-              <p className="text-xs text-foreground/65">
-                <span className="font-semibold uppercase tracking-[0.12em] text-foreground/60">
-                  {variantPreview.label}:
-                </span>{" "}
-                {variantPreview.values.join(", ")}
-                {variantPreview.remaining > 0 ? ` +${variantPreview.remaining} more` : ""}
+
+            {strengthSummary ? (
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/78">
+                Strength: <span className="normal-case tracking-normal">{strengthSummary}</span>
               </p>
+            ) : null}
+
+            {subtitle ? (
+              <p className="line-clamp-2 text-xs leading-relaxed text-foreground/72">{subtitle}</p>
+            ) : null}
+
+            {variantDetailSummary ? (
+              <div className="rounded-xl border border-border/55 bg-background/55 px-2.5 py-2 text-[11px] text-foreground/68">
+                {variantDetailSummary}
+              </div>
             ) : null}
           </div>
 
-          {price ? (
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              {(() => {
-                const hasRange = price.minCalculated !== price.maxCalculated
-                const minPriceLabel = convertToLocale({
-                  amount: price.minCalculated,
-                  currency_code: price.currencyCode,
-                })
-                const maxPriceLabel = convertToLocale({
-                  amount: price.maxCalculated,
-                  currency_code: price.currencyCode,
-                })
-
-                return (
-                  <span className="font-semibold text-foreground" data-testid="product-price">
-                    {hasRange ? `${minPriceLabel} - ${maxPriceLabel}` : minPriceLabel}
-                  </span>
-                )
-              })()}
-              {typeof price.cheapestOriginal === "number" &&
-              price.minCalculated === price.maxCalculated &&
-              price.cheapestOriginal > price.minCalculated ? (
-                <span className="text-xs text-foreground/60 line-through">
-                  {convertToLocale({
-                    amount: price.cheapestOriginal,
+          <div className="mt-auto space-y-2">
+            {price ? (
+              <div className="mt-1 flex items-end justify-between gap-3">
+                {(() => {
+                  const hasRange = price.minCalculated !== price.maxCalculated
+                  const minPriceLabel = convertToLocale({
+                    amount: price.minCalculated,
                     currency_code: price.currencyCode,
-                  })}
-                </span>
-              ) : null}
-            </div>
-          ) : (
-            <p className="text-sm text-foreground/60">Pricing unavailable</p>
-          )}
+                  })
+                  const maxPriceLabel = convertToLocale({
+                    amount: price.maxCalculated,
+                    currency_code: price.currencyCode,
+                  })
 
-          <p className="mt-auto text-xs uppercase tracking-[0.23em] text-foreground/60">
-            View details
-          </p>
+                  return (
+                    <span
+                      className="plp-card__price text-lg font-semibold text-foreground"
+                      data-testid="product-price"
+                    >
+                      {hasRange ? `${minPriceLabel} - ${maxPriceLabel}` : minPriceLabel}
+                    </span>
+                  )
+                })()}
+                {typeof price.cheapestOriginal === "number" &&
+                price.minCalculated === price.maxCalculated &&
+                price.cheapestOriginal > price.minCalculated ? (
+                  <span className="text-xs text-foreground/60 line-through">
+                    {convertToLocale({
+                      amount: price.cheapestOriginal,
+                      currency_code: price.currencyCode,
+                    })}
+                  </span>
+                ) : null}
+              </div>
+            ) : (
+              <p className="text-sm text-foreground/60">Pricing unavailable</p>
+            )}
+
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/62">
+              View details
+            </p>
+          </div>
         </div>
       </article>
     </LocalizedClientLink>

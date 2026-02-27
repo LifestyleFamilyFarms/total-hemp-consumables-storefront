@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button"
 const SideMenuItems = [
   { name: "Home", href: "/" },
   { name: "Store", href: "/store" },
+  { name: "Rewards", href: "/content/loyalty-rewards" },
   { name: "Account", href: "/account" },
   { name: "Cart", href: "/cart" },
 ]

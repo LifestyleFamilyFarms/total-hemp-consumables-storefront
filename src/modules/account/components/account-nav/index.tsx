@@ -1,6 +1,13 @@
 "use client"
 
-import { ChevronRight, LogOut, MapPin, Package, UserRound } from "lucide-react"
+import {
+  Award,
+  ChevronRight,
+  LogOut,
+  MapPin,
+  Package,
+  UserRound,
+} from "lucide-react"
 import { useParams, usePathname } from "next/navigation"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -22,6 +29,7 @@ const AccountNav = ({
     { label: "Profile", href: "/account/profile", icon: UserRound, testId: "profile-link" },
     { label: "Addresses", href: "/account/addresses", icon: MapPin, testId: "addresses-link" },
     { label: "Orders", href: "/account/orders", icon: Package, testId: "orders-link" },
+    { label: "Loyalty", href: "/account/loyalty", icon: Award, testId: "loyalty-link" },
   ]
 
   const handleLogout = async () => {
@@ -80,6 +88,15 @@ const AccountNav = ({
           </li>
         ))}
       </ul>
+
+      <div className="mt-4 border-t border-border/60 pt-3">
+        <LocalizedClientLink
+          href="/content/loyalty-rewards"
+          className="text-sm font-medium text-primary hover:text-primary/80"
+        >
+          How loyalty rewards work
+        </LocalizedClientLink>
+      </div>
     </div>
   )
 }

@@ -2,6 +2,8 @@ import { Suspense } from "react"
 
 import { getPlpFacetOptions } from "@lib/data/products"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
+import PlpCardStyleSwitcher from "@modules/store/components/plp-card-style-switcher"
+import { DEFAULT_PLP_CARD_STYLE, PlpCardStyle } from "@modules/store/lib/card-style"
 import PlpControls from "@modules/store/components/plp-controls"
 import { SortOptions } from "@modules/store/lib/sort-options"
 
@@ -27,6 +29,7 @@ type StoreTemplateProps = {
   emptyStateDescription?: string
   layout?: "stacked" | "split"
   resultMode?: "products" | "variants"
+  cardStyle?: PlpCardStyle
 }
 
 const StoreTemplate = async ({
@@ -48,6 +51,7 @@ const StoreTemplate = async ({
   emptyStateDescription,
   layout = "stacked",
   resultMode = "products",
+  cardStyle = DEFAULT_PLP_CARD_STYLE,
 }: StoreTemplateProps) => {
   const facetOptions = await getPlpFacetOptions({
     countryCode,
@@ -71,24 +75,28 @@ const StoreTemplate = async ({
   )
 
   const results = (
-    <Suspense fallback={<SkeletonProductGrid />}>
-      <PaginatedProducts
-        sortBy={sortBy}
-        page={page}
-        query={q}
-        categoryHandles={category}
-        typeValues={type}
-        effectValues={effect}
-        compoundValues={compound}
-        countryCode={countryCode}
-        categoryId={categoryId}
-        collectionId={collectionId}
-        productsIds={productsIds}
-        emptyStateTitle={emptyStateTitle}
-        emptyStateDescription={emptyStateDescription}
-        resultMode={resultMode}
-      />
-    </Suspense>
+    <div className="space-y-4">
+      <PlpCardStyleSwitcher value={cardStyle} />
+      <Suspense fallback={<SkeletonProductGrid />}>
+        <PaginatedProducts
+          sortBy={sortBy}
+          page={page}
+          query={q}
+          categoryHandles={category}
+          typeValues={type}
+          effectValues={effect}
+          compoundValues={compound}
+          countryCode={countryCode}
+          categoryId={categoryId}
+          collectionId={collectionId}
+          productsIds={productsIds}
+          emptyStateTitle={emptyStateTitle}
+          emptyStateDescription={emptyStateDescription}
+          resultMode={resultMode}
+          cardStyle={cardStyle}
+        />
+      </Suspense>
+    </div>
   )
 
   if (layout === "split") {

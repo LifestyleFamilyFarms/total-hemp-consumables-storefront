@@ -2,11 +2,18 @@
 
 import { track } from "@vercel/analytics"
 
-type CartEventPayload = Record<string, string | number | boolean | null | undefined>
+type CartEventValue = string | number | boolean | null
+type CartEventPayload = Record<string, CartEventValue | undefined>
 
 export function trackCartEvent(name: string, payload: CartEventPayload = {}) {
   try {
-    track(name, payload)
+    const safePayload: Record<string, CartEventValue> = {}
+    for (const [key, value] of Object.entries(payload)) {
+      if (value !== undefined) {
+        safePayload[key] = value
+      }
+    }
+    track(name, safePayload)
   } catch {
     // Ignore analytics failures so cart UX never regresses.
   }

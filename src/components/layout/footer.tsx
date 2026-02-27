@@ -75,6 +75,11 @@ export default function SiteFooter({
                 Address Book
               </Link>
             </li>
+            <li>
+              <Link href={`/${countryCode}/content/loyalty-rewards`} className="hover:underline">
+                Loyalty Rewards Guide
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -89,13 +94,33 @@ export default function SiteFooter({
               </a>
             </li>
             <li>
-              <Link href={`/${countryCode}/store`} className="hover:underline">
-                Shipping Availability
+              <Link href={`/${countryCode}/content/shipping-returns`} className="hover:underline">
+                Shipping & Returns
               </Link>
             </li>
             <li>
-              <Link href={`/${countryCode}/account`} className="hover:underline">
-                Support
+              <Link href={`/${countryCode}/content/privacy-policy`} className="hover:underline">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/content/terms-of-use`} className="hover:underline">
+                Terms of Use
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/content/faq`} className="hover:underline">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/content/contact`} className="hover:underline">
+                Contact Support
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${countryCode}/content/loyalty-rewards`} className="hover:underline">
+                Loyalty Rewards
               </Link>
             </li>
           </ul>

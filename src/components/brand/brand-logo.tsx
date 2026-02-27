@@ -44,12 +44,22 @@ export function BrandLogo({
     throw new Error(`Brand asset ${asset.id} has no output for size ${size}`)
   }
 
+  const normalizedOutput = selectedOutput as {
+    width?: number
+    height?: number
+    svg?: string
+    png?: string
+    webp?: string
+  }
+  const svgSrc =
+    typeof normalizedOutput.svg === "string" ? normalizedOutput.svg : null
+
   const src =
     format === "svg"
-      ? selectedOutput.svg ?? selectedOutput.webp ?? selectedOutput.png
+      ? svgSrc ?? normalizedOutput.webp ?? normalizedOutput.png
       : format === "png"
-        ? selectedOutput.png ?? selectedOutput.webp ?? selectedOutput.svg
-        : selectedOutput.webp ?? selectedOutput.png ?? selectedOutput.svg
+        ? normalizedOutput.png ?? normalizedOutput.webp ?? svgSrc
+        : normalizedOutput.webp ?? normalizedOutput.png ?? svgSrc
 
   if (!src) {
     throw new Error(`Brand asset ${asset.id} is missing ${format.toUpperCase()} output`)
@@ -62,8 +72,8 @@ export function BrandLogo({
       <Image
         src={normalizedSrc}
         alt={config.label}
-        width={selectedOutput.width ?? 0}
-        height={selectedOutput.height ?? 0}
+        width={normalizedOutput.width ?? 0}
+        height={normalizedOutput.height ?? 0}
         priority={priority}
         className={cn(
           "h-auto w-full max-w-full object-contain",

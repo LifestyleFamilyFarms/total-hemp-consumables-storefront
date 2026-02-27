@@ -39,6 +39,22 @@ Use this as pass/fail criteria before handing work to Agent C.
   - [ ] PDP variant + add-to-cart
   - [ ] Cart reflects updates after mutation
 
+## Responsive QA Gate (Required)
+- [ ] Validate layouts at these viewport sizes before handoff:
+  - [ ] `360x800` (small mobile)
+  - [ ] `390x844` (modern mobile)
+  - [ ] `768x1024` (tablet portrait)
+  - [ ] `1024x768` (tablet landscape / small laptop)
+  - [ ] `1280x800` (desktop)
+  - [ ] `1440x900` (desktop wide)
+- [ ] Validate these routes at each size:
+  - [ ] `/[countryCode]/store`
+  - [ ] `/[countryCode]/categories/[handle]`
+  - [ ] `/[countryCode]/products/[handle]`
+- [ ] Validate shell interactions at each size:
+  - [ ] Topbar/nav behavior
+  - [ ] Cart drawer open/close and item controls
+
 ## Handoff Documentation
 - [ ] `docs/rebuild-handoff-status.md` updated with Agent B change note.
 - [ ] Files changed are listed by boundary (`app`, `lib/data`, `modules`, docs).

@@ -3,6 +3,12 @@ import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import VariantPreview from "@modules/products/components/variant-preview"
 import { Pagination } from "@modules/store/components/pagination"
+import {
+  DEFAULT_PLP_CARD_STYLE,
+  PlpCardStyle,
+  PLP_CARD_STYLE_LABELS,
+  resolvePlpCardStyleForIndex,
+} from "@modules/store/lib/card-style"
 import { SortOptions } from "@modules/store/lib/sort-options"
 
 const PRODUCT_LIMIT = 12
@@ -22,6 +28,7 @@ export default async function PaginatedProducts({
   emptyStateTitle,
   emptyStateDescription,
   resultMode = "products",
+  cardStyle,
 }: {
   sortBy?: SortOptions
   page: number
@@ -37,7 +44,10 @@ export default async function PaginatedProducts({
   emptyStateTitle?: string
   emptyStateDescription?: string
   resultMode?: "products" | "variants"
+  cardStyle?: PlpCardStyle
 }) {
+  const activeCardStyle = cardStyle || DEFAULT_PLP_CARD_STYLE
+
   if (resultMode === "variants") {
     const { variants, count, totalPages } = await listProductVariantsForPlp({
       page,
@@ -85,9 +95,19 @@ export default async function PaginatedProducts({
           className="grid w-full gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           data-testid="products-list"
         >
-          {variants.map((record) => (
-            <VariantPreview key={record.id} record={record} />
-          ))}
+          {variants.map((record, index) => {
+            const resolvedStyle = resolvePlpCardStyleForIndex(activeCardStyle, index)
+            return (
+              <VariantPreview
+                key={record.id}
+                record={record}
+                cardStyle={resolvedStyle}
+                styleLabel={
+                  activeCardStyle === "all" ? PLP_CARD_STYLE_LABELS[resolvedStyle] : undefined
+                }
+              />
+            )
+          })}
         </div>
 
         <Pagination data-testid="product-pagination" page={page} totalPages={totalPages} />
@@ -147,9 +167,20 @@ export default async function PaginatedProducts({
         className="grid w-full gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         data-testid="products-list"
       >
-        {products.map((product) => (
-          <ProductPreview key={product.id} product={product} region={region} />
-        ))}
+        {products.map((product, index) => {
+          const resolvedStyle = resolvePlpCardStyleForIndex(activeCardStyle, index)
+          return (
+            <ProductPreview
+              key={product.id}
+              product={product}
+              region={region}
+              cardStyle={resolvedStyle}
+              styleLabel={
+                activeCardStyle === "all" ? PLP_CARD_STYLE_LABELS[resolvedStyle] : undefined
+              }
+            />
+          )
+        })}
       </div>
 
       <Pagination data-testid="product-pagination" page={page} totalPages={totalPages} />

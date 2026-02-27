@@ -58,7 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             autoComplete={props.autoComplete}
             {...props}
             ref={inputRef}
-            className="h-11 w-full rounded-md border border-border bg-white px-3 py-2 text-sm shadow-sm focus-visible:ring-2 focus-visible:ring-ring"
+            className="h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus-visible:ring-2 focus-visible:ring-ring"
           />
           {type === "password" && (
             <button

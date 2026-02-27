@@ -96,3 +96,15 @@ export const SHIPSTATION_SERVICE_ALLOWLIST_SET =
   expandedAllowlistValues.length > 0
     ? new Set(expandedAllowlistValues)
     : null
+
+export type CheckoutShippingMode = "pickup_only" | "full"
+
+const resolveCheckoutShippingMode = (): CheckoutShippingMode => {
+  const mode = process.env.NEXT_PUBLIC_CHECKOUT_SHIPPING_MODE
+    ?.trim()
+    .toLowerCase()
+
+  return mode === "full" ? "full" : "pickup_only"
+}
+
+export const CHECKOUT_SHIPPING_MODE = resolveCheckoutShippingMode()
