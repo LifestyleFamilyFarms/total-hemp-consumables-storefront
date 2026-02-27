@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-27T14:54:54.106Z",
+  "generatedAt": "2026-02-27T15:43:27.912Z",
   "sourceDir": "assets/brand/LOGOS_ICONS_WEB",
   "outputDir": "/logos/svg",
   "sizes": [
@@ -11,6 +11,32 @@
       "label": "md",
       "width": 256
     }
+  ],
+  "svgFiles": [
+    "BW_ICON_PRINT.svg",
+    "BW_ICONnoTM_PRINT.svg",
+    "BW_LOGO_PRINT.svg",
+    "BW_LOGOwTAGLINE_PRINT.svg",
+    "BW_horizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_BW_ICON_PRINT.svg",
+    "DB_BW_ICONnoTM_PRINT.svg",
+    "DB_COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_FULL_COLOR_ICON_PRINT.svg",
+    "DB_FULL_COLOR_ICONnoTM_PRINT.svg",
+    "DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg",
+    "DB_FULL_COLOR_LOGO_PRINT.svg",
+    "DB_GREY_LOGO_PRINT.svg",
+    "DB_GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_ICON_PRINT.svg",
+    "FULL_COLOR_ICONnoTM_PRINT.svg",
+    "FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_LOGOwTAGLINE_PRINT.svg",
+    "GREY_ICON_PRINT.svg",
+    "GREY_ICONnoTM_PRINT.svg",
+    "GREY_LOGO_PRINT.svg",
+    "GREY_LOGOwTAGLINE_PRINT.svg",
+    "GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg"
   ],
   "assets": [
     {

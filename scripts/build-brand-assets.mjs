@@ -190,6 +190,7 @@ async function main() {
     sourceDir: SOURCE_MANIFEST_DIR,
     outputDir: "/logos/svg",
     sizes: SIZE_PRESETS,
+    svgFiles: [...availableSvgFiles].sort(),
     assets: manifestEntries.sort((a, b) => a.id.localeCompare(b.id)),
   }
 

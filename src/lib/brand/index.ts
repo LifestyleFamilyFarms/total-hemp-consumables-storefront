@@ -245,18 +245,21 @@ export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
 }
 
 const manifestSvgFileNames = new Set(
-  brandManifest.assets.flatMap((asset) =>
-    Object.values(asset.outputs)
-      .map((output) => {
-        const svgPath = (output as { svg?: string }).svg
-        if (typeof svgPath !== "string") {
-          return null
-        }
+  [
+    ...((brandManifest as { svgFiles?: string[] }).svgFiles ?? []),
+    ...brandManifest.assets.flatMap((asset) =>
+      Object.values(asset.outputs)
+        .map((output) => {
+          const svgPath = (output as { svg?: string }).svg
+          if (typeof svgPath !== "string") {
+            return null
+          }
 
-        return svgPath.split("/").pop() ?? null
-      })
-      .filter((value): value is string => Boolean(value))
-  )
+          return svgPath.split("/").pop() ?? null
+        })
+        .filter((value): value is string => Boolean(value))
+    ),
+  ]
 )
 
 const invalidThemeLogoFamilyEntries = Object.entries(THEME_LOGO_FAMILY_SVGS)
