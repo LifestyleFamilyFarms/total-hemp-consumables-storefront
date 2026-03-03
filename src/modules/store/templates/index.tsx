@@ -1,7 +1,13 @@
 import { Suspense } from "react"
 
+import type { CatalogCategoryMediaCard, CategoryImageContract } from "@lib/data/categories"
 import { getPlpFacetOptions } from "@lib/data/products"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
+import {
+  CatalogCategoryThumbnails,
+  CategoryBanner,
+  CategoryThumbnailGallery,
+} from "@modules/store/components/category-media"
 import PlpCardStyleSwitcher from "@modules/store/components/plp-card-style-switcher"
 import { DEFAULT_PLP_CARD_STYLE, PlpCardStyle } from "@modules/store/lib/card-style"
 import PlpControls from "@modules/store/components/plp-controls"
@@ -30,6 +36,8 @@ type StoreTemplateProps = {
   layout?: "stacked" | "split"
   resultMode?: "products" | "variants"
   cardStyle?: PlpCardStyle
+  categoryImages?: CategoryImageContract | null
+  catalogCategoryCards?: CatalogCategoryMediaCard[]
 }
 
 const StoreTemplate = async ({
@@ -52,6 +60,8 @@ const StoreTemplate = async ({
   layout = "stacked",
   resultMode = "products",
   cardStyle = DEFAULT_PLP_CARD_STYLE,
+  categoryImages,
+  catalogCategoryCards,
 }: StoreTemplateProps) => {
   const facetOptions = await getPlpFacetOptions({
     countryCode,
@@ -102,7 +112,8 @@ const StoreTemplate = async ({
   if (layout === "split") {
     return (
       <div className="pb-16" data-testid="category-container">
-        <section className="mx-auto w-full max-w-[1480px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="page-top-offset mx-auto w-full max-w-[1480px] px-4 pb-8 sm:px-6 sm:pb-10 lg:px-8">
+          <CategoryBanner categoryName={heading} banner={categoryImages?.banner} />
           <div className="grid gap-6 lg:grid-cols-[minmax(0,0.33fr)_minmax(0,0.67fr)] lg:items-start">
             <aside className="space-y-4 lg:sticky lg:top-24">
               <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6">
@@ -117,9 +128,16 @@ const StoreTemplate = async ({
                 </h1>
                 <p className="text-sm text-foreground/70 sm:text-base">{description}</p>
               </header>
+              <CategoryThumbnailGallery images={categoryImages} categoryName={heading} />
               {controls}
             </aside>
-            <div>{results}</div>
+            <div>
+              <CatalogCategoryThumbnails
+                countryCode={countryCode}
+                categories={catalogCategoryCards}
+              />
+              {results}
+            </div>
           </div>
         </section>
       </div>
@@ -128,7 +146,8 @@ const StoreTemplate = async ({
 
   return (
     <div className="pb-16" data-testid="category-container">
-      <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-8 sm:px-10 sm:py-10">
+      <section className="page-top-offset mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 pb-8 sm:px-10 sm:pb-10">
+        <CategoryBanner categoryName={heading} banner={categoryImages?.banner} />
         <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/60">
             {eyebrow}
@@ -138,6 +157,9 @@ const StoreTemplate = async ({
           </h1>
           <p className="max-w-3xl text-sm text-foreground/70 sm:text-base">{description}</p>
         </header>
+
+        <CategoryThumbnailGallery images={categoryImages} categoryName={heading} />
+        <CatalogCategoryThumbnails countryCode={countryCode} categories={catalogCategoryCards} />
 
         {controls}
 

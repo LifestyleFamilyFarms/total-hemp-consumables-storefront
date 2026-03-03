@@ -12,7 +12,7 @@ export default function StaticContentPage({
   children,
 }: StaticContentPageProps) {
   return (
-    <main className="py-10 sm:py-14">
+    <main className="page-top-offset pb-10 sm:pb-14">
       <div className="content-container max-w-4xl">
         <article className="rounded-2xl border border-border/70 bg-background/80 p-6 shadow-sm sm:p-8">
           <header className="space-y-3 border-b border-border/60 pb-6">

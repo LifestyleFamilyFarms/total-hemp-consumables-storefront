@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { HttpTypes } from "@medusajs/types"
 import ProductDetailClient from "@modules/products/components/product-detail-client"
+import ProductReviews from "@modules/products/components/product-reviews"
 import RelatedProducts from "@modules/products/components/related-products"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 
@@ -28,6 +29,8 @@ const ProductTemplate = ({
         countryCode={countryCode}
         initialVariantId={initialVariantId}
       />
+
+      <ProductReviews productId={product.id} />
 
       <section data-testid="related-products-container" className="space-y-4">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">

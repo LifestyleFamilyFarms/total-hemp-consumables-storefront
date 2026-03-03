@@ -14,13 +14,13 @@ const Login = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="flex w-full flex-col items-center"
+      className="mx-auto flex w-full max-w-[30rem] flex-col items-center"
       data-testid="login-page"
     >
       <h1 className="mb-3 text-center text-2xl font-semibold tracking-tight text-ui-fg-base">
-        Welcome back
+        Welcome Back
       </h1>
-      <p className="mb-6 text-center text-sm leading-6 text-ui-fg-subtle small:mb-8">
+      <p className="mb-6 text-center text-sm leading-6 text-foreground/90 small:mb-8">
         Sign in to track orders, redeem loyalty points, and check out faster.
       </p>
       <form className="w-full" action={formAction}>
@@ -48,7 +48,7 @@ const Login = ({ setCurrentView }: Props) => {
           Sign in
         </SubmitButton>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
+      <span className="mt-6 text-center text-small-regular text-foreground/95">
         New here?{" "}
         <button
           type="button"

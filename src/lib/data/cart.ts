@@ -359,6 +359,50 @@ export async function applyPromotions(codes: string[]) {
     .catch(medusaError)
 }
 
+export type FirstPurchaseDiscountResponse = {
+  cart?: HttpTypes.StoreCart
+  applied?: boolean
+  reason?: string | null
+  promotion_code?: string
+  message?: string
+  status?: string
+  disabled?: boolean
+  eligible?: boolean
+  already_applied?: boolean
+  [key: string]: unknown
+}
+
+export async function applyFirstPurchaseDiscount(cartId: string) {
+  if (!cartId) {
+    throw new Error("No existing cart found")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<FirstPurchaseDiscountResponse>(
+      `/store/carts/${cartId}/first-purchase-discount`,
+      {
+        method: "POST",
+        headers,
+        body: {},
+        cache: "no-store",
+      }
+    )
+    .then(async (result) => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment")
+      revalidateTag(fulfillmentCacheTag)
+
+      return result
+    })
+    .catch(medusaError)
+}
+
 export async function applyLoyaltyPointsOnCart() {
   const cartId = await getCartId()
 

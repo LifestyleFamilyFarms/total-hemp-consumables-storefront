@@ -1,6 +1,6 @@
 # Storefront Rebuild Handoff Status
 
-Updated: 2026-02-27
+Updated: 2026-03-02
 
 ## Purpose
 Single source of truth for what has been scaffolded, what is in scope next, and how agents should avoid overlap.
@@ -567,3 +567,65 @@ Use this at the bottom of this file when an agent finishes:
   - storefront `yarn check:commerce-rules`: pass
 - Risks:
   - Bypass only works in non-production builds; production age gate behavior remains unchanged.
+
+### Change Note - 2026-03-02 - Agent C (Wave 1 catalog/presentation completion + optimization)
+- Completed:
+  - Implemented category image presentation support in storefront catalog/category surfaces.
+  - Added data-layer category image contract handling and fallback-safe normalization in `src/lib/data/categories.ts`.
+  - Added meta feed operator/dev verification path documentation:
+    - `docs/meta-product-feed-verification.md`
+  - Completed low-risk optimization for catalog media cards:
+    - `listCatalogCategoryMediaCards` now avoids per-category request fan-out and derives thumbnail data from a single category fetch payload.
+  - Manager review outcome: approved.
+- Files touched:
+  - `src/lib/data/categories.ts`
+  - `src/modules/store/components/category-media.tsx`
+  - `src/modules/store/templates/index.tsx`
+  - `src/modules/categories/templates/index.tsx`
+  - `src/app/[countryCode]/(main)/store/page.tsx`
+  - `docs/meta-product-feed-verification.md`
+  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `docs/rebuild-handoff-status.md`
+- Quality gates:
+  - storefront `yarn lint`: pass
+  - storefront `yarn build`: pass
+- Risks:
+  - No new blocking risks identified in this pass.
+
+### Change Note - 2026-03-02 - Agent B (Wave 1 storefront conversion completion + remediation)
+- Completed:
+  - Implemented Wave 1 storefront conversion surfaces for:
+    - Product Reviews (PDP list + authenticated submit with robust UX states)
+    - Wishlist (PDP add/remove + guest/auth paths)
+    - Reorder UX (order details summary + unavailable/suggested handling)
+    - First-purchase discount UX (cart summary state handling)
+  - Added data-layer contract adapters in `src/lib/data/*` for custom routes using Medusa SDK `sdk.client.fetch` only.
+  - Completed manager-requested remediation for backend contract shape alignment:
+    - wishlist GET/POST/DELETE response normalization and safe UI mutation flow
+    - reorder contract update from `cart` to `cart_id`
+    - first-purchase reason/status parsing hardening
+    - reviews typing hardening for optional `average_rating`
+  - Completed non-blocking UX hardening follow-up:
+    - disabled first-purchase apply CTA for guest users while preserving auth-required sign-in CTA.
+- Files touched:
+  - `src/lib/data/reviews.ts`
+  - `src/lib/data/wishlist.ts`
+  - `src/lib/data/orders.ts`
+  - `src/lib/data/cart.ts`
+  - `src/modules/products/components/product-reviews/index.tsx`
+  - `src/modules/products/components/wishlist-panel/index.tsx`
+  - `src/modules/products/components/product-detail-client/index.tsx`
+  - `src/modules/products/templates/index.tsx`
+  - `src/modules/order/components/reorder-action/index.tsx`
+  - `src/modules/order/templates/order-details-template.tsx`
+  - `src/modules/checkout/components/first-purchase-discount/index.tsx`
+  - `src/modules/cart/templates/summary.tsx`
+  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `docs/rebuild-handoff-status.md`
+- Quality gates:
+  - storefront `yarn lint`: pass
+  - storefront `yarn build`: pass
+  - storefront `yarn tsc --noEmit`: fail (unchanged unrelated pre-existing issue in `src/components/layout/topbar.tsx`)
+- Risks:
+  - No blocking risks in Agent B lane after remediation.
+  - Repo-level TypeScript gate remains blocked by unrelated pre-existing `topbar` typing issue.

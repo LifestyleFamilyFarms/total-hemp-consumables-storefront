@@ -2,7 +2,7 @@
 
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { getAuthHeaders, getCacheOptions, setCartId } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 
 export const retrieveOrder = async (id: string) => {
@@ -110,4 +110,59 @@ export const declineTransferRequest = async (id: string, token: string) => {
     .declineTransfer(id, { token }, {}, headers)
     .then(({ order }) => ({ success: true, error: null, order }))
     .catch((err) => ({ success: false, error: err.message, order: null }))
+}
+
+export type ReorderItem = {
+  id?: string
+  order_item_id?: string
+  title?: string
+  quantity?: number
+  variant_id?: string
+  product_id?: string | null
+  product_title?: string
+  variant_title?: string
+  reason?: string
+  [key: string]: unknown
+}
+
+export type ReorderSuggestion = {
+  id: string
+  title: string
+  sku?: string | null
+}
+
+export type ReorderSuggestionGroup = {
+  order_item_id?: string
+  original_variant_id?: string | null
+  product_id?: string
+  variants?: ReorderSuggestion[]
+  [key: string]: unknown
+}
+
+export type ReorderResponse = {
+  cart_id?: string
+  added_items?: ReorderItem[]
+  unavailable_items?: ReorderItem[]
+  suggested_variants?: ReorderSuggestionGroup[]
+  [key: string]: unknown
+}
+
+export const reorderOrder = async (orderId: string) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const response = await sdk.client
+    .fetch<ReorderResponse>(`/store/customers/me/orders/${orderId}/reorder`, {
+      method: "POST",
+      headers,
+      cache: "no-store",
+    })
+    .catch(medusaError)
+
+  if (typeof response?.cart_id === "string" && response.cart_id) {
+    await setCartId(response.cart_id)
+  }
+
+  return response
 }

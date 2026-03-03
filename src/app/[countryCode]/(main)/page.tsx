@@ -72,7 +72,7 @@ export default async function Home(props: {
           __html: JSON.stringify(organizationSchema),
         }}
       />
-      <section className="mx-auto w-full max-w-6xl px-6 pt-10 sm:px-10">
+      <section className="page-top-offset mx-auto w-full max-w-6xl px-6 sm:px-10">
         <div className="relative overflow-hidden rounded-[36px] border border-border/60 bg-gradient-to-br from-card via-card/85 to-background px-6 py-12 shadow-[0_30px_60px_rgba(15,23,42,0.16)] sm:px-10 sm:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(18,165,120,0.18),transparent_40%),radial-gradient(circle_at_85%_15%,rgba(245,158,11,0.22),transparent_45%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">

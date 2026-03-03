@@ -25,6 +25,7 @@ import { cn } from "@lib/utils"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import { BrandSpinner } from "@/components/brand/brand-spinner"
+import WishlistPanel from "../wishlist-panel"
 
 type ProductDetailClientProps = {
   product: HttpTypes.StoreProduct
@@ -1019,6 +1020,8 @@ export default function ProductDetailClient({
           <div className="surface-panel rounded-2xl border border-border/50 px-4 py-3 text-xs uppercase tracking-[0.22em] text-foreground/60">
             21+ only. Farm Bill compliant hemp products.
           </div>
+
+          <WishlistPanel selectedVariant={selectedVariant || activeVariant} />
         </div>
 
         <div className="surface-panel rounded-2xl border border-border/60 xl:mt-0">

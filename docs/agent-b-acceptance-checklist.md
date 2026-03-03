@@ -2,6 +2,17 @@
 
 Use this as pass/fail criteria before handing work to Agent C.
 
+## Latest Execution Snapshot (2026-03-02)
+- Status: Completed and manager-approved for Wave 1 storefront conversion lane (reviews, wishlist, reorder UX, first-purchase discount UX).
+- Quality gates:
+  - `yarn lint`: pass
+  - `yarn build`: pass
+  - `yarn tsc --noEmit`: fail (known unrelated pre-existing type issue in `src/components/layout/topbar.tsx`)
+- Remarks:
+  - Contract-shape remediation completed for wishlist and reorder endpoints.
+  - First-purchase status parsing hardened and guest action button auth-gated.
+  - Lane boundaries preserved (no category-feed presentation work touched in Agent B pass).
+
 ## Scope Guard
 - [ ] Changes are limited to PLP/PDP data + UI responsibilities.
 - [ ] Shell contracts are preserved (`Topbar`, `MobileNav`, `CartDrawer`).

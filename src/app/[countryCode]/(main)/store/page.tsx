@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 
+import { listCatalogCategoryMediaCards } from "@lib/data/categories"
 import StoreTemplate from "@modules/store/templates"
 import { SortOptions } from "@modules/store/lib/sort-options"
 import { parsePlpUrlState } from "@modules/store/lib/url-state"
@@ -37,6 +38,9 @@ export default async function StorePage(props: Params) {
   const params = await props.params
   const searchParams = await props.searchParams
   const state = parsePlpUrlState(searchParams)
+  const catalogCategoryCards = await listCatalogCategoryMediaCards({
+    limit: 6,
+  }).catch(() => [])
 
   return (
     <StoreTemplate
@@ -50,6 +54,7 @@ export default async function StorePage(props: Params) {
       cardStyle={state.cardStyle}
       countryCode={params.countryCode}
       layout="split"
+      catalogCategoryCards={catalogCategoryCards}
     />
   )
 }

@@ -3,6 +3,7 @@
 import CartTotals from "@modules/common/components/cart-totals"
 import Divider from "@modules/common/components/divider"
 import DiscountCode from "@modules/checkout/components/discount-code"
+import FirstPurchaseDiscount from "@modules/checkout/components/first-purchase-discount"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@/components/ui/button"
@@ -32,6 +33,7 @@ const Summary = ({ cart }: SummaryProps) => {
   return (
     <div className="flex flex-col gap-y-4">
       <h2 className="text-[2rem] leading-[2.75rem] font-semibold">Summary</h2>
+      <FirstPurchaseDiscount cart={cart} />
       <DiscountCode cart={cart} />
       <Divider />
       <div className="relative">

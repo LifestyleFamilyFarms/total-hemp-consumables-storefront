@@ -45,7 +45,7 @@ const normalizePath = (path: string) => {
   return path.replace(/\/+$/, "")
 }
 
-const mobileMarkForTheme: Record<BrandThemeId, BrandLogoVariant> = {
+const menuBadgeVariantByTheme: Record<BrandThemeId, BrandLogoVariant> = {
   sativa: "navMonogram",
   indica: "navMonogramDb",
   light: "monoIcon",
@@ -81,26 +81,32 @@ export default function Topbar({
     <header className="surface-nav sticky top-0 z-40 w-full border-b border-border/60 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto w-full max-w-8xl px-4 sm:px-6">
         <div className="relative flex h-16 items-center gap-2">
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:flex">
             <MobileNav
               countryCode={countryCode}
               categories={categories}
               isAuthenticated={Boolean(user?.isAuthenticated)}
               triggerAriaLabel="Open navigation menu"
-              triggerClassName="surface-button h-9 gap-2 rounded-full px-2.5 text-foreground/85 transition-colors hover:border-foreground/40 hover:text-foreground md:h-10 md:px-3"
+              triggerClassName="surface-button h-9 gap-2 rounded-lg px-2.5 text-foreground/85 transition-colors hover:border-foreground/40 hover:text-foreground md:h-10 md:px-3"
               triggerContent={
                 <>
-                  <BrandLogo variant={mobileMarkForTheme[currentTheme]} className="w-6 md:w-7" />
-                  <Menu className="h-4 w-4" />
+                  <BrandLogo
+                    variant={menuBadgeVariantByTheme[currentTheme]}
+                    size="sm"
+                    format="svg"
+                    className="w-5 md:w-[22px]"
+                  />
+                  <Menu className="h-4 w-4 md:h-5 md:w-5" />
                 </>
               }
             />
+            <ThemeSwitcher compact className="surface-button hidden h-10 w-10 md:inline-flex lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:inline-flex" />
           </div>
 
           <Link
             href={`/${countryCode}`}
             aria-label="Return to the homepage"
-            className="hidden w-52 items-center lg:flex"
+            className="hidden w-52 items-center lg:flex [@media(min-width:1024px)_and_(max-height:800px)]:hidden"
           >
             <span className="sr-only">Total Hemp Consumables</span>
             <BrandLogo
@@ -113,13 +119,17 @@ export default function Topbar({
           <Link
             href={`/${countryCode}`}
             aria-label="Return to the homepage"
-            className="absolute left-1/2 hidden w-44 -translate-x-1/2 items-center md:flex lg:hidden"
+            className="absolute left-1/2 hidden w-52 -translate-x-1/2 items-center md:flex lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:flex"
           >
             <span className="sr-only">Total Hemp Consumables</span>
-            <BrandLogo theme={currentTheme} slot={desktopLogoSlot} className="w-full" />
+            <BrandLogo
+              theme={currentTheme}
+              slot={desktopLogoSlot}
+              className="w-full"
+            />
           </Link>
 
-          <nav className="ml-2 hidden items-center gap-4 lg:flex" aria-label="Primary">
+          <nav className="ml-2 hidden items-center gap-4 lg:flex [@media(min-width:1024px)_and_(max-height:800px)]:hidden" aria-label="Primary">
             {PRIMARY_NAV_ITEMS.map((item) => {
               const href = item.href(countryCode)
               const isActive =
@@ -177,7 +187,7 @@ export default function Topbar({
           </nav>
 
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            <ThemeSwitcher compact className="surface-button h-9 w-9 md:h-10 md:w-10" />
+            <ThemeSwitcher compact className="surface-button h-9 w-9 md:hidden md:h-10 md:w-10 lg:inline-flex [@media(min-width:1024px)_and_(max-height:800px)]:hidden" />
 
             <CartDrawer
               countryCode={countryCode}
@@ -237,10 +247,10 @@ export default function Topbar({
                 ) : (
                   <>
                     <DropdownMenuItem asChild>
-                      <Link href={`/${countryCode}/account`}>Sign in</Link>
+                      <Link href={`/${countryCode}/account?view=sign-in`}>Sign in</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={`/${countryCode}/account`}>Create account</Link>
+                      <Link href={`/${countryCode}/account?view=register`}>Create account</Link>
                     </DropdownMenuItem>
                   </>
                 )}

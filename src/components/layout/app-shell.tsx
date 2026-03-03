@@ -1,5 +1,6 @@
 "use client"
 import type { ReactNode } from "react"
+import { usePathname } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import ComplianceBar from "@/components/layout/compliance-bar"
 import MemberRewardsBanner from "@/components/layout/member-rewards-banner"
@@ -29,6 +30,12 @@ export default function AppShell({
   user?: User
   withBottomBar?: boolean
 }) {
+  const pathname = usePathname()
+  const isAccountAuthRoute = pathname === `/${countryCode}/account`
+  const shellContentSpacing = isAccountAuthRoute
+    ? "relative isolate px-0 pb-2 pt-0 sm:px-6"
+    : "relative isolate px-0 pb-[calc(var(--bottom-bar-height,4rem)+2rem)] pt-4 sm:px-6 sm:pt-6"
+
   return (
     <>
       <main className="shell-surface shell-surface--full relative flex w-full flex-1 flex-col">
@@ -38,12 +45,14 @@ export default function AppShell({
           categories={categories}
           user={user}
         />
-        <MemberRewardsBanner
-          countryCode={countryCode}
-          isAuthenticated={Boolean(user?.isAuthenticated)}
-        />
+        {!isAccountAuthRoute ? (
+          <MemberRewardsBanner
+            countryCode={countryCode}
+            isAuthenticated={Boolean(user?.isAuthenticated)}
+          />
+        ) : null}
 
-        <div className="relative isolate px-0 pb-[calc(var(--bottom-bar-height,4rem)+2rem)] pt-3 sm:px-6 md:pt-5">
+        <div className={shellContentSpacing}>
           <div className="mx-auto max-w-8xl shell-surface__content">{children}</div>
         </div>
 

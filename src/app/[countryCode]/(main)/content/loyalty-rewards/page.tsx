@@ -37,7 +37,7 @@ export default async function LoyaltyRewardsPage(props: LoyaltyRewardsPageProps)
           </li>
           <li>
             <span className="font-semibold">MEMBER BENEFIT:</span> Members currently
-            earn approximately 4% back on eligible orders.
+            earn approximately 5% back on eligible orders.
           </li>
           <li>
             <span className="font-semibold">REDEEM:</span> Points convert to

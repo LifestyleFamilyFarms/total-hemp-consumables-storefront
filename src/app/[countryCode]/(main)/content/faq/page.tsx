@@ -24,7 +24,7 @@ export default function FaqPage() {
       <section>
         <h2 className="text-lg font-semibold text-foreground">How do loyalty points work?</h2>
         <p>
-          Members earn approximately 4% back on eligible orders, and points can be
+          Members earn approximately 5% back on eligible orders, and points can be
           redeemed during checkout. You can review balance and recent activity from
           your account dashboard.
         </p>

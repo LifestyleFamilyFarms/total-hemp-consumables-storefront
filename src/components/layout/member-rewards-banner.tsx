@@ -76,7 +76,7 @@ export default function MemberRewardsBanner({
         <Modal.Body>
           <div className="w-full space-y-3 text-sm text-ui-fg-base">
             <ul className="list-disc space-y-1.5 pl-5">
-              <li>Current rewards value is approximately 4% back.</li>
+              <li>Current rewards value is approximately 5% back.</li>
               <li>Points are tracked in your account loyalty dashboard.</li>
               <li>Redeem points during checkout whenever you are ready.</li>
             </ul>

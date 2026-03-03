@@ -9,6 +9,7 @@ import OrderDetails from "@modules/order/components/order-details"
 import OrderSummary from "@modules/order/components/order-summary"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import React from "react"
+import ReorderAction from "../components/reorder-action"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
@@ -34,6 +35,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         data-testid="order-details-container"
       >
         <OrderDetails order={order} showStatus />
+        <ReorderAction orderId={order.id} />
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />

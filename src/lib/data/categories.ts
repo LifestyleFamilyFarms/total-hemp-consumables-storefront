@@ -10,6 +10,76 @@ export type NavigationCategory = {
   children?: NavigationCategory[]
 }
 
+export type CategoryImageContract = {
+  thumbnail: string | null
+  banner: string | null
+  gallery: string[]
+}
+
+export type CatalogCategoryMediaCard = {
+  id: string
+  name: string
+  handle: string
+  thumbnail: string | null
+}
+
+type CatalogCategoryMediaRecord = {
+  id: string
+  name: string
+  handle: string
+  parent_category_id?: string | null
+  rank?: number | null
+  metadata?: Record<string, unknown> | null
+}
+
+const createEmptyCategoryImages = (): CategoryImageContract => ({
+  thumbnail: null,
+  banner: null,
+  gallery: [],
+})
+
+const normalizeImageUrl = (value: unknown): string | null => {
+  if (typeof value !== "string") {
+    return null
+  }
+
+  const normalized = value.trim()
+
+  return normalized.length ? normalized : null
+}
+
+const normalizeCategoryImages = (input: unknown): CategoryImageContract => {
+  const contract = input && typeof input === "object" ? (input as Record<string, unknown>) : {}
+
+  const gallery = Array.isArray(contract.gallery)
+    ? Array.from(
+        new Set(
+          contract.gallery
+            .map((value) => normalizeImageUrl(value))
+            .filter((value): value is string => Boolean(value))
+        )
+      )
+    : []
+
+  return {
+    thumbnail: normalizeImageUrl(contract.thumbnail),
+    banner: normalizeImageUrl(contract.banner),
+    gallery,
+  }
+}
+
+const getCategoryImagesFromMetadata = (
+  metadata: Record<string, unknown> | null | undefined
+): CategoryImageContract => {
+  if (!metadata || typeof metadata !== "object") {
+    return createEmptyCategoryImages()
+  }
+
+  const contract = metadata.category_images
+
+  return normalizeCategoryImages(contract)
+}
+
 export const listCategories = async (query?: Record<string, any>) => {
   const next = {
     ...(await getCacheOptions("categories")),
@@ -133,4 +203,61 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       }
     )
     .then(({ product_categories }) => product_categories[0])
+}
+
+export const getCategoryImages = async (categoryId: string): Promise<CategoryImageContract> => {
+  if (!categoryId) {
+    return createEmptyCategoryImages()
+  }
+
+  const next = {
+    ...(await getCacheOptions("categories")),
+  }
+
+  return sdk.client
+    .fetch<{
+      category_id: string
+      images?: unknown
+    }>(`/store/product-categories/${categoryId}/images`, {
+      next,
+      cache: "force-cache",
+    })
+    .then((response) => normalizeCategoryImages(response.images))
+    .catch(() => createEmptyCategoryImages())
+}
+
+export const listCatalogCategoryMediaCards = async ({
+  limit = 6,
+}: {
+  limit?: number
+} = {}): Promise<CatalogCategoryMediaCard[]> => {
+  const next = {
+    ...(await getCacheOptions("categories")),
+  }
+
+  const { product_categories } = await sdk.client.fetch<{
+    product_categories: CatalogCategoryMediaRecord[]
+  }>("/store/product-categories", {
+    query: {
+      fields: "id,name,handle,parent_category_id,rank,metadata",
+      limit: 100,
+    },
+    next,
+    cache: "force-cache",
+  })
+
+  return product_categories
+    .filter((category) => !category.parent_category_id)
+    .sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
+    .slice(0, Math.max(limit, 0))
+    .map((category) => {
+      const images = getCategoryImagesFromMetadata(category.metadata)
+
+      return {
+        id: category.id,
+        name: category.name,
+        handle: category.handle,
+        thumbnail: images.thumbnail,
+      }
+    })
 }

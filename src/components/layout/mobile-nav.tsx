@@ -52,7 +52,10 @@ export function MobileNav({
         <Button
           variant="outline"
           size="sm"
-          className={cn("lg:hidden", triggerClassName)}
+          className={cn(
+            "lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:!inline-flex",
+            triggerClassName
+          )}
           aria-label={triggerAriaLabel}
         >
           {triggerContent ?? <Menu className="h-5 w-5" />}
@@ -156,12 +159,12 @@ export function MobileNav({
               ) : (
                 <>
                   <Button variant="ghost" asChild className="justify-start rounded-lg">
-                    <Link href={`/${countryCode}/account`} onClick={closeNav}>
+                    <Link href={`/${countryCode}/account?view=sign-in`} onClick={closeNav}>
                       Sign In
                     </Link>
                   </Button>
                   <Button variant="ghost" asChild className="justify-start rounded-lg">
-                    <Link href={`/${countryCode}/account`} onClick={closeNav}>
+                    <Link href={`/${countryCode}/account?view=register`} onClick={closeNav}>
                       Create Account
                     </Link>
                   </Button>

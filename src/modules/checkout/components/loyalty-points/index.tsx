@@ -130,7 +130,7 @@ const LoyaltyPoints = ({ cart }: LoyaltyPointsProps) => {
                       at checkout.
                     </p>
                     <ul className="list-disc space-y-1.5 pl-5">
-                      <li>Members earn approximately 4% back on eligible orders.</li>
+                      <li>Members earn approximately 5% back on eligible orders.</li>
                       <li>
                         Points convert at the current rewards redemption rate.
                       </li>

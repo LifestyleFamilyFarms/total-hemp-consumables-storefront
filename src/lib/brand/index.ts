@@ -117,6 +117,22 @@ export const BRAND_VARIANT_CONFIG = {
     minWidthPx: 220,
     background: "either",
   },
+  roundGreyLogo: {
+    id: "grey-logo-nobgweb",
+    label: "Round greyscale logo",
+    description: "Neutral circular logo for light/greyscale theme surfaces.",
+    recommendedUsage: ["Light theme auth visuals", "Muted brand surfaces"],
+    minWidthPx: 220,
+    background: "light",
+  },
+  roundBwLogo: {
+    id: "bw-logo-nobgweb",
+    label: "Round black and white logo",
+    description: "High-contrast circular logo for dark theme surfaces.",
+    recommendedUsage: ["Dark theme auth visuals", "Monochrome sections"],
+    minWidthPx: 220,
+    background: "either",
+  },
   complianceSeal: {
     id: "bw-logowtagline-wbgweb",
     label: "Compliance seal",
@@ -244,6 +260,13 @@ export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
   ],
 }
 
+const AUTH_PANEL_LOGO_MAP: Record<BrandThemeId, BrandLogoVariant> = {
+  sativa: "roundFullColorLogo",
+  indica: "darkBlockBadge",
+  light: "roundGreyLogo",
+  dark: "roundBwLogo",
+}
+
 const manifestSvgFileNames = new Set(
   [
     ...((brandManifest as { svgFiles?: string[] }).svgFiles ?? []),
@@ -267,12 +290,16 @@ const invalidThemeLogoFamilyEntries = Object.entries(THEME_LOGO_FAMILY_SVGS)
     fileNames
       .filter((fileName) => !manifestSvgFileNames.has(fileName))
       .map((fileName) => `${theme}: ${fileName}`)
-  )
+)
 
 if (invalidThemeLogoFamilyEntries.length > 0) {
   throw new Error(
     `Invalid THEME_LOGO_FAMILY_SVGS entries detected:\n${invalidThemeLogoFamilyEntries.join("\n")}`
   )
+}
+
+export function getAuthPanelLogoVariantForTheme(theme: BrandThemeId): BrandLogoVariant {
+  return AUTH_PANEL_LOGO_MAP[theme] ?? "roundFullColorLogo"
 }
 
 export function getLogoVariantForTheme(slot: BrandLogoSlot, theme: BrandThemeId): BrandLogoVariant {

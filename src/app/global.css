@@ -352,6 +352,10 @@
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
 
+  .page-top-offset {
+    @apply pt-4 sm:pt-6;
+  }
+
   /* border-triple removed */
 
   .app-shell-parallax {
@@ -438,6 +442,30 @@
     -webkit-backdrop-filter: blur(8px) !important;
   }
 
+  .surface-universal {
+    background-color: hsl(var(--card) / 0.7) !important;
+    background-image:
+      radial-gradient(94% 88% at 0% 0%, hsl(var(--surface-border-top-left) / 0.16) 0%, transparent 62%),
+      radial-gradient(94% 88% at 100% 0%, hsl(var(--surface-border-top-right) / 0.15) 0%, transparent 62%),
+      radial-gradient(96% 92% at 0% 100%, hsl(var(--surface-border-bottom-left) / 0.12) 0%, transparent 64%),
+      radial-gradient(96% 92% at 100% 100%, hsl(var(--surface-border-bottom-right) / 0.12) 0%, transparent 64%),
+      linear-gradient(
+        var(--surface-light-angle),
+        hsl(var(--surface-glass-top) / 0.24) 0%,
+        hsl(var(--surface-glass-bottom) / 0.2) 100%
+      ) !important;
+    background-blend-mode: screen, screen, multiply, multiply, normal !important;
+    border: 1px solid hsl(var(--surface-border-mid) / 0.44) !important;
+    box-shadow:
+      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.42),
+      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.38),
+      inset 1px -1px 0 hsl(var(--surface-border-bottom-left) / 0.28),
+      inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.32),
+      0 12px 28px hsl(var(--surface-glass-shadow) / 0.2) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
   .surface-nav {
     background-color: hsl(var(--card) / 0.68) !important;
     background-image:
@@ -472,6 +500,29 @@
       inset 0 -1px 0 hsl(var(--surface-border-bottom-right) / 0.3),
       0 4px 10px hsl(var(--surface-glass-shadow) / 0.2) !important;
     text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / calc(var(--type-shadow-opacity) * 0.85));
+  }
+
+  .auth-logo-overlay {
+    border-color: hsl(var(--surface-border-mid) / 0.55);
+    background: radial-gradient(
+      circle at 24% 20%,
+      hsl(var(--card) / 0.58) 0%,
+      hsl(var(--card) / 0.34) 42%,
+      hsl(var(--background) / 0.12) 100%
+    );
+    box-shadow:
+      inset 2px 2px 0 hsl(var(--surface-glass-edge) / 0.62),
+      inset -2px -2px 0 hsl(var(--surface-glass-shadow) / 0.3),
+      0 14px 36px hsl(var(--surface-glass-shadow) / 0.22);
+  }
+
+  .surface-border-light {
+    border: 1px solid hsl(var(--surface-border-mid) / 0.46);
+    box-shadow:
+      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
+      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.38),
+      inset 1px -1px 0 hsl(var(--surface-border-bottom-left) / 0.28),
+      inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.32);
   }
 
   .shell-surface:has([data-auth-isolated="true"]) footer {
