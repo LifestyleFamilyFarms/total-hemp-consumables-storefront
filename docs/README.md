@@ -2,17 +2,22 @@
 
 This directory contains storefront-specific documentation for `total-hemp-consumables-storefront`.
 
-## Cross-Repo Coordination Docs
+## Storefront Rollout Docs
 
-Canonical cross-repo release/finalization docs are maintained at:
+Storefront rollout phases and wave docs are maintained here:
 
-- `/Users/franciscraven/Desktop/total-hemp/docs/finalization-phases`
+- `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables-storefront/docs/finalization-phases`
+- `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables-storefront/docs/wave-1-docs`
 
-Use this as the command center for multi-agent execution:
+## Cross-Repo Command Center
 
-- `/Users/franciscraven/Desktop/total-hemp/docs/finalization-phases/README.md`
+Central orchestration, dispatch, evidence, and runbooks are maintained in backend docs:
+
+- `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/finalization-phases`
+
+- `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/finalization-phases/README.md`
 
 ## Rule of Placement
 
 - Put storefront implementation details in this folder.
-- Put cross-repo orchestration docs in root `/docs/finalization-phases`.
+- Keep command-center docs in backend `docs/finalization-phases` to avoid split-brain.

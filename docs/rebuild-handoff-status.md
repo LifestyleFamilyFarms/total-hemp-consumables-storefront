@@ -298,7 +298,7 @@ Use this at the bottom of this file when an agent finishes:
 - Files touched:
   - `docs/full-build-implementation-order.md`
   - `docs/rebuild-handoff-status.md`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/src/api/store/carts/[id]/loyalty-points/route.ts`
 - Quality gates:
   - `yarn build` (backend): pass
@@ -327,7 +327,7 @@ Use this at the bottom of this file when an agent finishes:
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/package.json`
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/src/workflows/loyalty/apply-loyalty-on-cart.ts`
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/src/workflows/loyalty/remove-loyalty-from-cart.ts`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - backend `yarn build`: pass
 - Risks:
@@ -352,7 +352,7 @@ Use this at the bottom of this file when an agent finishes:
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/src/scripts/ensure-pickup-shipping-option.ts`
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/src/scripts/credit-loyalty-points.ts`
   - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/package.json`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - backend `yarn build`: pass
 - Risks:
@@ -374,7 +374,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/lib/constants/support.ts`
   - `src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx`
   - `.env.template`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - storefront `yarn check:commerce-rules`: pass
   - storefront `yarn lint`: pass
@@ -419,7 +419,7 @@ Use this at the bottom of this file when an agent finishes:
 - Files touched:
   - `scripts/responsive-smoke.sh`
   - `package.json`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - `yarn qa:responsive-smoke`: pass
 - Risks:
@@ -437,7 +437,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/modules/checkout/components/discount-code/index.tsx`
   - `src/modules/checkout/components/loyalty-points/index.tsx`
   - `src/modules/checkout/components/payment-button/index.tsx`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - storefront `yarn lint`: pass
   - storefront `yarn build`: pass
@@ -461,7 +461,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/modules/account/components/profile-billing-address/index.tsx`
   - `src/modules/products/components/product-detail-client/index.tsx`
   - `src/modules/products/components/product-preview/index.tsx`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - storefront `yarn tsc --noEmit`: pass
   - storefront `yarn lint`: pass
@@ -496,7 +496,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/components/layout/footer.tsx`
   - `src/components/layout/compliance-bar.tsx`
   - `src/modules/order/components/help/index.tsx`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
 - Quality gates:
   - storefront `yarn tsc --noEmit`: pass
   - storefront `yarn lint`: pass
@@ -520,7 +520,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/app/robots.ts`
   - `src/app/sitemap.ts`
   - `src/app/[countryCode]/(main)/products/[handle]/page.tsx`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `docs/rebuild-handoff-status.md`
 - Quality gates:
   - storefront `yarn lint`: pass
@@ -539,7 +539,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/modules/order/components/order-summary/index.tsx`
   - `src/modules/order/templates/order-completed-template.tsx`
   - `src/lib/data/orders.ts`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `docs/rebuild-handoff-status.md`
 - Quality gates:
   - storefront `yarn lint`: pass
@@ -558,7 +558,7 @@ Use this at the bottom of this file when an agent finishes:
 - Files touched:
   - `src/components/layout/age-gate.tsx`
   - `scripts/responsive-smoke.sh`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `docs/rebuild-handoff-status.md`
 - Quality gates:
   - storefront `yarn lint`: pass
@@ -584,7 +584,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/modules/categories/templates/index.tsx`
   - `src/app/[countryCode]/(main)/store/page.tsx`
   - `docs/meta-product-feed-verification.md`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `docs/rebuild-handoff-status.md`
 - Quality gates:
   - storefront `yarn lint`: pass
@@ -620,7 +620,7 @@ Use this at the bottom of this file when an agent finishes:
   - `src/modules/order/templates/order-details-template.tsx`
   - `src/modules/checkout/components/first-purchase-discount/index.tsx`
   - `src/modules/cart/templates/summary.tsx`
-  - `/Users/franciscraven/Desktop/total-hemp/to-do-prod.md`
+  - `/Users/franciscraven/Desktop/total-hemp/total-hemp-consumables/docs/to-do-prod.md`
   - `docs/rebuild-handoff-status.md`
 - Quality gates:
   - storefront `yarn lint`: pass
