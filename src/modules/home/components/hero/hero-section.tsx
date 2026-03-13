@@ -74,6 +74,7 @@ export default function HeroSection() {
 
       <div
         className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
+        aria-hidden="true"
         style={{
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
           animation: "hero-scroll-hint 3s ease-in-out infinite",

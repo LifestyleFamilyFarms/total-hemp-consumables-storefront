@@ -888,6 +888,28 @@
     transform: none !important;
     transition: none !important;
   }
+
+  /* Hero: skip entry animations — show content immediately at final state */
+  [style*="hero-fade-up"],
+  [style*="hero-blur-reveal"] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Hero: suppress ambient loop animations */
+  [style*="hero-gradient-drift"],
+  [style*="hero-scroll-hint"],
+  [style*="glow-pulse"] {
+    animation: none !important;
+  }
+
+  /* Icon draw-on strokes: show immediately */
+  .icon-draw-on {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
 }
 
 /* ── Hero keyframes ────────────────────────── */

@@ -70,12 +70,15 @@ export default async function Home(props: {
         }}
       />
       <HeroSection />
-      <EffectSection />
-      <CategorySection categories={categories} />
-      <CollectionSection collection={featuredCollection} />
-      <ArrivalsSection products={newest.products} />
-      <TrustSection />
-      <NewsletterSection />
+      {/* Post-hero landing sections are always dark-themed regardless of user theme selection */}
+      <div data-theme="indica">
+        <EffectSection />
+        <CategorySection categories={categories} />
+        <CollectionSection collection={featuredCollection} />
+        <ArrivalsSection products={newest.products} />
+        <TrustSection />
+        <NewsletterSection />
+      </div>
     </>
   )
 }

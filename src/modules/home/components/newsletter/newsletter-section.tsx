@@ -63,15 +63,17 @@ export default function NewsletterSection() {
                   setResult(null)
                 }}
                 placeholder="your@email.com"
+                aria-label="Email address"
                 required
-                className="flex-1 rounded-xl border border-white/8 bg-white/[0.04] px-4 py-3.5 text-sm text-white placeholder-white/25 outline-none transition-colors duration-300 focus:border-teal/40"
+                className="flex-1 rounded-xl border border-white/8 bg-white/[0.04] px-4 py-3.5 text-sm text-white placeholder-white/25 outline-none transition-colors duration-300 focus:border-teal/40 focus-visible:ring-2 focus-visible:ring-teal/50"
               />
               <button
                 type="submit"
                 disabled={isPending}
+                aria-label={isPending ? "Joining newsletter…" : "Join newsletter"}
                 className="whitespace-nowrap rounded-xl bg-gradient-to-r from-teal to-[#0d8a63] px-6 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:brightness-110 disabled:opacity-50"
               >
-                {isPending ? "..." : "Join"}
+                {isPending ? "…" : "Join"}
               </button>
             </form>
           )}
