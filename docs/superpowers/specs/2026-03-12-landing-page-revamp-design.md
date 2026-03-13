@@ -28,7 +28,7 @@ Seven sections in order:
 
 ## Section 1: Hero
 
-Full-viewport (100vh) cinematic experience built from four composited layers:
+Full-viewport (`100dvh` with `100vh` fallback for older browsers) cinematic experience built from four composited layers. The hero renders full-bleed over the app shell parallax background (`z-index` above `.shell-surface`) to avoid double-parallax artifacts.
 
 ### Layer 1: Morphing Gradient Mesh (CSS)
 - 3-4 large radial gradient blobs in brand colors (forest, teal, gold, tangelo)
@@ -38,7 +38,7 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 
 ### Layer 2: Canvas Particle Field (JS)
 - HTML Canvas element covering the viewport
-- Particles sampled from the brand mark SVG paths (FULL_COLOR_ICON_PRINT.svg) — extract path coordinates to use as particle spawn/attractor positions
+- Particle attractor positions pre-computed at build time: extract point coordinates from the brand mark SVG paths (FULL_COLOR_ICON_PRINT.svg) and bake into a static coordinate array in `particle-system.ts`. No runtime SVG parsing.
 - ~200 particles on desktop, ~80 on tablet, 0 on mobile
 - Movement driven by simplex noise for organic drift
 - Particle colors: gold (#f4bf3d), teal (#12a578), tangelo (#e56525) with varying opacity
@@ -54,36 +54,38 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 
 ### Layer 4: Content
 - **Headline:** "Elevate Your Everyday"
-  - "Elevate Your" in font-weight 300, white
-  - "Everyday" in font-weight 600, gradient text (gold → tangelo)
+  - "Elevate Your" in font-weight 400, white (verified: Clarendon URW supports 400)
+  - "Everyday" in font-weight 700, gradient text (gold → tangelo)
   - Staggered word fade-in (200ms delay per word)
-- **Subheadline:** "Premium hemp, crafted for how you want to feel." — rgba white, weight 300
+- **Subheadline:** "Premium hemp, crafted for how you want to feel." — rgba white, weight 400
 - **CTAs:**
-  - Primary: "Shop Now" — teal gradient fill, pill shape, glow shadow
-  - Secondary: "Explore Effects" — glass morphism outline, pill shape
+  - Primary: "Shop Now" — teal gradient fill, pill shape, glow shadow → links to `/{countryCode}/store`
+  - Secondary: "Explore Effects" — glass morphism outline, pill shape → smooth scrolls to `#shop-by-effect` anchor
   - Both slide up from 20px below with 200ms stagger after headline
-- **Scroll indicator:** Bottom center, "Scroll" label + gradient line, fade-pulse animation
+- **Scroll indicator:** Bottom center with `padding-bottom: env(safe-area-inset-bottom)` for iOS safe area. "Scroll" label + gradient line, fade-pulse animation
 
 ### Scroll Behavior
 - All layers parallax at different speeds (gradient mesh slowest, content fastest)
+- Hero parallax operates independently from the app shell `--shell-scroll-y` system — hero is positioned above the shell background layer
 - Particles disperse outward on scroll
 - Content fades out with slight upward drift
 
 ### Mobile Tier
-| Tier | Layers Active |
-|---|---|
-| Desktop (>1024px) | All 4 layers, full particles |
-| Tablet (512-1024px) | Gradient mesh + reduced particles (~80) + content |
-| Mobile (<512px) | Gradient mesh + brand reveal + content (CSS-only) |
-| Reduced motion | Static gradient + logo + content, instant render |
+| Tier | Breakpoint | Layers Active |
+|---|---|---|
+| Desktop | `small` and up (≥1024px) | All 4 layers, full particles |
+| Tablet | `xsmall` to `small` (512-1024px) | Gradient mesh + reduced particles (~80) + content |
+| Mobile | below `xsmall` (<512px) | Gradient mesh + brand reveal + content (CSS-only) |
+| Reduced motion | any | Static gradient + logo + content, instant render |
 
 ## Section 2: Shop by Effect
 
 **Purpose:** Experiential product discovery by mood/effect.
 
 ### Layout
+- Section `id="shop-by-effect"` (anchor target for hero CTA)
 - Section label: "Find Your Flow" — uppercase, letter-spaced, teal color
-- Heading: "Shop by **Effect**" — weight 300/600 split
+- Heading: "Shop by **Effect**" — weight 400/700 split
 - 4-column grid (2-column on mobile): Relax, Focus, Energy, Sleep
 
 ### Cards
@@ -92,9 +94,18 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
   - Relax: teal (#12a578)
   - Focus: gold (#f4bf3d)
   - Energy: tangelo (#e56525)
-  - Sleep: purple (#9382dc)
+  - Sleep: cocoa (existing brand token — warm earthy tone suits nighttime better than an out-of-system purple)
 - Circular icon container (48px) with custom SVG icon per effect
 - Short label + tagline below icon
+
+### Routing
+- Each card links to the store with the appropriate effect filter
+- URL pattern: `/{countryCode}/store?effect={facet_value}`
+- Facet mapping (must align with `EFFECT_RULES` in `src/lib/data/products.ts`):
+  - Relax → `?effect=relaxation`
+  - Focus → `?effect=focus`
+  - Energy → `?effect=energy`
+  - Sleep → `?effect=sleep`
 
 ### Animation
 - Cards stagger in from below: `translateY(24px) → 0`, `opacity 0→1`, 100ms delay between each
@@ -130,6 +141,11 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 - Categories fetched from Medusa via `listCategories()` (existing data layer)
 - Spotlight up to 6 categories (configurable)
 
+### Loading / Empty States
+- **Loading:** Skeleton cards matching card dimensions (glass morphism pulse)
+- **Empty:** Section hidden entirely (conditional render: `categories.length > 0`)
+- **Error:** Section hidden (silent fail — non-critical)
+
 ## Section 4: Featured Collection
 
 **Purpose:** Editorial spotlight on a curated collection with rich visual treatment.
@@ -152,7 +168,14 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 - CTA button: ghost/outline style with accent color, pill shape
 
 ### Data Source
-- Featured collection from Medusa via `listCollections()` (first or pinned collection)
+- Fetch the first collection handle via `listCollections()`, then call `getCollectionByHandle(handle)` which returns `*products`
+- Slice `.products` to first 4 for the 2x2 grid
+- CTA links to `/{countryCode}/collections/{handle}`
+
+### Loading / Empty States
+- **Loading:** Skeleton layout matching 2-column split
+- **Empty:** Section hidden entirely if no collections exist
+- **Error:** Section hidden (silent fail)
 
 ## Section 5: New Arrivals
 
@@ -175,6 +198,11 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 ### Data Source
 - Products from Medusa via `listProducts()` sorted by `created_at` desc, limit 4
 
+### Loading / Empty States
+- **Loading:** 4 skeleton cards
+- **Empty:** Section hidden
+- **Error:** Section hidden
+
 ## Section 6: Trust Strip
 
 **Purpose:** Quality credentials — understated, confident, not clinical.
@@ -185,7 +213,7 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 - Each: custom SVG icon + short label
 
 ### Colors
-- Each icon in a different brand accent (teal, gold, tangelo, purple)
+- Each icon in a different brand accent (teal, gold, tangelo, cocoa)
 - Background: subtle gradient strip
 
 ### Animation
@@ -211,7 +239,7 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 
 ### Form Behavior
 - Client-side email validation (Zod)
-- Server action for submission (connect to newsletter provider when ready)
+- Server action in `src/lib/data/newsletter.ts` — stub that logs to console initially, ready to connect to a newsletter provider (Mailchimp, ConvertKit, etc.) when chosen
 - Success state: input transforms to "You're in!" confirmation
 
 ## Global Animation System
@@ -232,14 +260,14 @@ Full-viewport (100vh) cinematic experience built from four composited layers:
 - Pure CSS + vanilla JS `IntersectionObserver` — zero animation library dependencies
 - CSS `@keyframes` for continuous animations (gradient mesh, background pulses)
 - Canvas API for particle system (hero only)
-- Simplex noise via small inline utility (~1KB) for organic particle movement
+- Simplex noise: hand-written 2D value noise function (~1KB unminified TypeScript). Only needs organic drift, not terrain — a simplified noise function is sufficient. No vendored library needed.
 - All colors via CSS custom properties for automatic theme adaptation
 
 ### Performance Budget
 - Canvas particle system: lazy-initialized after first paint
 - `IntersectionObserver` pauses canvas when hero not visible
-- `will-change` applied sparingly (only during active animations, removed after)
-- Total JS for animation system: ~8-12KB (particles + simplex noise + scroll observer)
+- `will-change` managed via `data-animating` attribute: IntersectionObserver callback adds `[data-animating]` when element enters viewport, CSS applies `[data-animating] { will-change: transform, opacity; }`, attribute removed on `animationend`/`transitionend`
+- Total JS for animation system: ~8-12KB (particles + noise + scroll observer)
 - CSS animations: GPU-composited (transform, opacity only — no layout triggers)
 
 ### Accessibility
@@ -266,7 +294,11 @@ All sections adapt to the active theme via CSS custom properties:
 New/modified files:
 
 ```
-src/app/[countryCode]/(main)/page.tsx          — Rewritten: new section composition
+src/app/[countryCode]/(main)/page.tsx          — Rewritten: new section composition (preserve existing Organization JSON-LD + metadata export)
+src/lib/data/newsletter.ts                      — Server action for newsletter signup (stub)
+src/lib/hooks/
+  use-scroll-reveal.ts                          — IntersectionObserver hook for scroll animations (shared utility)
+  use-stagger.ts                                — Staggered children animation hook (shared utility)
 src/modules/home/                               — New module directory
   components/
     hero/
@@ -291,15 +323,16 @@ src/modules/home/                               — New module directory
       trust-icons.tsx                           — Custom SVG trust icons
     newsletter/
       newsletter-section.tsx                    — CTA layout + form
-  hooks/
-    use-scroll-reveal.ts                        — IntersectionObserver hook for scroll animations
-    use-stagger.ts                              — Staggered children animation hook
   lib/
-    simplex-noise.ts                            — Minimal simplex noise implementation (~1KB)
-    particle-system.ts                          — Canvas particle system logic
+    simplex-noise.ts                            — Hand-written 2D value noise (~1KB)
+    particle-system.ts                          — Canvas particle system logic + pre-computed attractor coordinates
 src/app/global.css                              — Additional keyframes + animation utility classes
 tailwind.config.js                              — New animation keyframes if needed
 ```
+
+### Migration / Cleanup
+- Remove existing empty subdirectories in `src/modules/home/components/`: `brand-promise`, `category-rail`, `compliance-callout`, `editorial-deck`, `featured-products`, `hero`, `newsletter`, `strain-highlights`
+- These were placeholder directories from initial scaffolding and contain no active code
 
 ## Dependencies
 
@@ -307,7 +340,7 @@ tailwind.config.js                              — New animation keyframes if n
 - CSS `@keyframes` + custom properties
 - Vanilla `IntersectionObserver` API
 - HTML Canvas API
-- Inline simplex noise utility
+- Hand-written value noise utility
 
 ## Out of Scope
 
@@ -315,4 +348,4 @@ tailwind.config.js                              — New animation keyframes if n
 - Backend/Medusa changes
 - Navigation/topbar/footer modifications
 - Checkout or account flow changes
-- SEO meta tags (separate task)
+- SEO meta tags (separate task) — **note:** existing `Organization` JSON-LD schema and `metadata` export in `page.tsx` must be preserved in the rewrite
