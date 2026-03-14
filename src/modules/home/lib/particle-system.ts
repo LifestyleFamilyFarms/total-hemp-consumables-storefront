@@ -1,30 +1,5 @@
 import { noise2D } from "./simplex-noise"
 
-/** Pre-computed attractor positions sampled from the brand mark SVG circle.
- *  Coordinates normalized to 0-1 range, centered at (0.5, 0.5). */
-const ATTRACTOR_POINTS: [number, number][] = (() => {
-  const points: [number, number][] = []
-  const cx = 0.5,
-    cy = 0.5,
-    r = 0.25
-  // Outer circle — 20 points
-  for (let i = 0; i < 20; i++) {
-    const angle = (i / 20) * Math.PI * 2
-    points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)])
-  }
-  // Inner circle — 10 points
-  for (let i = 0; i < 10; i++) {
-    const angle = (i / 10) * Math.PI * 2
-    points.push([cx + r * 0.5 * Math.cos(angle), cy + r * 0.5 * Math.sin(angle)])
-  }
-  // Center cluster — 6 points
-  for (let i = 0; i < 6; i++) {
-    const angle = (i / 6) * Math.PI * 2
-    points.push([cx + r * 0.15 * Math.cos(angle), cy + r * 0.15 * Math.sin(angle)])
-  }
-  return points
-})()
-
 type Particle = {
   x: number
   y: number
@@ -36,17 +11,16 @@ type Particle = {
   noiseOffsetX: number
   noiseOffsetY: number
   speed: number
+  pulse: number
+  pulseSpeed: number
 }
 
 const BRAND_COLORS = [
   "244,191,61", // gold
   "18,165,120", // teal
-  "229,101,37", // tangelo
   "18,165,120", // teal (weighted)
+  "229,101,37", // tangelo
 ]
-
-/** Distance threshold for connecting lines (in CSS px) */
-const CONNECTION_DISTANCE = 100
 
 export type ParticleSystemConfig = {
   canvas: HTMLCanvasElement
@@ -75,28 +49,37 @@ export function createParticleSystem({
     particles = []
     const w = canvas.offsetWidth
     const h = canvas.offsetHeight
+    const cx = w * 0.5
+    const cy = h * 0.45 // slightly above center (where logo sits)
+    const maxRadius = Math.min(w, h) * 0.42
 
     for (let i = 0; i < particleCount; i++) {
-      // Assign to a random attractor point
-      const attractor =
-        ATTRACTOR_POINTS[Math.floor(Math.random() * ATTRACTOR_POINTS.length)]
-      const baseX = attractor[0] * w
-      const baseY = attractor[1] * h
-      // Tighter scatter keeps the brand mark shape visible
-      const scatter = Math.min(w, h) * 0.08
+      // Distribute in a soft radial cluster, denser near center
+      const angle = Math.random() * Math.PI * 2
+      // Bias toward center: sqrt gives uniform disk, pow(0.7) biases center
+      const r = maxRadius * Math.pow(Math.random(), 0.7)
+      const baseX = cx + Math.cos(angle) * r
+      const baseY = cy + Math.sin(angle) * r
       const color = BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)]
 
+      // Particles further from center are smaller and fainter
+      const distRatio = r / maxRadius
+      const sizeBase = distRatio < 0.3 ? 2.5 : distRatio < 0.6 ? 2 : 1.5
+      const alphaBase = distRatio < 0.3 ? 0.6 : distRatio < 0.6 ? 0.4 : 0.2
+
       particles.push({
-        x: baseX + (Math.random() - 0.5) * scatter,
-        y: baseY + (Math.random() - 0.5) * scatter,
+        x: baseX,
+        y: baseY,
         baseX,
         baseY,
-        size: 2 + Math.random() * 2.5,
+        size: sizeBase + Math.random() * 1.5,
         color,
-        alpha: 0.35 + Math.random() * 0.5,
+        alpha: alphaBase + Math.random() * 0.2,
         noiseOffsetX: Math.random() * 1000,
         noiseOffsetY: Math.random() * 1000,
-        speed: 0.2 + Math.random() * 0.35,
+        speed: 0.15 + Math.random() * 0.25,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.01 + Math.random() * 0.02,
       })
     }
   }
@@ -106,62 +89,56 @@ export function createParticleSystem({
     const h = canvas.offsetHeight
     ctx.clearRect(0, 0, w, h)
 
-    // Fade out particles as user scrolls
+    // Fade out as user scrolls
     const fadeAlpha = Math.max(0, 1 - scrollProgress * 2)
     if (fadeAlpha <= 0) {
       animationId = requestAnimationFrame(draw)
       return
     }
 
-    // Update positions
     for (const p of particles) {
+      // Organic noise-driven drift
       const nx = noise2D(
-        p.noiseOffsetX + time * p.speed * 0.0008,
+        p.noiseOffsetX + time * p.speed * 0.0006,
         p.noiseOffsetY
       )
       const ny = noise2D(
         p.noiseOffsetX,
-        p.noiseOffsetY + time * p.speed * 0.0008
+        p.noiseOffsetY + time * p.speed * 0.0006
       )
 
-      // Drift range increases with scroll (disperse effect)
-      const drift = 30 + scrollProgress * 150
+      // Gentle drift that increases on scroll (disperse outward)
+      const drift = 20 + scrollProgress * 100
       p.x = p.baseX + nx * drift
       p.y = p.baseY + ny * drift
-    }
 
-    // Draw connections between nearby particles
-    ctx.lineWidth = 0.5
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x
-        const dy = particles[i].y - particles[j].y
-        const dist = Math.sqrt(dx * dx + dy * dy)
+      // Soft pulsing glow per particle
+      p.pulse += p.pulseSpeed
+      const pulseFactor = 0.7 + 0.3 * Math.sin(p.pulse)
+      const alpha = p.alpha * fadeAlpha * pulseFactor
 
-        if (dist < CONNECTION_DISTANCE) {
-          const lineAlpha =
-            (1 - dist / CONNECTION_DISTANCE) * 0.15 * fadeAlpha
-          ctx.beginPath()
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.strokeStyle = `rgba(${particles[i].color},${lineAlpha})`
-          ctx.stroke()
-        }
-      }
-    }
+      // Draw soft glowing ember
+      const glowRadius = p.size * 6
+      const gradient = ctx.createRadialGradient(
+        p.x, p.y, 0,
+        p.x, p.y, glowRadius
+      )
+      gradient.addColorStop(0, `rgba(${p.color},${alpha})`)
+      gradient.addColorStop(0.3, `rgba(${p.color},${alpha * 0.4})`)
+      gradient.addColorStop(1, `rgba(${p.color},0)`)
 
-    // Draw particles
-    for (const p of particles) {
-      const alpha = p.alpha * fadeAlpha
       ctx.beginPath()
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(${p.color},${alpha})`
-      ctx.shadowBlur = p.size * 4
-      ctx.shadowColor = `rgba(${p.color},${alpha * 0.6})`
+      ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2)
+      ctx.fillStyle = gradient
+      ctx.fill()
+
+      // Bright core
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(${p.color},${Math.min(1, alpha * 1.5)})`
       ctx.fill()
     }
 
-    ctx.shadowBlur = 0
     time++
 
     if (isRunning) {

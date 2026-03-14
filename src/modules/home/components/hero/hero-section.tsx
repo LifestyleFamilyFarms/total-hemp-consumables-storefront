@@ -6,14 +6,14 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 export default function HeroSection() {
   return (
     <section
-      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-gradient-to-br from-[#071a0e] via-[#0a2216] to-[#0d1f18]"
+      className="relative -mx-[50vw] left-1/2 right-1/2 flex w-screen min-h-[100dvh] items-center justify-center overflow-hidden bg-gradient-to-br from-[#071a0e] via-[#0a2216] to-[#0d1f18]"
       style={{ minHeight: "100vh" }}
     >
       {/* Layer 1: Gradient mesh */}
       <GradientMesh />
 
       {/* Layer 2: Canvas particles */}
-      <ParticleCanvas particleCount={200} />
+      <ParticleCanvas particleCount={120} />
 
       {/* Decorative corner accents */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
