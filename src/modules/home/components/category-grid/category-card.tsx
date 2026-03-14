@@ -25,19 +25,20 @@ export default function CategoryCard({
   secondaryRgb,
   index,
 }: CategoryCardProps & { index: number }) {
-  const circle = BOTANICAL_CIRCLE_POSITIONS[index % BOTANICAL_CIRCLE_POSITIONS.length]
+  const circle =
+    BOTANICAL_CIRCLE_POSITIONS[index % BOTANICAL_CIRCLE_POSITIONS.length]
 
   return (
     <LocalizedClientLink
       href={`/categories/${handle}`}
-      className="group relative block overflow-hidden rounded-[20px] border border-white/[0.06] p-10 text-center transition-all duration-300 hover:-translate-y-0.5 hover:border-white/[0.12]"
+      className="group relative block overflow-hidden rounded-[20px] border border-white/[0.1] p-10 text-center transition-all duration-300 hover:-translate-y-0.5 hover:border-white/[0.18]"
       style={{
-        background: `linear-gradient(135deg, rgba(${accentRgb}, 0.08), rgba(${secondaryRgb}, 0.05))`,
+        background: `linear-gradient(135deg, rgba(${accentRgb}, 0.15) 0%, rgba(${secondaryRgb}, 0.08) 50%, rgba(15,30,20,0.6) 100%)`,
       }}
     >
       {/* Decorative botanical circle */}
       <div
-        className="pointer-events-none absolute rounded-full border opacity-20 transition-opacity duration-500 group-hover:opacity-40"
+        className="pointer-events-none absolute rounded-full border opacity-25 transition-opacity duration-500 group-hover:opacity-50"
         style={{
           top: circle.top,
           right: circle.right,
@@ -45,14 +46,25 @@ export default function CategoryCard({
           left: circle.left,
           width: circle.size,
           height: circle.size,
-          borderColor: `rgba(${accentRgb}, 0.15)`,
+          borderColor: `rgba(${accentRgb}, 0.25)`,
         }}
         aria-hidden="true"
       />
 
-      <h3 className="mb-1.5 text-base font-medium text-white">{name}</h3>
+      {/* Inner glow accent */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(ellipse at 50% 0%, rgba(${accentRgb}, 0.08), transparent 70%)`,
+        }}
+        aria-hidden="true"
+      />
+
+      <h3 className="relative mb-2 text-base font-semibold text-white">
+        {name}
+      </h3>
       {description && (
-        <p className="text-sm text-white/35">{description}</p>
+        <p className="relative text-sm text-white/55">{description}</p>
       )}
     </LocalizedClientLink>
   )
