@@ -45,7 +45,7 @@ export default function EffectSection() {
   const gridRef = useStagger<HTMLDivElement>({ delayMs: 100 })
 
   return (
-    <section id="shop-by-effect" className="px-5 py-20 small:py-28">
+    <section id="shop-by-effect" className="relative px-5 py-20 small:py-28">
       <div className="mx-auto max-w-6xl">
         <div ref={headerRef} className="scroll-reveal mb-10 text-center">
           <p className="mb-2 text-xs uppercase tracking-[0.2em] text-teal/70">

@@ -70,14 +70,23 @@ export default async function Home(props: {
         }}
       />
       <HeroSection />
-      {/* Post-hero landing sections are always dark-themed regardless of user theme selection */}
-      <div data-theme="indica">
-        <EffectSection />
-        <CategorySection categories={categories} />
-        <CollectionSection collection={featuredCollection} />
-        <ArrivalsSection products={newest.products} />
-        <TrustSection />
-        <NewsletterSection />
+      {/* Post-hero sections: dark-themed, full-bleed with grain texture */}
+      <div
+        data-theme="indica"
+        className="relative -mx-[50vw] left-1/2 right-1/2 w-screen"
+        style={{
+          background:
+            "linear-gradient(180deg, #050e08 0%, #091a0f 15%, #0b1e13 50%, #091a0f 85%, #050e08 100%)",
+        }}
+      >
+        <div className="mx-auto max-w-8xl">
+          <EffectSection />
+          <CategorySection categories={categories} />
+          <CollectionSection collection={featuredCollection} />
+          <ArrivalsSection products={newest.products} />
+          <TrustSection />
+          <NewsletterSection />
+        </div>
       </div>
     </>
   )

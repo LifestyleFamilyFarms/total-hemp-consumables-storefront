@@ -2,39 +2,49 @@ import { BrandLogo } from "@/components/brand/brand-logo"
 
 export default function BrandReveal() {
   return (
-    <div
-      className="mb-10 flex justify-center"
-      style={{
-        animation: "hero-blur-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-      }}
-    >
-      {/* Decorative orbiting ring */}
-      <div className="relative">
-        <div
-          className="absolute -inset-6 rounded-full border border-white/[0.1]"
-          style={{
-            animation: "hero-orbit-ring 20s linear infinite",
-          }}
-          aria-hidden="true"
-        >
-          <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-gold/50 shadow-[0_0_8px_rgba(244,191,61,0.3)]" />
+    <div className="relative mb-8">
+      {/* Large watermark brand mark — the hero's visual anchor */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%]"
+        style={{
+          animation:
+            "hero-blur-reveal 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        }}
+        aria-hidden="true"
+      >
+        <div className="relative h-[280px] w-[280px] small:h-[380px] small:w-[380px]">
+          {/* Radial glow behind the mark */}
+          <div
+            className="absolute inset-[-30%] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(18,165,120,0.12) 0%, rgba(244,191,61,0.06) 40%, transparent 70%)",
+              filter: "blur(40px)",
+            }}
+          />
+          <BrandLogo
+            variant="roundFullColorLogo"
+            format="svg"
+            size="orig"
+            className="h-full w-full opacity-[0.12]"
+          />
         </div>
-        <div
-          className="absolute -inset-12 rounded-full border border-white/[0.06]"
-          style={{
-            animation: "hero-orbit-ring 30s linear infinite reverse",
-          }}
-          aria-hidden="true"
-        >
-          <div className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-teal/40 shadow-[0_0_6px_rgba(18,165,120,0.3)]" />
-        </div>
+      </div>
 
-        <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.04] shadow-[0_0_60px_rgba(18,165,120,0.08)] backdrop-blur-sm small:h-28 small:w-28">
+      {/* Foreground logo — crisp, smaller */}
+      <div
+        className="relative z-10 flex justify-center"
+        style={{
+          animation:
+            "hero-blur-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both",
+        }}
+      >
+        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] shadow-[0_0_80px_rgba(18,165,120,0.12),0_0_30px_rgba(244,191,61,0.06)] backdrop-blur-sm small:h-24 small:w-24">
           <BrandLogo
             variant="roundFullColorLogo"
             format="svg"
             size="md"
-            className="h-[72px] w-[72px] small:h-20 small:w-20"
+            className="h-14 w-14 small:h-[68px] small:w-[68px]"
           />
         </div>
       </div>

@@ -24,8 +24,22 @@ export default function CollectionSection({
   const products = collection.products.slice(0, 4)
 
   return (
-    <section className="px-5 py-20 small:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section className="relative px-5 py-20 small:py-28">
+      {/* Subtle ambient glow */}
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div
+          className="absolute -right-[10%] top-[20%] h-[60%] w-[40%] rounded-full opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(244,191,61,0.06), transparent 70%)",
+            filter: "blur(60px)",
+          }}
+        />
+      </div>
+      <div className="relative mx-auto max-w-6xl">
         <div className="grid items-center gap-10 small:grid-cols-2 small:gap-16">
           {/* Editorial copy — left side */}
           <div ref={copyRef} className="scroll-reveal--left">

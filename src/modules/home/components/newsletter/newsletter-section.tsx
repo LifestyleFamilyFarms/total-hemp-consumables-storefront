@@ -26,7 +26,8 @@ export default function NewsletterSection() {
         className="scroll-reveal relative mx-auto max-w-lg overflow-hidden rounded-2xl px-6 py-16 text-center"
         style={{
           background:
-            "linear-gradient(135deg, rgba(22,46,36,0.8), rgba(13,40,24,0.8))",
+            "linear-gradient(135deg, rgba(22,46,36,0.9), rgba(13,40,24,0.85))",
+          border: "1px solid rgba(255,255,255,0.04)",
         }}
       >
         {/* Background glow */}
