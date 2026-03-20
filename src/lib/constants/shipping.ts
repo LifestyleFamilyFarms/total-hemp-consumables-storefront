@@ -155,14 +155,15 @@ export const SHIPSTATION_SERVICE_ALLOWLIST_SET =
     ? new Set(expandedAllowlistValues)
     : null
 
+/** Ordered most-specific to least-specific to avoid keyword collisions (e.g. "Priority Express" → express wins). */
 export const DELIVERY_ESTIMATE_MAP: Record<string, string> = {
+  overnight: "Next business day",
+  "2-day": "2 business days",
+  "2day": "2 business days",
+  express: "1–2 business days",
+  priority: "2–3 business days",
   ground: "5–7 business days",
   economy: "5–10 business days",
-  priority: "2–3 business days",
-  express: "1–2 business days",
-  overnight: "Next business day",
-  "2day": "2 business days",
-  "2-day": "2 business days",
   standard: "3–5 business days",
 }
 
