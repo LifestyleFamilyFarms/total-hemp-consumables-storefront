@@ -156,7 +156,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   }
 
   return (
-    <tr className="w-full border-b border-border/60 last:border-b-0" data-testid="product-row">
+    <tr className="w-full border-b border-border/30 last:border-b-0" data-testid="product-row">
       <td className="p-4 w-24 align-top">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}

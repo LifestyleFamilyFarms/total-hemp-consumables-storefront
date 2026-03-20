@@ -4,7 +4,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 const SignInPrompt = () => {
   return (
-    <Card className="border-border/70 bg-card/90 shadow-sm">
+    <Card className="border-border/30 bg-card shadow-sm">
       <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:p-5">
         <div className="min-w-0">
           <h2 className="text-base font-semibold text-foreground sm:text-lg">

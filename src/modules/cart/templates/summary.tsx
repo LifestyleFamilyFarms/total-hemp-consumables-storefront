@@ -31,28 +31,30 @@ const Summary = ({ cart }: SummaryProps) => {
   const isCartMutating = useStorefrontState(selectIsCartMutating)
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <h2 className="text-[2rem] leading-[2.75rem] font-semibold">Summary</h2>
-      <FirstPurchaseDiscount cart={cart} />
-      <DiscountCode cart={cart} />
-      <Divider />
-      <div className="relative">
-        {isCartMutating ? (
-          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/80 backdrop-blur-[1px]">
-            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-              <BrandSpinner />
-              Updating totals...
+    <div className="rounded-xl border border-border/30 bg-card p-5">
+      <div className="flex flex-col gap-y-4">
+        <h2 className="text-[2rem] leading-[2.75rem] font-semibold">Summary</h2>
+        <FirstPurchaseDiscount cart={cart} />
+        <DiscountCode cart={cart} />
+        <Divider />
+        <div className="relative">
+          {isCartMutating ? (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-card/80 backdrop-blur-[1px]">
+              <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                <BrandSpinner />
+                Updating totals...
+              </div>
             </div>
-          </div>
-        ) : null}
-        <CartTotals totals={cart} />
+          ) : null}
+          <CartTotals totals={cart} />
+        </div>
+        <LocalizedClientLink
+          href={"/checkout?step=" + step}
+          data-testid="checkout-button"
+        >
+          <Button className="w-full h-12 bg-accent text-accent-foreground font-bold rounded-lg text-sm uppercase tracking-[0.08em]">Go to checkout</Button>
+        </LocalizedClientLink>
       </div>
-      <LocalizedClientLink
-        href={"/checkout?step=" + step}
-        data-testid="checkout-button"
-      >
-        <Button className="w-full h-10">Go to checkout</Button>
-      </LocalizedClientLink>
     </div>
   )
 }

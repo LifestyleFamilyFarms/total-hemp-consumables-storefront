@@ -227,7 +227,7 @@ export default function FirstPurchaseDiscount({ cart }: FirstPurchaseDiscountPro
   }
 
   return (
-    <section className="space-y-3 rounded-2xl border border-border/60 bg-card/55 p-4">
+    <section className="space-y-3 rounded-xl border border-border/30 bg-card p-4">
       <div className="space-y-1">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">
           First purchase

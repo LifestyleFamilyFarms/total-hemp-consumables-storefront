@@ -21,7 +21,7 @@ const CheckoutSummary = ({ cart }: CheckoutSummaryProps) => {
 
   return (
     <aside className="lg:sticky lg:top-8">
-      <div className="rounded-2xl border border-border/30 bg-card">
+      <div className="rounded-xl border border-border/30 bg-card">
         <div className="flex items-center justify-between px-5 pt-5">
           <h2 className="text-2xl font-semibold tracking-tight">
             Order summary

@@ -24,7 +24,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
         <h2 className="text-[2rem] leading-[2.75rem] font-semibold">Cart</h2>
         <ClearCartButton />
       </div>
-      <div className="overflow-x-auto rounded-lg border border-border/60 bg-background">
+      <div className="overflow-x-auto rounded-lg border border-border/30 bg-card">
         <Table className="min-w-full">
           <TableHeader>
             <TableRow className="text-muted-foreground font-medium">
