@@ -1,3 +1,52 @@
+/**
+ * States where we CANNOT ship hemp products.
+ *
+ * Blocked:
+ *   - ID: requires 0.0% THC (not 0.3%), effectively bans all hemp products
+ *   - KS, NE, NC, SC, WY: hemp shipping prohibited or unclear legality
+ *   - TN: online/delivery hemp sales BANNED effective Jan 1, 2026 (face-to-face only)
+ *
+ * Medical-only (excluded — we don't have medical licensing):
+ *   - SD: medical-only hemp program
+ *
+ * See hemp-compliance skill for full state-by-state reference.
+ */
+const BLOCKED_SHIPPING_STATES = new Set([
+  "Idaho",
+  "Kansas",
+  "Nebraska",
+  "North Carolina",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Wyoming",
+])
+
+/**
+ * States requiring extra compliance beyond our baseline 21+ / age-gate:
+ *   - NJ: adopted federal 0.4mg total THC cap early (Jan 2026), intoxicating
+ *         hemp beverages restricted after April 13, 2026
+ *   - AL, AR, MS: medical-only programs — currently allowed but may need
+ *         product-level restrictions depending on catalog
+ *   - NY: CBD in food/drink banned (fines $250-$600)
+ *   - OH: SB 56 (Dec 2025) banned intoxicating hemp products
+ *
+ * These states are still in ALLOWED_SHIPPING_STATES but need product-level
+ * validation at checkout or catalog filtering before launch.
+ */
+export const EXTRA_COMPLIANCE_STATES = [
+  { code: "NJ", label: "New Jersey", note: "0.4mg total THC cap, 21+, beverage restrictions after Apr 2026" },
+  { code: "NY", label: "New York", note: "CBD in food/drink banned, fines $250-$600" },
+  { code: "OH", label: "Ohio", note: "SB 56 banned intoxicating hemp products Dec 2025" },
+  { code: "AL", label: "Alabama", note: "Medical-only program — review product catalog" },
+  { code: "AR", label: "Arkansas", note: "Medical-only program — review product catalog" },
+  { code: "MS", label: "Mississippi", note: "Medical-only, 20:1 CBD:THC ratio, max 2.5mg THC/mL" },
+] as const
+
+export const EXTRA_COMPLIANCE_STATE_CODES = new Set(
+  EXTRA_COMPLIANCE_STATES.map((s) => s.code)
+)
+
 export const ALLOWED_SHIPPING_STATES = [
   "Alabama",
   "Alaska",
@@ -9,11 +58,9 @@ export const ALLOWED_SHIPPING_STATES = [
   "Florida",
   "Georgia",
   "Hawaii",
-  "Idaho",
   "Illinois",
   "Indiana",
   "Iowa",
-  "Kansas",
   "Kentucky",
   "Louisiana",
   "Maine",
@@ -24,13 +71,11 @@ export const ALLOWED_SHIPPING_STATES = [
   "Mississippi",
   "Missouri",
   "Montana",
-  "Nebraska",
   "Nevada",
   "New Hampshire",
   "New Jersey",
   "New Mexico",
   "New York",
-  "North Carolina",
   "North Dakota",
   "Ohio",
   "Oklahoma",
@@ -38,9 +83,6 @@ export const ALLOWED_SHIPPING_STATES = [
   "Pennsylvania",
   "Puerto Rico",
   "Rhode Island",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
   "Texas",
   "Utah",
   "Vermont",
@@ -48,7 +90,6 @@ export const ALLOWED_SHIPPING_STATES = [
   "Washington",
   "West Virginia",
   "Wisconsin",
-  "Wyoming",
 ]
 
 export const ALLOWED_SHIPPING_STATES_LABEL = ALLOWED_SHIPPING_STATES.join(" • ")
