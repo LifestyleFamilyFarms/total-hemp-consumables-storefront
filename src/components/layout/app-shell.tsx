@@ -6,6 +6,7 @@ import ComplianceBar from "@/components/layout/compliance-bar"
 import MemberRewardsBanner from "@/components/layout/member-rewards-banner"
 import Topbar from "@/components/layout/topbar"
 import AgeGate from "@/components/layout/age-gate"
+import GeoWarningBanner from "@/components/layout/geo-warning-banner"
 import type { NavigationCategory } from "@lib/data/categories"
 
 type User = {
@@ -39,6 +40,7 @@ export default function AppShell({
   return (
     <>
       <main className="shell-surface shell-surface--full relative flex w-full flex-1 flex-col">
+        <GeoWarningBanner />
         <Topbar
           countryCode={countryCode}
           cart={cart}
