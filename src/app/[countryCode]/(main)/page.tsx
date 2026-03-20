@@ -70,15 +70,30 @@ export default async function Home(props: {
         }}
       />
       <HeroSection />
-      {/* Post-hero sections: full-bleed, inherits active theme */}
-      <div className="relative -mx-[50vw] left-1/2 right-1/2 w-screen bg-background">
-        <div className="mx-auto max-w-8xl">
-          <EffectSection />
-          <CategorySection categories={categories} />
-          <CollectionSection collection={featuredCollection} />
-          <ArrivalsSection products={newest.products} />
-          <TrustSection />
-          <NewsletterSection />
+
+      {/* Post-hero: full-bleed alternating bands for visual rhythm */}
+      <div className="relative -mx-[50vw] left-1/2 right-1/2 w-screen">
+        <div className="bg-background">
+          <div className="mx-auto max-w-8xl">
+            <EffectSection />
+          </div>
+        </div>
+        <div className="bg-card">
+          <div className="mx-auto max-w-8xl">
+            <CategorySection categories={categories} />
+          </div>
+        </div>
+        <div className="bg-background">
+          <div className="mx-auto max-w-8xl">
+            <CollectionSection collection={featuredCollection} />
+            <ArrivalsSection products={newest.products} />
+          </div>
+        </div>
+        <div className="bg-card">
+          <div className="mx-auto max-w-8xl">
+            <TrustSection />
+            <NewsletterSection />
+          </div>
         </div>
       </div>
     </>

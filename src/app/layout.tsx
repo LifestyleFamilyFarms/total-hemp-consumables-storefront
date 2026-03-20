@@ -5,7 +5,6 @@ import { Metadata } from "next"
 import { Providers } from "../providers"
 import { Toaster } from "@/components/ui/sonner"
 import { DEFAULT_THEME_ID } from "@/themes/config"
-import ShellParallaxBackground from "@/components/layout/shell-parallax-background"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -53,15 +52,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         {/* Clarendon Adobe Font*/}
         <link rel="stylesheet" href="https://use.typekit.net/kwa1csc.css" />
       </head>
-      <body className="app-shell-bg">
-        <div className="relative">
-          <ShellParallaxBackground />
-          <Providers>
-            <main className="relative">{props.children}</main>
-            <Toaster />
-            {isProd ? <Analytics /> : null}
-          </Providers>
-        </div>
+      <body className="bg-background text-foreground">
+        <Providers>
+          <main className="relative min-h-screen">{props.children}</main>
+          <Toaster />
+          {isProd ? <Analytics /> : null}
+        </Providers>
       </body>
     </html>
   )

@@ -28,7 +28,7 @@ export default async function CheckoutLayout({
   const nonce = nonceHeader.get("x-csp-nonce") || undefined
 
   return (
-    <div className="shell-surface shell-surface--full min-h-screen flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Load Authorize.Net Accept.js only on checkout pages */}
       <Script src={ACCEPT_SRC} strategy="afterInteractive" nonce={nonce} />
       {GOOGLE_PLACES_SRC ? (

@@ -47,36 +47,19 @@
     --sidebar-border: 137 45% 14%;
     --sidebar-ring: var(--brand-gold);
 
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
-    --app-bg-pattern-opacity: 0.3;
-    --app-bg-filter: blur(1px) saturate(0.72) contrast(1) brightness(0.74);
-    --scene-grad-tl: 59 73% 78%;
-    --scene-grad-tr: 43 82% 70%;
-    --scene-grad-bl: 162 34% 28%;
-    --scene-grad-br: 0 0% 10%;
-    --scene-grad-base-start: 137 52% 16%;
-    --scene-grad-base-end: 137 62% 8%;
-    --app-bg-overlay:
-      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 0.741) 0%, transparent 75%),
-      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
-      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
-      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 1) 50%, transparent 100%),
-      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
-    --app-bg-overlay-opacity: 0.5;
-
-    --surface-glass-top: var(--scene-grad-tl);
-    --surface-glass-bottom: var(--scene-grad-base-end);
-    --surface-glass-glow: var(--scene-grad-tr);
+    --surface-glass-top: 59 73% 78%;
+    --surface-glass-bottom: 137 62% 8%;
+    --surface-glass-glow: 43 82% 70%;
     --surface-glass-edge: 59 66% 88%;
     --surface-light-angle: 156deg;
     --surface-light-source-x: 12%;
     --surface-light-source-y: 6%;
     --surface-glass-shadow: 137 56% 4%;
-    --surface-border-top-left: var(--scene-grad-tl);
-    --surface-border-top-right: var(--scene-grad-tr);
-    --surface-border-bottom-left: var(--scene-grad-bl);
-    --surface-border-bottom-right: var(--scene-grad-br);
-    --surface-border-mid: var(--scene-grad-base-end);
+    --surface-border-top-left: 59 73% 78%;
+    --surface-border-top-right: 43 82% 70%;
+    --surface-border-bottom-left: 162 34% 28%;
+    --surface-border-bottom-right: 0 0% 10%;
+    --surface-border-mid: 137 62% 8%;
     --type-shadow-color: 0 0% 3%;
     --type-shadow-opacity: 0.44;
     --type-shadow-x: 1px;
@@ -112,18 +95,6 @@
     --sidebar-accent-foreground: 137 55% 15%;
     --sidebar-border: 137 20% 82%;
     --sidebar-ring: 137 55% 22%;
-
-    --app-bg-image: none;
-    --app-bg-pattern-opacity: 0;
-    --app-bg-filter: none;
-    --scene-grad-tl: 137 15% 94%;
-    --scene-grad-tr: 43 30% 92%;
-    --scene-grad-bl: 137 20% 90%;
-    --scene-grad-br: 43 40% 88%;
-    --scene-grad-base-start: 60 20% 98%;
-    --scene-grad-base-end: 137 15% 96%;
-    --app-bg-overlay: hsl(137 15% 94% / 0.3);
-    --app-bg-overlay-opacity: 0.3;
 
     --surface-light-angle: 156deg;
     --surface-light-source-x: 12%;
@@ -173,18 +144,6 @@
     --sidebar-accent-foreground: 137 20% 8%;
     --sidebar-border: 137 15% 16%;
     --sidebar-ring: 43 70% 55%;
-
-    --app-bg-image: none;
-    --app-bg-pattern-opacity: 0;
-    --app-bg-filter: none;
-    --scene-grad-tl: 137 25% 6%;
-    --scene-grad-tr: 43 40% 15%;
-    --scene-grad-bl: 137 30% 5%;
-    --scene-grad-br: 43 50% 12%;
-    --scene-grad-base-start: 137 20% 8%;
-    --scene-grad-base-end: 137 15% 6%;
-    --app-bg-overlay: hsl(137 20% 4% / 0.5);
-    --app-bg-overlay-opacity: 0.5;
 
     --surface-light-angle: 156deg;
     --surface-light-source-x: 12%;
@@ -279,44 +238,6 @@
 
   /* border-triple removed */
 
-  .app-shell-parallax {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    --shell-scroll-y: 0px;
-  }
-
-  .app-shell-layer {
-    position: absolute;
-    pointer-events: none;
-    will-change: transform;
-  }
-
-  .app-shell-layer--deep {
-    inset: -32vh -16vw;
-    background-image: var(--app-bg-image);
-    background-repeat: repeat;
-    background-size: clamp(880px, 104vw, 1540px);
-    background-position: 50% 50%;
-    opacity: calc(var(--app-bg-pattern-opacity) * 0.44);
-    filter: var(--app-bg-filter);
-    transform: translate3d(0, calc(var(--shell-scroll-y) * -0.16), 0) scale(1.06);
-  }
-
-  .app-shell-layer--overlay {
-    inset: 0;
-    background: var(--app-bg-overlay);
-    opacity: var(--app-bg-overlay-opacity);
-  }
-
-  .app-shell-layer--noise {
-    position: absolute;
-    inset: 0;
-    opacity: 0.014;
-    background: radial-gradient(circle at 18% 18%, rgba(0, 0, 0, 0.12), transparent 48%),
-      radial-gradient(circle at 82% 28%, rgba(0, 0, 0, 0.1), transparent 50%);
-    transform: translate3d(0, calc(var(--shell-scroll-y) * -0.01), 0);
-  }
 
   .surface-universal {
     background-color: hsl(var(--card) / 0.7) !important;
@@ -366,9 +287,6 @@
       inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.32);
   }
 
-  .shell-surface:has([data-auth-isolated="true"]) footer {
-    display: none;
-  }
 
   .plp-card {
     position: relative;
@@ -426,36 +344,12 @@
     letter-spacing: 0.01em;
   }
 
-  .shell-surface {
-    position: relative;
-    z-index: 0;
-  }
-
-  .shell-surface--full {
-    min-height: 100vh;
-    overflow: visible;
-    isolation: isolate;
-  }
-
-  .shell-surface--full::before {
-    content: none;
-  }
-
-  .shell-surface--full::after {
-    content: none;
-  }
-
-  .shell-surface__content {
-    position: relative;
-    z-index: 1;
+  /* Hide footer on auth-isolated pages (login/register) */
+  main:has([data-auth-isolated="true"]) footer {
+    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .app-shell-layer--deep,
-    .app-shell-layer--noise {
-      transform: none;
-    }
-
     .plp-card,
     .plp-card__image {
       transition: none;
@@ -471,50 +365,6 @@
     }
   }
 
-  @keyframes parallax-drift {
-    0% {
-      transform: translate3d(0px, 0px, 0);
-    }
-    100% {
-      transform: translate3d(0px, 16px, 0);
-    }
-  }
-
-  @keyframes parallax-drift-2 {
-    0% {
-      transform: translate3d(0px, 0px, 0);
-    }
-    100% {
-      transform: translate3d(12px, -12px, 0);
-    }
-  }
-
-  @keyframes parallax-float {
-    0% {
-      transform: translate3d(-6px, 0px, 0);
-    }
-    100% {
-      transform: translate3d(6px, -8px, 0);
-    }
-  }
-
-  @keyframes shell-pan {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(-180px, -220px, 0);
-    }
-  }
-
-  @keyframes shell-parallax-marks {
-    0% {
-      transform: translate3d(0px, 0px, 0);
-    }
-    100% {
-      transform: translate3d(-28px, -18px, 0);
-    }
-  }
 
   .contrast-btn {
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;

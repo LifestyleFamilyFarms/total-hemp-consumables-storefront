@@ -86,7 +86,7 @@ export default function Topbar({
               categories={categories}
               isAuthenticated={Boolean(user?.isAuthenticated)}
               triggerAriaLabel="Open navigation menu"
-              triggerClassName="border border-border/30 bg-card h-9 gap-2 rounded-lg px-2.5 text-foreground/85 transition-colors hover:border-foreground/40 hover:text-foreground md:h-10 md:px-3"
+              triggerClassName="h-9 gap-2 rounded-lg px-2.5 text-foreground/85 transition-colors hover:bg-foreground/5 hover:text-foreground md:h-10 md:px-3"
               triggerContent={
                 <>
                   <BrandLogo
@@ -99,7 +99,7 @@ export default function Topbar({
                 </>
               }
             />
-            <ThemeSwitcher compact className="border border-border/30 bg-card hidden h-10 w-10 md:inline-flex lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:inline-flex" />
+            <ThemeSwitcher compact className="hidden h-10 w-10 rounded-lg text-foreground/85 transition-colors hover:bg-foreground/5 hover:text-foreground md:inline-flex lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:inline-flex" />
           </div>
 
           <Link
@@ -186,14 +186,14 @@ export default function Topbar({
           </nav>
 
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            <ThemeSwitcher compact className="border border-border/30 bg-card h-9 w-9 md:hidden md:h-10 md:w-10 lg:inline-flex [@media(min-width:1024px)_and_(max-height:800px)]:hidden" />
+            <ThemeSwitcher compact className="h-9 w-9 rounded-lg text-foreground/85 transition-colors hover:bg-foreground/5 hover:text-foreground md:hidden md:h-10 md:w-10 lg:inline-flex [@media(min-width:1024px)_and_(max-height:800px)]:hidden" />
 
             <CartDrawer
               countryCode={countryCode}
               cart={cart}
               isAuthenticated={Boolean(user?.isAuthenticated)}
               compactOnMobile
-              className="border border-border/30 bg-card inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-semibold text-foreground transition-colors hover:border-foreground/40 md:h-10 lg:gap-2 lg:px-3 lg:py-2"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border/20 px-2.5 py-1.5 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/5 hover:border-foreground/30 md:h-10 lg:gap-2 lg:px-3 lg:py-2"
             />
 
             <DropdownMenu>
@@ -201,7 +201,7 @@ export default function Topbar({
                 {user?.isAuthenticated ? (
                   <Button
                     variant="outline"
-                    className="hidden h-10 items-center gap-2 rounded-full border border-border/30 px-2 transition-colors hover:border-foreground/40 md:inline-flex"
+                    className="hidden h-10 items-center gap-2 rounded-full border border-border/20 px-2 transition-colors hover:bg-foreground/5 hover:border-foreground/30 md:inline-flex"
                   >
                     <Avatar className="h-7 w-7 rounded-full">
                       <AvatarImage src={user?.avatarUrl ?? ""} alt={name} />
@@ -212,7 +212,7 @@ export default function Topbar({
                 ) : (
                   <Button
                     variant="outline"
-                    className="hidden h-10 rounded-full border border-border/30 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/85 transition-colors hover:border-foreground/40 md:inline-flex"
+                    className="hidden h-10 rounded-full border border-border/20 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/85 transition-colors hover:bg-foreground/5 hover:border-foreground/30 md:inline-flex"
                     aria-label="Sign in or create account"
                   >
                     <UserRound className="h-4 w-4" />

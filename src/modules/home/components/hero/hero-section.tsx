@@ -9,9 +9,8 @@ const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='h
 export default function HeroSection() {
   return (
     <section
-      className="relative -mx-[50vw] left-1/2 right-1/2 flex w-screen min-h-[100dvh] items-center justify-center overflow-hidden"
+      className="relative -mx-[50vw] left-1/2 right-1/2 flex w-screen min-h-[480px] items-center justify-center overflow-hidden py-20 sm:py-28"
       style={{
-        minHeight: "100vh",
         background:
           "radial-gradient(ellipse 80% 60% at 50% 45%, #0f2e1c 0%, #091a0f 50%, #050e08 100%)",
       }}
@@ -136,20 +135,6 @@ export default function HeroSection() {
         </p>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
-        aria-hidden="true"
-        style={{
-          paddingBottom: "env(safe-area-inset-bottom, 0px)",
-          animation: "hero-scroll-hint 3s ease-in-out infinite",
-        }}
-      >
-        <span className="text-[0.6rem] uppercase tracking-[0.25em] text-white/20">
-          Scroll
-        </span>
-        <div className="h-8 w-px bg-gradient-to-b from-white/20 to-transparent" />
-      </div>
     </section>
   )
 }
