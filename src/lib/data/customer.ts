@@ -247,6 +247,73 @@ export async function login(_currentState: unknown, formData: FormData) {
   }
 }
 
+export async function requestPasswordReset(
+  _currentState: { success: boolean; error: string | null },
+  formData: FormData
+): Promise<{ success: boolean; error: string | null }> {
+  const email = formData.get("email") as string
+
+  try {
+    // Medusa v2 auth reset: POST /auth/customer/emailpass/reset-password
+    await sdk.auth.resetPassword("customer", "emailpass", {
+      identifier: email,
+    })
+    return { success: true, error: null }
+  } catch {
+    // Always return success to prevent email enumeration attacks
+    return { success: true, error: null }
+  }
+}
+
+export async function resetPassword(
+  _currentState: { success: boolean; error: string | null },
+  formData: FormData
+): Promise<{ success: boolean; error: string | null }> {
+  const token = formData.get("token") as string
+  const newPassword = formData.get("new_password") as string
+
+  try {
+    // Medusa v2: POST /auth/customer/emailpass/update with token + new password
+    // Token identifies the user — no email needed in body
+    await sdk.auth.updateProvider(
+      "customer",
+      "emailpass",
+      { password: newPassword },
+      token
+    )
+    return { success: true, error: null }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || "Could not reset password. Please try again.",
+    }
+  }
+}
+
+export async function changePassword(
+  _currentState: { success: boolean; error: string | null },
+  formData: FormData
+): Promise<{ success: boolean; error: string | null }> {
+  const newPassword = formData.get("new_password") as string
+
+  try {
+    const headers = {
+      ...(await getAuthHeaders()),
+    }
+    await sdk.client.fetch("/auth/customer/emailpass/update", {
+      method: "POST",
+      body: { password: newPassword },
+      headers,
+    })
+    return { success: true, error: null }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || "Could not update password. Please try again.",
+    }
+  }
+}
+
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
 
