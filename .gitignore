@@ -59,5 +59,8 @@ dump.rdb
 
 .cursor/
 .agents/
+.claude/
+.superpowers/
+CLAUDE.md
 
 /assets/
