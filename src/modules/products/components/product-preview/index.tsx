@@ -285,7 +285,7 @@ export default function ProductPreview({
 
   return (
     <LocalizedClientLink href={`/products/${product.handle}`} className="group block h-full">
-      <article className="surface-panel plp-card">
+      <article className="plp-card">
         <div className="plp-card__media">
           {image ? (
             <Image
@@ -301,21 +301,17 @@ export default function ProductPreview({
             </div>
           )}
 
-          <div className="plp-card__media-vignette" />
-          <div className="plp-card__media-glass" />
-          <div className="plp-card__media-glow" />
-
           <div className="absolute left-3 top-3 flex max-w-[80%] flex-wrap items-center gap-1.5">
             {tagPills.map((tag) => (
               <span
                 key={tag}
-                className="surface-button rounded-full px-2.5 py-1 text-[10px] font-semibold text-foreground/85"
+                className="plp-card__tag rounded-full px-2.5 py-1 text-[10px] font-semibold text-foreground/85"
               >
                 {tag}
               </span>
             ))}
             {badge ? (
-              <span className="surface-button rounded-full px-2.5 py-1 text-[10px] font-semibold text-primary">
+              <span className="plp-card__tag rounded-full px-2.5 py-1 text-[10px] font-semibold text-primary">
                 {badge}
               </span>
             ) : null}
@@ -324,7 +320,7 @@ export default function ProductPreview({
 
         <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-3">
           <div className="space-y-2">
-            <h3 className="plp-card__title line-clamp-2 text-[1.02rem] font-semibold tracking-tight text-foreground">
+            <h3 className="plp-card__title line-clamp-2 text-sm font-semibold tracking-tight text-foreground">
               {product.title}
             </h3>
 

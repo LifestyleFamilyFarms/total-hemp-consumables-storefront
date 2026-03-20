@@ -459,75 +459,49 @@
   .plp-card {
     position: relative;
     display: flex;
-    min-height: 430px;
     height: 100%;
     flex-direction: column;
     overflow: hidden;
-    border-radius: 30px;
-    border: 1px solid hsl(var(--border) / 0.6);
+    border-radius: 16px;
+    border: 1px solid hsl(var(--border) / 0.3);
+    background-color: hsl(var(--card));
     transition: transform 300ms ease, box-shadow 300ms ease;
   }
 
   .plp-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 52px hsl(var(--surface-glass-shadow) / 0.26);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px hsl(var(--background) / 0.5);
   }
 
   .plp-card__media {
     position: relative;
-    margin: 0.5rem 0.5rem 0;
-    aspect-ratio: 4 / 5;
+    margin: 12px 12px 0;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 24px;
-    border: 1px solid hsl(var(--border) / 0.5);
-    isolation: isolate;
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-  }
-
-  .plp-card__image {
-    border-radius: 18px;
-    object-fit: contain;
-    padding: 0.7rem;
-    transition: transform 500ms ease, filter 350ms ease;
-    filter: drop-shadow(0 16px 24px hsl(var(--surface-glass-shadow) / 0.2));
-  }
-
-  .group:hover .plp-card__image {
-    transform: scale(1.04);
-  }
-
-  .plp-card__media-vignette,
-  .plp-card__media-glass,
-  .plp-card__media-glow {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-  }
-
-  .plp-card__media-vignette {
-    background: linear-gradient(
-      180deg,
-      hsl(var(--background) / 0.05) 0%,
-      transparent 36%,
-      hsl(var(--background) / 0.42) 100%
+    border-radius: 12px;
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      hsl(var(--accent) / 0.12),
+      hsl(var(--card)) 70%
     );
   }
 
-  .plp-card__media-glass {
-    border-radius: 24px;
-    box-shadow:
-      inset 0 0 0 1px hsl(var(--surface-border-mid) / 0.45),
-      inset 0 18px 36px hsl(var(--surface-border-bottom-right) / 0.16),
-      inset 0 -14px 28px hsl(var(--surface-border-top-left) / 0.12);
+  .plp-card__image {
+    border-radius: 8px;
+    object-fit: contain;
+    padding: 0.75rem;
+    transition: transform 300ms ease;
   }
 
-  .plp-card__media-glow {
-    inset: auto 1rem 0.75rem;
-    height: 2.8rem;
-    border-radius: 9999px;
-    background: hsl(var(--primary) / 0.12);
-    filter: blur(22px);
+  .group:hover .plp-card__image {
+    transform: scale(1.02);
+  }
+
+  .plp-card__tag {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: hsl(var(--card) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.15);
   }
 
   .plp-card__title {
@@ -536,69 +510,6 @@
 
   .plp-card__price {
     letter-spacing: 0.01em;
-  }
-
-  .plp-card--minimal .plp-card__media {
-    background:
-      radial-gradient(124% 98% at 8% 4%, hsl(var(--surface-glass-edge) / 0.36) 0%, transparent 56%),
-      radial-gradient(136% 112% at 100% 100%, hsl(var(--surface-glass-shadow) / 0.2) 0%, transparent 72%),
-      linear-gradient(to bottom right, hsl(var(--card) / 0.82) 0%, hsl(var(--background) / 0.52) 100%);
-  }
-
-  .plp-card--minimal .plp-card__image {
-    mix-blend-mode: normal;
-    filter: saturate(1.04) contrast(1.02) brightness(1.05)
-      drop-shadow(0 14px 20px hsl(var(--surface-glass-shadow) / 0.16));
-  }
-
-  .plp-card--cinematic .plp-card__media {
-    background:
-      radial-gradient(130% 92% at 8% 4%, hsl(var(--surface-glass-edge) / 0.44) 0%, transparent 58%),
-      radial-gradient(150% 118% at 100% 100%, hsl(var(--surface-glass-shadow) / 0.34) 0%, transparent 70%),
-      linear-gradient(to bottom right, hsl(var(--card) / 0.84) 0%, hsl(var(--surface-glass-bottom) / 0.62) 100%);
-  }
-
-  .plp-card--cinematic .plp-card__image {
-    object-fit: contain;
-    padding: 0.55rem;
-    filter: saturate(1.08) contrast(1.02) brightness(1.06)
-      drop-shadow(0 20px 28px hsl(var(--surface-glass-shadow) / 0.24));
-  }
-
-  .plp-card--cinematic .plp-card__media-vignette {
-    background: linear-gradient(to bottom right,
-      hsl(var(--surface-glass-edge) / 0.2) 0%,
-      transparent 48%,
-      hsl(var(--surface-glass-shadow) / 0.28) 100%);
-  }
-
-  .plp-card--cinematic .plp-card__media-glass {
-    box-shadow:
-      inset 0 0 0 1px hsl(var(--surface-border-mid) / 0.42),
-      inset 12px 12px 24px hsl(var(--surface-glass-edge) / 0.14),
-      inset -14px -14px 26px hsl(var(--surface-glass-shadow) / 0.2);
-  }
-
-  .plp-card--cinematic .plp-card__media-glow {
-    background: hsl(var(--accent) / 0.15);
-    filter: blur(20px);
-  }
-
-  .plp-card--natural .plp-card__media {
-    background:
-      radial-gradient(96% 86% at 0% 0%, hsl(var(--brand-butter) / 0.38) 0%, transparent 62%),
-      radial-gradient(100% 80% at 100% 100%, hsl(var(--brand-teal) / 0.22) 0%, transparent 66%),
-      linear-gradient(154deg, hsl(var(--card) / 0.7) 0%, hsl(var(--background) / 0.6) 100%);
-  }
-
-  .plp-card--natural .plp-card__image {
-    mix-blend-mode: multiply;
-    filter: saturate(1.1) contrast(1.04)
-      drop-shadow(0 16px 24px hsl(var(--surface-glass-shadow) / 0.24));
-  }
-
-  .plp-card--natural .plp-card__media-glow {
-    background: hsl(var(--secondary) / 0.16);
   }
 
   .shell-surface {
@@ -628,6 +539,20 @@
   @media (prefers-reduced-motion: reduce) {
     .app-shell-layer--deep,
     .app-shell-layer--noise {
+      transform: none;
+    }
+
+    .plp-card,
+    .plp-card__image {
+      transition: none;
+    }
+
+    .plp-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .group:hover .plp-card__image {
       transform: none;
     }
   }

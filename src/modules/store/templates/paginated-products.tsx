@@ -83,7 +83,7 @@ export default async function PaginatedProducts({
         </div>
 
         <div
-          className="grid w-full gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           data-testid="products-list"
         >
           {variants.map((record) => (
@@ -148,7 +148,7 @@ export default async function PaginatedProducts({
       </div>
 
       <div
-        className="grid w-full gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         data-testid="products-list"
       >
         {products.map((product) => (
