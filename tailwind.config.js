@@ -74,7 +74,13 @@ module.exports = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+  			forest: 'hsl(var(--brand-forest) / <alpha-value>)',
+  			teal: 'hsl(var(--brand-teal) / <alpha-value>)',
+  			butter: 'hsl(var(--brand-butter) / <alpha-value>)',
+  			gold: 'hsl(var(--brand-gold) / <alpha-value>)',
+  			tangelo: 'hsl(var(--brand-tangelo) / <alpha-value>)',
+  			cocoa: 'hsl(var(--brand-cocoa) / <alpha-value>)'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
