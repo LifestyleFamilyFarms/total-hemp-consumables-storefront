@@ -1,14 +1,9 @@
 import Image from "next/image"
 
 import { HttpTypes } from "@medusajs/types"
-import { cn } from "@lib/utils"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { subtitleForProduct } from "@lib/mappers/product-labels"
 import { convertToLocale } from "@lib/util/money"
-import {
-  DEFAULT_PLP_CARD_STYLE,
-  ResolvedPlpCardStyle,
-} from "@modules/store/lib/card-style"
 
 const BADGES: Record<string, string> = {
   sativa: "Sativa",
@@ -272,13 +267,9 @@ function getVariantDetailSummary(variantPreview: ReturnType<typeof getVariantPre
 
 export default function ProductPreview({
   product,
-  cardStyle = DEFAULT_PLP_CARD_STYLE,
-  styleLabel,
 }: {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
-  cardStyle?: ResolvedPlpCardStyle
-  styleLabel?: string
 }) {
   const badge = getBadge(product)
   const subtitle = subtitleForProduct(product)
@@ -294,7 +285,7 @@ export default function ProductPreview({
 
   return (
     <LocalizedClientLink href={`/products/${product.handle}`} className="group block h-full">
-      <article className={cn("surface-panel plp-card", `plp-card--${cardStyle}`)}>
+      <article className="surface-panel plp-card">
         <div className="plp-card__media">
           {image ? (
             <Image
@@ -329,11 +320,6 @@ export default function ProductPreview({
               </span>
             ) : null}
           </div>
-          {styleLabel ? (
-            <span className="absolute right-3 top-3 rounded-full border border-border/60 bg-card/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/78">
-              {styleLabel}
-            </span>
-          ) : null}
         </div>
 
         <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-3">

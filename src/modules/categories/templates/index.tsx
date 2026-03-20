@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 
 import { getCategoryImages } from "@lib/data/categories"
 import { HttpTypes } from "@medusajs/types"
-import { PlpCardStyle } from "@modules/store/lib/card-style"
 import { SortOptions } from "@modules/store/lib/sort-options"
 import StoreTemplate from "@modules/store/templates"
 
@@ -16,7 +15,6 @@ export default async function CategoryTemplate({
   selectedTypes,
   selectedEffects,
   selectedCompounds,
-  cardStyle,
 }: {
   category: HttpTypes.StoreProductCategory
   sortBy?: SortOptions
@@ -27,7 +25,6 @@ export default async function CategoryTemplate({
   selectedTypes: string[]
   selectedEffects: string[]
   selectedCompounds: string[]
-  cardStyle: PlpCardStyle
 }) {
   if (!category || !countryCode) {
     notFound()
@@ -44,7 +41,6 @@ export default async function CategoryTemplate({
       type={selectedTypes}
       effect={selectedEffects}
       compound={selectedCompounds}
-      cardStyle={cardStyle}
       countryCode={countryCode}
       categoryId={category.id}
       categoryImages={categoryImages}

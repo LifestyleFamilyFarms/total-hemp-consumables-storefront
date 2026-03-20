@@ -19,7 +19,6 @@ type Props = {
     type?: string | string[]
     effect?: string | string[]
     compound?: string | string[]
-    cardStyle?: string | string[]
   }>
 }
 
@@ -100,7 +99,6 @@ export default async function CollectionPage(props: Props) {
       selectedTypes={state.type}
       selectedEffects={state.effect}
       selectedCompounds={state.compound}
-      cardStyle={state.cardStyle}
       countryCode={params.countryCode}
     />
   )

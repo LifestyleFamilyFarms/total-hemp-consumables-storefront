@@ -1,13 +1,8 @@
 import Image from "next/image"
 
 import { PlpVariantRecord } from "@lib/data/products"
-import { cn } from "@lib/utils"
 import { convertToLocale } from "@lib/util/money"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import {
-  DEFAULT_PLP_CARD_STYLE,
-  ResolvedPlpCardStyle,
-} from "@modules/store/lib/card-style"
 
 const LABEL_IMAGE_PATTERN = /(nute|nutrition|label|ingredient|supplement|facts)/i
 const HERO_IMAGE_PATTERN = /(front|hero|main|primary|pack|bottle|product|angle)/i
@@ -173,12 +168,8 @@ const getStrengthSummary = (record: PlpVariantRecord) => {
 
 export default function VariantPreview({
   record,
-  cardStyle = DEFAULT_PLP_CARD_STYLE,
-  styleLabel,
 }: {
   record: PlpVariantRecord
-  cardStyle?: ResolvedPlpCardStyle
-  styleLabel?: string
 }) {
   const { product, variant, priceAmount, currencyCode } = record
   const image = resolveVariantPreviewImage(record)
@@ -199,7 +190,7 @@ export default function VariantPreview({
       href={`/products/${product.handle}?variant=${variant.id}`}
       className="group block h-full"
     >
-      <article className={cn("surface-panel plp-card", `plp-card--${cardStyle}`)}>
+      <article className="surface-panel plp-card">
         <div className="plp-card__media">
           {image ? (
             <Image
@@ -217,11 +208,6 @@ export default function VariantPreview({
           <div className="plp-card__media-vignette" />
           <div className="plp-card__media-glass" />
           <div className="plp-card__media-glow" />
-          {styleLabel ? (
-            <span className="absolute right-3 top-3 rounded-full border border-border/60 bg-card/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/78">
-              {styleLabel}
-            </span>
-          ) : null}
         </div>
 
         <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-3">

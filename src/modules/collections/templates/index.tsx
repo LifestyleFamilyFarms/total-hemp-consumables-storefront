@@ -1,5 +1,4 @@
 import { HttpTypes } from "@medusajs/types"
-import { PlpCardStyle } from "@modules/store/lib/card-style"
 import { SortOptions } from "@modules/store/lib/sort-options"
 import StoreTemplate from "@modules/store/templates"
 
@@ -13,7 +12,6 @@ export default function CollectionTemplate({
   selectedTypes,
   selectedEffects,
   selectedCompounds,
-  cardStyle,
 }: {
   sortBy?: SortOptions
   collection: HttpTypes.StoreCollection
@@ -24,7 +22,6 @@ export default function CollectionTemplate({
   selectedTypes: string[]
   selectedEffects: string[]
   selectedCompounds: string[]
-  cardStyle: PlpCardStyle
 }) {
   return (
     <StoreTemplate
@@ -35,7 +32,6 @@ export default function CollectionTemplate({
       type={selectedTypes}
       effect={selectedEffects}
       compound={selectedCompounds}
-      cardStyle={cardStyle}
       countryCode={countryCode}
       collectionId={collection.id}
       heading={collection.title}

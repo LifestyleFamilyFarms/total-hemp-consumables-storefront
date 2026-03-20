@@ -8,8 +8,6 @@ import {
   CategoryBanner,
   CategoryThumbnailGallery,
 } from "@modules/store/components/category-media"
-import PlpCardStyleSwitcher from "@modules/store/components/plp-card-style-switcher"
-import { DEFAULT_PLP_CARD_STYLE, PlpCardStyle } from "@modules/store/lib/card-style"
 import PlpControls from "@modules/store/components/plp-controls"
 import { SortOptions } from "@modules/store/lib/sort-options"
 
@@ -35,7 +33,6 @@ type StoreTemplateProps = {
   emptyStateDescription?: string
   layout?: "stacked" | "split"
   resultMode?: "products" | "variants"
-  cardStyle?: PlpCardStyle
   categoryImages?: CategoryImageContract | null
   catalogCategoryCards?: CatalogCategoryMediaCard[]
 }
@@ -59,7 +56,6 @@ const StoreTemplate = async ({
   emptyStateDescription,
   layout = "stacked",
   resultMode = "products",
-  cardStyle = DEFAULT_PLP_CARD_STYLE,
   categoryImages,
   catalogCategoryCards,
 }: StoreTemplateProps) => {
@@ -86,7 +82,6 @@ const StoreTemplate = async ({
 
   const results = (
     <div className="space-y-4">
-      <PlpCardStyleSwitcher value={cardStyle} />
       <Suspense fallback={<SkeletonProductGrid />}>
         <PaginatedProducts
           sortBy={sortBy}
@@ -103,7 +98,6 @@ const StoreTemplate = async ({
           emptyStateTitle={emptyStateTitle}
           emptyStateDescription={emptyStateDescription}
           resultMode={resultMode}
-          cardStyle={cardStyle}
         />
       </Suspense>
     </div>

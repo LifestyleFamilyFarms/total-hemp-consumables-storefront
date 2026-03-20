@@ -15,7 +15,6 @@ type Params = {
     type?: string | string[]
     effect?: string | string[]
     compound?: string | string[]
-    cardStyle?: string | string[]
   }>
   params: Promise<{
     countryCode: string
@@ -51,7 +50,6 @@ export default async function StorePage(props: Params) {
       type={state.type}
       effect={state.effect}
       compound={state.compound}
-      cardStyle={state.cardStyle}
       countryCode={params.countryCode}
       layout="split"
       catalogCategoryCards={catalogCategoryCards}
