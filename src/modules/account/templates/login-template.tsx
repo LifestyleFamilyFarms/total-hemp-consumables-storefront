@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { BrandLogo } from "@/components/brand/brand-logo"
 import { useTheme } from "@/components/theme/theme-provider"
@@ -11,10 +11,12 @@ import {
 
 import Register from "@modules/account/components/register"
 import Login from "@modules/account/components/login"
+import ForgotPassword from "@modules/account/components/forgot-password"
 
 export enum LOGIN_VIEW {
   SIGN_IN = "sign-in",
   REGISTER = "register",
+  FORGOT_PASSWORD = "forgot-password",
 }
 
 const resolveLoginView = (viewParam: string | null): LOGIN_VIEW => {
@@ -26,6 +28,10 @@ const resolveLoginView = (viewParam: string | null): LOGIN_VIEW => {
 
   if (normalized === "register" || normalized === "signup" || normalized === "sign-up") {
     return LOGIN_VIEW.REGISTER
+  }
+
+  if (normalized === "forgot-password" || normalized === "reset") {
+    return LOGIN_VIEW.FORGOT_PASSWORD
   }
 
   return LOGIN_VIEW.SIGN_IN
@@ -43,6 +49,20 @@ const LoginTemplate = () => {
   const authLogoVariant = getAuthPanelLogoVariantForTheme(currentTheme)
   const isRegisterView = currentView === LOGIN_VIEW.REGISTER
 
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  // Smooth view transition handler with cleanup for rapid switching
+  const transitionTimer = useRef<number | undefined>(undefined)
+
+  const handleViewChange = useCallback((view: LOGIN_VIEW) => {
+    clearTimeout(transitionTimer.current)
+    setIsTransitioning(true)
+    transitionTimer.current = window.setTimeout(() => {
+      setCurrentView(view)
+      setIsTransitioning(false)
+    }, 150)
+  }, [])
+
   useEffect(() => {
     setCurrentView(requestedView)
   }, [requestedView])
@@ -58,7 +78,7 @@ const LoginTemplate = () => {
             <div className="absolute -left-10 -top-10 h-56 w-56 rounded-full bg-primary/25 blur-3xl" />
             <div className="absolute -bottom-12 -right-10 h-64 w-64 rounded-full bg-secondary/25 blur-3xl" />
           </div>
-          <div className="absolute inset-0 flex items-center justify-center px-4">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-8">
             <div className="relative w-full max-w-[540px]">
               <BrandLogo
                 variant={authLogoVariant}
@@ -69,6 +89,10 @@ const LoginTemplate = () => {
               />
               <div className="auth-logo-overlay pointer-events-none absolute left-1/2 top-1/2 w-[82%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border" />
             </div>
+            {/* Tagline */}
+            <p className="max-w-xs text-center text-sm font-medium leading-relaxed text-foreground/60">
+              Premium hemp &amp; CBD products — lab-tested, legally compliant, delivered to your door.
+            </p>
           </div>
         </div>
         <div className={`relative mx-auto flex w-full flex-col items-center lg:min-h-[560px] lg:max-w-none ${isRegisterView ? "max-w-xl p-3 small:p-5 md:p-6" : "max-w-md p-5 small:p-8 md:p-10"}`}>
@@ -79,14 +103,22 @@ const LoginTemplate = () => {
               size="md"
               format="svg"
               priority
-              className="w-full max-w-[320px] opacity-95"
+              className="w-full max-w-[280px] opacity-95"
             />
           </div>
-          <div className={`surface-universal mx-auto w-full rounded-3xl text-foreground ${isRegisterView ? "p-4 small:p-5 md:p-6" : "p-5 small:p-8"}`}>
-            {currentView === LOGIN_VIEW.SIGN_IN ? (
-              <Login setCurrentView={setCurrentView} />
-            ) : (
-              <Register setCurrentView={setCurrentView} />
+          <div
+            className={`surface-universal mx-auto w-full rounded-3xl text-foreground transition-opacity duration-150 ease-in-out ${
+              isTransitioning ? "opacity-0" : "opacity-100"
+            } ${isRegisterView ? "p-4 small:p-5 md:p-6" : "p-5 small:p-8"}`}
+          >
+            {currentView === LOGIN_VIEW.SIGN_IN && (
+              <Login setCurrentView={handleViewChange} />
+            )}
+            {currentView === LOGIN_VIEW.REGISTER && (
+              <Register setCurrentView={handleViewChange} />
+            )}
+            {currentView === LOGIN_VIEW.FORGOT_PASSWORD && (
+              <ForgotPassword setCurrentView={handleViewChange} />
             )}
           </div>
         </div>
