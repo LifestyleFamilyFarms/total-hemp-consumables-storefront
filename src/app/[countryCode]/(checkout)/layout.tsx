@@ -35,7 +35,7 @@ export default async function CheckoutLayout({
         <Script src={GOOGLE_PLACES_SRC} strategy="afterInteractive" nonce={nonce} />
       ) : null}
 
-      <header className="surface-nav sticky top-0 z-40 border-b border-border/60 px-4 py-3 backdrop-blur-xl supports-[backdrop-filter]:bg-background/75 md:px-6">
+      <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-md border-b border-border/30 px-4 py-3 transition-colors duration-200 md:px-6">
         <div className="mx-auto flex w-full max-w-8xl items-center justify-between gap-3">
           <Button asChild variant="ghost" size="sm" className="surface-button">
             <Link href={`/${cc}`}>Back to shopping</Link>

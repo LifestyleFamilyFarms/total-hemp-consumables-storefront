@@ -77,7 +77,7 @@ export default function Topbar({
     .toUpperCase()
 
   return (
-    <header className="surface-nav sticky top-0 z-40 w-full border-b border-border/60 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 w-full h-16 bg-background/85 backdrop-blur-md border-b border-border/30 transition-colors duration-200">
       <div className="mx-auto w-full max-w-8xl px-4 sm:px-6">
         <div className="relative flex h-16 items-center gap-2">
           <div className="flex items-center gap-2 lg:hidden [@media(min-width:1024px)_and_(max-height:800px)]:flex">
