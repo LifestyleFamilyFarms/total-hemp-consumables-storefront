@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/sonner"
 import { addToCart } from "@lib/data/cart"
+import { CHECKOUT_SHIPPING_MODE } from "@lib/constants/shipping"
 import { selectOpenCartDrawer, useStorefrontState } from "@lib/state"
 import { cn } from "@lib/utils"
 import { getProductPrice } from "@lib/util/get-product-price"
@@ -808,6 +809,10 @@ export default function ProductDetailClient({
     })
   }
 
+  const brandName = (product as any).collection?.title
+    || readMetadataText(product.metadata?.brand_name)
+    || ""
+
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) {
       toast.error("Select all variant options before adding to cart.")
@@ -835,9 +840,10 @@ export default function ProductDetailClient({
 
   return (
     <div className="space-y-8">
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.85fr)_minmax(0,0.85fr)] xl:items-start xl:gap-6">
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8 lg:items-start">
+        {/* Image column */}
         <div className="space-y-3">
-          <div className="surface-panel relative aspect-[5/6] overflow-hidden rounded-3xl border border-border/60">
+          <div className="relative aspect-square overflow-hidden rounded-xl border border-border/30 bg-[radial-gradient(ellipse_at_50%_100%,hsl(var(--accent)/0.12),hsl(var(--card))_70%)]">
             {activeImage?.url ? (
               <Image
                 src={activeImage.url}
@@ -845,7 +851,7 @@ export default function ProductDetailClient({
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 52vw"
-                className="object-cover object-center"
+                className="object-contain object-center p-4"
               />
             ) : (
               <div className="flex h-full items-center justify-center text-sm text-foreground/60">
@@ -862,10 +868,10 @@ export default function ProductDetailClient({
                   type="button"
                   onClick={() => setActiveImageIndex(index)}
                   className={cn(
-                    "relative aspect-square overflow-hidden rounded-xl border bg-background/60 transition",
+                    "relative aspect-square overflow-hidden rounded-lg border bg-background/60 transition",
                     index === activeImageIndex
                       ? "border-primary"
-                      : "border-border/60 hover:border-primary/50"
+                      : "border-border/30 hover:border-primary/50"
                   )}
                 >
                   {image.url ? (
@@ -883,10 +889,16 @@ export default function ProductDetailClient({
           ) : null}
         </div>
 
-        <div className="surface-panel space-y-5 rounded-3xl border border-border/60 p-5 sm:p-6">
+        {/* Buy box column — sticky */}
+        <div className="space-y-5 lg:sticky lg:top-20 lg:self-start">
           <div className="space-y-2">
+            {brandName ? (
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+                {brandName}
+              </p>
+            ) : null}
             <h1
-              className="text-3xl font-semibold tracking-tight text-foreground"
+              className="text-2xl font-semibold tracking-tight text-foreground"
               data-testid="product-title"
             >
               {product.title}
@@ -898,7 +910,7 @@ export default function ProductDetailClient({
 
           {selectedPrice ? (
             <div className="space-y-1">
-              <p className="text-3xl font-semibold text-foreground" data-testid="product-price">
+              <p className="text-xl font-semibold text-foreground" data-testid="product-price">
                 {!selectedVariant && variants.length > 1 ? "From " : ""}
                 {selectedPrice.calculated_price}
               </p>
@@ -940,9 +952,9 @@ export default function ProductDetailClient({
               return (
                 <div
                   key={option.id}
-                  className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:items-center"
+                  className="space-y-1.5"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground/60 sm:pt-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                     {option.title}
                   </p>
 
@@ -1006,7 +1018,7 @@ export default function ProductDetailClient({
             <Button
               onClick={handleAddToCart}
               disabled={!addToCartEnabled}
-              className="h-11 w-full"
+              className="h-12 w-full bg-accent text-accent-foreground font-bold rounded-lg text-sm uppercase tracking-[0.08em]"
               data-testid="add-product-button"
             >
               {isAdding ? (
@@ -1017,85 +1029,120 @@ export default function ProductDetailClient({
             </Button>
           </div>
 
-          <div className="surface-panel rounded-2xl border border-border/50 px-4 py-3 text-xs uppercase tracking-[0.22em] text-foreground/60">
+          <div className="rounded-lg border border-border/30 bg-card px-4 py-3 text-xs uppercase tracking-[0.22em] text-foreground/60">
             21+ only. Farm Bill compliant hemp products.
           </div>
 
           <WishlistPanel selectedVariant={selectedVariant || activeVariant} />
         </div>
+      </section>
 
-        <div className="surface-panel rounded-2xl border border-border/60 xl:mt-0">
-          <Accordion
-            type="multiple"
-            defaultValue={["details", "faqs"]}
-            className="rounded-2xl"
-          >
-            <AccordionItem value="details">
-              <AccordionTrigger className="px-5 text-left text-base font-semibold">
-                Product Details
-              </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5">
-                {shouldPromptDetailsSelection ? (
-                  <p className="text-sm text-foreground/70">{detailsSelectionPrompt}</p>
-                ) : detailList.length ? (
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground/80">
-                    {detailList.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-sm text-foreground/70">
-                    No additional details for this variant.
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
+      {/* Details accordion — below the fold */}
+      <section className="border-t border-border/30 pt-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* Product Details */}
+          <div className="rounded-lg border border-border/30 overflow-hidden">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="details" className="border-none">
+                <AccordionTrigger className="rounded-lg border-border/30 px-4 py-3 text-left text-base font-semibold">
+                  Product Details
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  {shouldPromptDetailsSelection ? (
+                    <p className="text-sm text-foreground/70">{detailsSelectionPrompt}</p>
+                  ) : detailList.length ? (
+                    <ul className="list-disc space-y-1 pl-5 text-sm text-foreground/80">
+                      {detailList.map((detail) => (
+                        <li key={detail}>{detail}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-foreground/70">
+                      No additional details for this variant.
+                    </p>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
 
-            <AccordionItem value="faqs">
-              <AccordionTrigger className="px-5 text-left text-base font-semibold">
-                FAQs
-              </AccordionTrigger>
-              <AccordionContent className="space-y-3 px-5 pb-5">
-                {faqs.length ? (
-                  <Accordion type="single" collapsible className="surface-panel rounded-xl border border-border/50">
-                    {faqs.map((faq, index) => (
-                      <AccordionItem
-                        key={`${faq.question}-${index}`}
-                        value={`faq-${index}`}
-                        className="border-border/40 px-3"
-                      >
-                        <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-3 text-sm text-foreground/75">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                ) : (
-                  <p className="text-sm text-foreground/70">
-                    FAQ data is not available for this product.
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
+          {/* FAQs */}
+          <div className="rounded-lg border border-border/30 overflow-hidden">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="faqs" className="border-none">
+                <AccordionTrigger className="rounded-lg border-border/30 px-4 py-3 text-left text-base font-semibold">
+                  FAQs
+                </AccordionTrigger>
+                <AccordionContent className="space-y-3 px-4 pb-4">
+                  {faqs.length ? (
+                    <Accordion type="single" collapsible className="rounded-xl border border-border/30">
+                      {faqs.map((faq, index) => (
+                        <AccordionItem
+                          key={`${faq.question}-${index}`}
+                          value={`faq-${index}`}
+                          className="border-border/40 px-3"
+                        >
+                          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline">
+                            {faq.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="pb-3 text-sm text-foreground/75">
+                            {faq.answer}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  ) : (
+                    <p className="text-sm text-foreground/70">
+                      FAQ data is not available for this product.
+                    </p>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
 
-            <AccordionItem value="ingredients">
-              <AccordionTrigger className="px-5 text-left text-base font-semibold">
-                Ingredients
-              </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5 text-sm leading-relaxed text-foreground/80">
-                {ingredientsText ? (
-                  <p className="whitespace-pre-line">{ingredientsText}</p>
-                ) : (
-                  <p className="text-foreground/70">
-                    Ingredient details are not provided for this variant.
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          {/* Ingredients */}
+          <div className="rounded-lg border border-border/30 overflow-hidden">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="ingredients" className="border-none">
+                <AccordionTrigger className="rounded-lg border-border/30 px-4 py-3 text-left text-base font-semibold">
+                  Ingredients
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-sm leading-relaxed text-foreground/80">
+                  {ingredientsText ? (
+                    <p className="whitespace-pre-line">{ingredientsText}</p>
+                  ) : (
+                    <p className="text-foreground/70">
+                      Ingredient details are not provided for this variant.
+                    </p>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          {/* Shipping / Pickup */}
+          <div className="rounded-lg border border-border/30 overflow-hidden">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="shipping" className="border-none">
+                <AccordionTrigger className="px-4 py-3 text-left text-base font-semibold">
+                  {CHECKOUT_SHIPPING_MODE === "full" ? "Shipping" : "Pickup"}
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-sm leading-relaxed text-foreground/80">
+                  {CHECKOUT_SHIPPING_MODE === "full" ? (
+                    <p>
+                      Orders are processed within 1–2 business days. Shipping times vary by location.
+                      All products are shipped in discreet, compliant packaging.
+                    </p>
+                  ) : (
+                    <p>
+                      Local pickup available. Order online and collect in store during business hours.
+                    </p>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </div>
       </section>
     </div>
