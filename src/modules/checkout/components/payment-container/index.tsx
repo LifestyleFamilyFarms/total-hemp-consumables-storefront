@@ -98,18 +98,28 @@ export const AuthorizeNetCardContainer = ({
             </p>
             <Card
               options={{
-                style: {
-                  base: {
-                    fontSize: "16px",
-                    color: "#424770",
-                    "::placeholder": {
-                      color: "#aab7c4",
+                style: (() => {
+                  const cs =
+                    typeof window !== "undefined"
+                      ? getComputedStyle(document.documentElement)
+                      : null
+                  const resolve = (v: string, fb: string) => {
+                    const raw = cs?.getPropertyValue(v)?.trim()
+                    return raw ? `hsl(${raw})` : fb
+                  }
+                  return {
+                    base: {
+                      fontSize: "16px",
+                      color: resolve("--foreground", "#424770"),
+                      "::placeholder": {
+                        color: resolve("--muted-foreground", "#aab7c4"),
+                      },
                     },
-                  },
-                  invalid: {
-                    color: "#9e2146",
-                  },
-                },
+                    invalid: {
+                      color: resolve("--destructive", "#9e2146"),
+                    },
+                  }
+                })(),
               }}
           onChange={(e: any) => {
             setCardComplete(e.complete)
