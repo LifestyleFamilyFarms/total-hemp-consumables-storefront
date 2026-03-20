@@ -4,6 +4,7 @@ import Eye from "@modules/common/icons/eye"
 import EyeOff from "@modules/common/icons/eye-off"
 import { Input as BaseInput } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@lib/utils"
 
 type InputProps = Omit<
   Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
@@ -12,12 +13,13 @@ type InputProps = Omit<
   label: string
   errors?: Record<string, unknown>
   touched?: Record<string, unknown>
+  error?: string
   name: string
   topLabel?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched, required, topLabel, ...props }, ref) => {
+  ({ type, name, label, touched, required, topLabel, error, ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
@@ -58,7 +60,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             autoComplete={props.autoComplete}
             {...props}
             ref={inputRef}
-            className="h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus-visible:ring-2 focus-visible:ring-ring"
+            className={cn(
+              "h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus-visible:ring-2 focus-visible:ring-ring",
+              error && "border-destructive focus-visible:ring-destructive"
+            )}
           />
           {type === "password" && (
             <button
@@ -70,6 +75,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
+        {error && (
+          <p className="mt-1 text-xs font-medium text-destructive" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     )
   }
