@@ -107,7 +107,7 @@ const LoginTemplate = () => {
             />
           </div>
           <div
-            className={`surface-universal mx-auto w-full rounded-3xl text-foreground transition-opacity duration-150 ease-in-out ${
+            className={`surface-universal mx-auto w-full rounded-xl text-foreground transition-opacity duration-150 ease-in-out ${
               isTransitioning ? "opacity-0" : "opacity-100"
             } ${isRegisterView ? "p-4 small:p-5 md:p-6" : "p-5 small:p-8"}`}
           >

@@ -17,7 +17,7 @@ export function CheckoutSteps() {
 
   return (
     <div className="mb-6 flex flex-col gap-3">
-      <div className="surface-panel flex flex-wrap items-center gap-3 rounded-2xl border border-border/60 bg-card/80 px-4 py-3 shadow-[0_12px_28px_hsl(var(--surface-glass-shadow)/0.15)]">
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border/30 bg-card px-4 py-3">
         {steps.map((step, idx) => {
           const Icon = step.icon ?? Circle
           const isActive = step.id === current

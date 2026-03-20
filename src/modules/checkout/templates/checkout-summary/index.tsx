@@ -21,7 +21,7 @@ const CheckoutSummary = ({ cart }: CheckoutSummaryProps) => {
 
   return (
     <aside className="lg:sticky lg:top-8">
-      <div className="surface-panel rounded-2xl border border-border/60 bg-card/85 shadow-[0_16px_36px_hsl(var(--surface-glass-shadow)/0.2)]">
+      <div className="rounded-2xl border border-border/30 bg-card">
         <div className="flex items-center justify-between px-5 pt-5">
           <h2 className="text-2xl font-semibold tracking-tight">
             Order summary
@@ -37,12 +37,12 @@ const CheckoutSummary = ({ cart }: CheckoutSummaryProps) => {
           <CartTotals totals={cart} />
         </div>
 
-        <div className="border-t border-border/70 px-5 pb-5 pt-2">
+        <div className="border-t border-border/30 px-5 pb-5 pt-2">
           <DiscountCode cart={cart} />
           <LoyaltyPoints cart={cart} />
         </div>
 
-        <div className="border-t border-border/70 px-5 pb-5">
+        <div className="border-t border-border/30 px-5 pb-5">
           <ItemsPreviewTemplate cart={cart} />
         </div>
       </div>

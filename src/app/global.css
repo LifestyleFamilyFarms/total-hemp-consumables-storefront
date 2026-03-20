@@ -216,12 +216,6 @@
     font-family: "clarendon-urw", "Clarendon", "Book Antiqua", "Palatino", serif;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
   .text-cast-shadow {
     text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / var(--type-shadow-opacity));
   }
@@ -260,9 +254,9 @@
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 1px solid #212121;
-    -webkit-text-fill-color: #212121;
-    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    border: 1px solid hsl(var(--foreground));
+    -webkit-text-fill-color: hsl(var(--foreground));
+    -webkit-box-shadow: 0 0 0px 1000px hsl(var(--background)) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 

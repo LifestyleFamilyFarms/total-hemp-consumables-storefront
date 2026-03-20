@@ -104,7 +104,7 @@ function FacetGroup({
               className={
                 active
                   ? "inline-flex min-h-9 items-center gap-1 rounded-full border border-primary bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground"
-                  : "inline-flex min-h-9 items-center gap-1 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-semibold text-foreground hover:border-primary/50"
+                  : "inline-flex min-h-9 items-center gap-1 rounded-full border border-border/30 bg-background/80 px-3 py-1 text-xs font-semibold text-foreground hover:border-primary/50"
               }
             >
               <span>{option.label}</span>
@@ -187,7 +187,7 @@ function ActiveFilterChips({
             key={`type-${value}`}
             type="button"
             onClick={() => onRemoveType(value)}
-            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
+            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/30 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
           >
             Type: {typeMap.get(value) ?? value}
             <X className="h-3.5 w-3.5" />
@@ -198,7 +198,7 @@ function ActiveFilterChips({
             key={`effect-${value}`}
             type="button"
             onClick={() => onRemoveEffect(value)}
-            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
+            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/30 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
           >
             Effect: {effectMap.get(value) ?? value}
             <X className="h-3.5 w-3.5" />
@@ -209,21 +209,21 @@ function ActiveFilterChips({
             key={`compound-${value}`}
             type="button"
             onClick={() => onRemoveCompound(value)}
-            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
+            className="inline-flex min-h-8 items-center gap-1 rounded-full border border-border/30 bg-background/80 px-2.5 text-xs font-semibold text-foreground hover:border-primary/50"
           >
             Compound: {compoundMap.get(value) ?? value}
             <X className="h-3.5 w-3.5" />
           </button>
         ))}
         {q ? (
-          <span className="inline-flex min-h-8 items-center rounded-full border border-dashed border-border/60 bg-background/80 px-2.5 text-xs font-semibold text-foreground/70">
+          <span className="inline-flex min-h-8 items-center rounded-full border border-dashed border-border/30 bg-background/80 px-2.5 text-xs font-semibold text-foreground/70">
             Keyword: {q}
           </span>
         ) : null}
         {category.map((value) => (
           <span
             key={`category-${value}`}
-            className="inline-flex min-h-8 items-center rounded-full border border-dashed border-border/60 bg-background/80 px-2.5 text-xs font-semibold text-foreground/70"
+            className="inline-flex min-h-8 items-center rounded-full border border-dashed border-border/30 bg-background/80 px-2.5 text-xs font-semibold text-foreground/70"
           >
             Category: {value}
           </span>
@@ -337,7 +337,7 @@ export default function PlpControls({
   }
 
   return (
-    <section className="surface-panel space-y-4 rounded-3xl border border-border/60 p-4">
+    <section className="bg-card border border-border/30 space-y-4 rounded-xl p-4">
       <div className="hidden space-y-4 lg:block">
         <div className="space-y-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/60">
@@ -537,7 +537,7 @@ export default function PlpControls({
             />
           </div>
 
-          <div className="mt-8 flex gap-2 border-t border-border/60 pt-4">
+          <div className="mt-8 flex gap-2 border-t border-border/30 pt-4">
             <Button type="button" variant="outline" className="flex-1" onClick={() => setMobileOpen(false)}>
               Cancel
             </Button>

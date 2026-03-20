@@ -229,7 +229,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
 
   return (
     <section
-      className="surface-panel space-y-6 rounded-3xl border border-border/60 p-5 sm:p-6"
+      className="bg-card border border-border/30 space-y-6 rounded-xl p-5 sm:p-6"
       data-testid="product-reviews-section"
     >
       <header className="flex flex-wrap items-end justify-between gap-3">
@@ -241,7 +241,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
             Customer Reviews
           </h2>
         </div>
-        <div className="rounded-xl border border-border/60 bg-background/70 px-4 py-2 text-right">
+        <div className="rounded-xl border border-border/30 bg-background/70 px-4 py-2 text-right">
           <p className="text-xl font-semibold text-foreground">
             {count > 0 ? averageRating.toFixed(1) : "—"}
           </p>
@@ -254,7 +254,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
       <div className="space-y-3">
         {isLoadingReviews ? (
           <div
-            className="rounded-2xl border border-border/60 bg-card/70 p-5 text-sm text-foreground/75"
+            className="rounded-2xl border border-border/30 bg-card/70 p-5 text-sm text-foreground/75"
             data-testid="reviews-loading-state"
           >
             <span className="inline-flex items-center gap-2">
@@ -284,7 +284,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
 
         {!isLoadingReviews && !reviewsError && reviews.length === 0 ? (
           <div
-            className="rounded-2xl border border-border/60 bg-card/70 p-5 text-sm text-foreground/75"
+            className="rounded-2xl border border-border/30 bg-card/70 p-5 text-sm text-foreground/75"
             data-testid="reviews-empty-state"
           >
             No reviews yet. Be the first to share feedback.
@@ -302,7 +302,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               return (
                 <li
                   key={review.id}
-                  className="space-y-3 rounded-2xl border border-border/60 bg-card/70 p-4"
+                  className="space-y-3 rounded-2xl border border-border/30 bg-card/70 p-4"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="space-y-1">
@@ -350,7 +350,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-border/60 bg-background/70 p-4 sm:p-5">
+      <div className="rounded-2xl border border-border/30 bg-background/70 p-4 sm:p-5">
         <h3 className="text-lg font-semibold tracking-tight text-foreground">
           Write a review
         </h3>
@@ -364,7 +364,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
 
         {!isCustomerLoading && !isAuthenticated ? (
           <div
-            className="mt-3 space-y-3 rounded-xl border border-border/60 bg-card/70 p-4"
+            className="mt-3 space-y-3 rounded-xl border border-border/30 bg-card/70 p-4"
             data-testid="reviews-auth-required"
           >
             <p className="text-sm text-foreground/80">

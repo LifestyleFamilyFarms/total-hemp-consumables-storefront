@@ -21,12 +21,12 @@ const SectionCard = ({
   return (
     <section
       className={cn(
-        "surface-panel flex flex-col gap-y-0 overflow-hidden rounded-3xl border border-border/60 bg-card/80 shadow-[0_18px_40px_hsl(var(--surface-glass-shadow)/0.18)] backdrop-blur-sm",
+        "flex flex-col gap-y-0 overflow-hidden rounded-xl border border-border/30 bg-card",
         className
       )}
     >
       {(title || description || rightAction) && (
-        <div className="flex items-start justify-between gap-3 border-b border-border/70 bg-card/35 px-5 py-4 sm:px-7">
+        <div className="flex items-start justify-between gap-3 border-b border-border/30 bg-card/35 px-5 py-4 sm:px-7">
           <div className="flex flex-col">
             {title && (
               <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">

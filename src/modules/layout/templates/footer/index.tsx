@@ -12,13 +12,13 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="w-full border-t border-border/60 bg-background/70">
+    <footer className="w-full border-t border-border/30 bg-background/70">
       <div className="content-container flex w-full flex-col gap-10 py-16">
-        <div className="grid grid-cols-1 gap-10 rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_28px_60px_rgba(6,10,22,0.32)] backdrop-blur sm:grid-cols-[1.1fr_auto]">
+        <div className="grid grid-cols-1 gap-10 rounded-xl border border-border/30 bg-card/70 p-8 shadow-[0_28px_60px_rgba(6,10,22,0.32)] backdrop-blur sm:grid-cols-[1.1fr_auto]">
           <div className="flex flex-col gap-4">
             <LocalizedClientLink
               href="/"
-              className="inline-flex w-fit items-center gap-3 rounded-full border border-border/70 bg-card/80 px-5 py-2 text-lg font-semibold uppercase tracking-[0.25em] text-foreground shadow-[0_16px_40px_rgba(6,10,22,0.28)] transition hover:-translate-y-[1px]"
+              className="inline-flex w-fit items-center gap-3 rounded-full border border-border/30 bg-card/80 px-5 py-2 text-lg font-semibold uppercase tracking-[0.25em] text-foreground shadow-[0_16px_40px_rgba(6,10,22,0.28)] transition hover:-translate-y-[1px]"
             >
               Total Hemp
             </LocalizedClientLink>

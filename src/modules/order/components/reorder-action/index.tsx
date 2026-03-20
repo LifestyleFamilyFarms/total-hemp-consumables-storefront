@@ -84,7 +84,7 @@ export default function ReorderAction({ orderId }: ReorderActionProps) {
   }
 
   return (
-    <section className="surface-panel space-y-4 rounded-2xl border border-border/60 p-4 sm:p-5">
+    <section className="bg-card border border-border/30 space-y-4 rounded-2xl p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">
@@ -121,7 +121,7 @@ export default function ReorderAction({ orderId }: ReorderActionProps) {
 
       {showResultPanel ? (
         <div
-          className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-4"
+          className="space-y-3 rounded-xl border border-border/30 bg-card/70 p-4"
           data-testid="reorder-result-state"
         >
           <p className="text-sm text-foreground/80" data-testid="reorder-result-summary">
@@ -132,7 +132,7 @@ export default function ReorderAction({ orderId }: ReorderActionProps) {
 
           <div className="grid gap-3 sm:grid-cols-3">
             <div
-              className="space-y-2 rounded-lg border border-border/50 bg-background/80 p-3"
+              className="space-y-2 rounded-lg border border-border/30 bg-background/80 p-3"
               data-testid="reorder-added-items-section"
             >
               <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70">
@@ -155,7 +155,7 @@ export default function ReorderAction({ orderId }: ReorderActionProps) {
             </div>
 
             <div
-              className="space-y-2 rounded-lg border border-border/50 bg-background/80 p-3"
+              className="space-y-2 rounded-lg border border-border/30 bg-background/80 p-3"
               data-testid="reorder-unavailable-items-section"
             >
               <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70">
@@ -180,7 +180,7 @@ export default function ReorderAction({ orderId }: ReorderActionProps) {
             </div>
 
             <div
-              className="space-y-2 rounded-lg border border-border/50 bg-background/80 p-3"
+              className="space-y-2 rounded-lg border border-border/30 bg-background/80 p-3"
               data-testid="reorder-suggested-variants-section"
             >
               <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70">

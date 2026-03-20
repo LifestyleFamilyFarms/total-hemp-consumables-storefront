@@ -20,7 +20,7 @@ export const CategoryBanner = ({
   }
 
   return (
-    <div className="relative mb-6 overflow-hidden rounded-3xl border border-border/60 bg-card/60 shadow-[0_20px_48px_rgba(5,8,20,0.22)] sm:mb-8">
+    <div className="relative mb-6 overflow-hidden rounded-xl border border-border/30 bg-card/60 shadow-[0_20px_48px_rgba(5,8,20,0.22)] sm:mb-8">
       <div className="relative aspect-[16/6] min-h-[180px] w-full sm:min-h-[220px]">
         <Image
           src={banner}
@@ -53,13 +53,13 @@ export const CategoryThumbnailGallery = ({
   }
 
   return (
-    <section className="surface-panel space-y-4 rounded-3xl border border-border/60 p-4 sm:p-5">
+    <section className="bg-card border border-border/30 space-y-4 rounded-xl p-4 sm:p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground/60">
         Category media
       </p>
 
       {images.thumbnail ? (
-        <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/70">
+        <div className="overflow-hidden rounded-2xl border border-border/30 bg-card/70">
           <div className="relative aspect-square">
             <Image
               src={images.thumbnail}
@@ -77,7 +77,7 @@ export const CategoryThumbnailGallery = ({
           {gallery.slice(0, 4).map((image, index) => (
             <div
               key={`${image}-${index}`}
-              className="relative aspect-square overflow-hidden rounded-xl border border-border/60 bg-card/70"
+              className="relative aspect-square overflow-hidden rounded-xl border border-border/30 bg-card/70"
             >
               <Image
                 src={image}
@@ -106,7 +106,7 @@ export const CatalogCategoryThumbnails = ({
   }
 
   return (
-    <section className="surface-panel mb-6 space-y-4 rounded-3xl border border-border/60 p-4 sm:mb-8 sm:p-5">
+    <section className="bg-card border border-border/30 mb-6 space-y-4 rounded-xl p-4 sm:mb-8 sm:p-5">
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground/60">
           Explore categories
@@ -124,7 +124,7 @@ export const CatalogCategoryThumbnails = ({
           <Link
             key={category.id}
             href={`/${countryCode}/categories/${category.handle}`}
-            className="group overflow-hidden rounded-2xl border border-border/60 bg-card/70 transition-colors hover:border-foreground/35"
+            className="group overflow-hidden rounded-2xl border border-border/30 bg-card/70 transition-colors hover:border-foreground/35"
           >
             <div className="relative aspect-[4/3] w-full">
               {category.thumbnail ? (

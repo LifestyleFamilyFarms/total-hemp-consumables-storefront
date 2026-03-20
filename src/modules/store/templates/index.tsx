@@ -110,7 +110,7 @@ const StoreTemplate = async ({
           <CategoryBanner categoryName={heading} banner={categoryImages?.banner} />
           <div className="grid gap-6 lg:grid-cols-[minmax(0,0.33fr)_minmax(0,0.67fr)] lg:items-start">
             <aside className="space-y-4 lg:sticky lg:top-24">
-              <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6">
+              <header className="bg-card border border-border/30 space-y-3 rounded-xl p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/60">
                   {eyebrow}
                 </p>
@@ -142,7 +142,7 @@ const StoreTemplate = async ({
     <div className="pb-16" data-testid="category-container">
       <section className="page-top-offset mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 pb-8 sm:px-10 sm:pb-10">
         <CategoryBanner categoryName={heading} banner={categoryImages?.banner} />
-        <header className="surface-panel space-y-3 rounded-3xl border border-border/60 p-6 sm:p-8">
+        <header className="bg-card border border-border/30 space-y-3 rounded-xl p-6 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/60">
             {eyebrow}
           </p>
