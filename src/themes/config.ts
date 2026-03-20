@@ -4,27 +4,22 @@ export type ThemeDefinition = {
   description?: string
 }
 
-export const DEFAULT_THEME_ID = "sativa"
+export const DEFAULT_THEME_ID = "indica"
 
 export const THEMES: ThemeDefinition[] = [
   {
-    id: "sativa",
-    label: "Sativa",
-    description: "Bright citrus-forward tones for an uplifting daytime vibe.",
-  },
-  {
     id: "indica",
     label: "Indica",
-    description: "Deep resin-rich tones inspired by heavier nighttime strains.",
+    description: "Deep resin-rich tones — the brand default.",
   },
   {
-    id: "light",
-    label: "Light",
-    description: "Clean daylight profile for bright spaces and long product browsing sessions.",
+    id: "daylight",
+    label: "Daylight",
+    description: "Clean off-white with forest green primary and gold accent.",
   },
   {
-    id: "dark",
-    label: "Dark",
-    description: "Low-glare profile for late-night sessions with reduced eye strain.",
+    id: "midnight",
+    label: "Midnight",
+    description: "Forest-tinted dark mode with gold accents.",
   },
 ]

@@ -68,6 +68,9 @@
     --surface-glass-bottom: var(--scene-grad-base-end);
     --surface-glass-glow: var(--scene-grad-tr);
     --surface-glass-edge: 59 66% 88%;
+    --surface-light-angle: 156deg;
+    --surface-light-source-x: 12%;
+    --surface-light-source-y: 6%;
     --surface-glass-shadow: 137 56% 4%;
     --surface-border-top-left: var(--scene-grad-tl);
     --surface-border-top-right: var(--scene-grad-tr);

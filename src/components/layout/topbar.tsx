@@ -46,10 +46,9 @@ const normalizePath = (path: string) => {
 }
 
 const menuBadgeVariantByTheme: Record<BrandThemeId, BrandLogoVariant> = {
-  sativa: "navMonogram",
   indica: "navMonogramDb",
-  light: "monoIcon",
-  dark: "navMonogramBw",
+  daylight: "navMonogram",
+  midnight: "navMonogramBw",
 }
 
 export default function Topbar({

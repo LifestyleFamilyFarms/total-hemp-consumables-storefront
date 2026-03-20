@@ -26,8 +26,22 @@ export function ThemeProvider({
   useEffect(() => {
     if (typeof window === "undefined") return
     const stored = window.localStorage.getItem(STORAGE_KEY)
-    if (stored && THEMES.some((item) => item.id === stored)) {
-      setThemeState(stored)
+    if (!stored) return
+
+    // Migrate old theme names
+    const MIGRATION: Record<string, string> = {
+      sativa: "indica",
+      light: "daylight",
+      dark: "midnight",
+    }
+    const migrated = MIGRATION[stored] ?? stored
+
+    if (migrated !== stored) {
+      window.localStorage.setItem(STORAGE_KEY, migrated)
+    }
+
+    if (THEMES.some((item) => item.id === migrated)) {
+      setThemeState(migrated)
     }
   }, [])
 

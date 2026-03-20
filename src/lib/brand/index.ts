@@ -3,7 +3,7 @@ import brandManifest from "./brand-assets.json"
 export type BrandAsset = (typeof brandManifest.assets)[number]
 export type BrandAssetId = BrandAsset["id"]
 export type BrandAssetSizeLabel = keyof BrandAsset["outputs"]
-export type BrandThemeId = "sativa" | "indica" | "light" | "dark"
+export type BrandThemeId = "indica" | "daylight" | "midnight"
 export type BrandLogoSlot = "hero" | "nav" | "footer" | "compliance"
 
 const brandAssetsById = brandManifest.assets.reduce<Record<BrandAssetId, BrandAsset>>((acc, asset) => {
@@ -199,25 +199,19 @@ export function listBrandVariants() {
 }
 
 const THEME_LOGO_MAP: Record<BrandThemeId, Record<BrandLogoSlot, BrandLogoVariant>> = {
-  sativa: {
-    hero: "heroWordmark",
-    nav: "navMonogram",
-    footer: "footerStack",
-    compliance: "complianceSeal",
-  },
   indica: {
     hero: "indicaNavHorizontal",
     nav: "indicaNavHorizontal",
     footer: "footerStackDb",
     compliance: "complianceDb",
   },
-  light: {
-    hero: "heroWordmarkGrey",
-    nav: "monoIcon",
-    footer: "footerStackGrey",
-    compliance: "complianceGrey",
+  daylight: {
+    hero: "heroWordmark",
+    nav: "navMonogram",
+    footer: "footerStack",
+    compliance: "complianceSeal",
   },
-  dark: {
+  midnight: {
     hero: "heroWordmarkBW",
     nav: "navMonogramBw",
     footer: "complianceSeal",
@@ -226,13 +220,6 @@ const THEME_LOGO_MAP: Record<BrandThemeId, Record<BrandLogoSlot, BrandLogoVarian
 }
 
 export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
-  sativa: [
-    "COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
-    "FULL_COLOR_ICON_PRINT.svg",
-    "FULL_COLOR_ICONnoTM_PRINT.svg",
-    "FULL_COLOR_LOGO_PRINT.svg",
-    "FULL_COLOR_LOGOwTAGLINE_PRINT.svg",
-  ],
   indica: [
     "DB_COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
     "DB_FULL_COLOR_ICON_PRINT.svg",
@@ -240,7 +227,12 @@ export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
     "DB_FULL_COLOR_LOGO_PRINT.svg",
     "DB_FULL_COLOR_LOGOWTAGLINE_PRINT.svg",
   ],
-  light: [
+  daylight: [
+    "COLORhorizontal_FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_ICON_PRINT.svg",
+    "FULL_COLOR_ICONnoTM_PRINT.svg",
+    "FULL_COLOR_LOGO_PRINT.svg",
+    "FULL_COLOR_LOGOwTAGLINE_PRINT.svg",
     "BW_ICON_PRINT.svg",
     "BW_ICONnoTM_PRINT.svg",
     "GREY_horizontal_FULL_COLOR_LOGO_PRINT.svg",
@@ -249,7 +241,7 @@ export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
     "GREY_LOGO_PRINT.svg",
     "GREY_LOGOwTAGLINE_PRINT.svg",
   ],
-  dark: [
+  midnight: [
     "BW_horizontal_FULL_COLOR_LOGO_PRINT.svg",
     "BW_LOGO_PRINT.svg",
     "BW_LOGOwTAGLINE_PRINT.svg",
@@ -261,10 +253,9 @@ export const THEME_LOGO_FAMILY_SVGS: Record<BrandThemeId, string[]> = {
 }
 
 const AUTH_PANEL_LOGO_MAP: Record<BrandThemeId, BrandLogoVariant> = {
-  sativa: "roundFullColorLogo",
   indica: "darkBlockBadge",
-  light: "roundGreyLogo",
-  dark: "roundBwLogo",
+  daylight: "roundFullColorLogo",
+  midnight: "roundBwLogo",
 }
 
 const manifestSvgFileNames = new Set(
