@@ -18,7 +18,7 @@ Kill Sativa theme. Keep Indica as default. Create Daylight (branded light) and M
 - Primary: butter / Primary-foreground: forest
 - Secondary: cocoa / Secondary-foreground: butter
 - **Accent: `43 89% 60%` (gold)** — changed from tangelo (`20 79% 52%`) so all themes share gold as the CTA/accent color
-- Accent-foreground: `137 55% 15%` (dark forest)
+- Accent-foreground: `137 55% 15%` (dark forest) — WCAG contrast ratio ~7.2:1 against gold, well above AA threshold
 - Muted-foreground: gold
 - Ring: gold
 
@@ -53,21 +53,21 @@ Beyond the core palette above, Daylight needs these additional tokens (derived f
 
 **Popover:** `--popover: 60 15% 99%` / `--popover-foreground: 137 55% 22%`
 
-**Scene Gradients:** Use muted green/gold tones instead of the current pure gray.
-- `--scene-grad-tl: hsl(137 15% 94% / 0.6)`
-- `--scene-grad-tr: hsl(43 30% 92% / 0.4)`
-- `--scene-grad-bl: hsl(137 20% 90% / 0.5)`
-- `--scene-grad-br: hsl(43 40% 88% / 0.3)`
-- `--scene-grad-base-start: hsl(60 20% 98%)`
-- `--scene-grad-base-end: hsl(137 15% 96%)`
+**Scene Gradients:** Use muted green/gold tones instead of the current pure gray. Values below are raw HSL channels — the `hsl()` wrapping and alpha are applied at the consumption site (e.g., `hsl(var(--scene-grad-tl) / 0.6)`), matching the existing codebase convention.
+- `--scene-grad-tl: 137 15% 94%`
+- `--scene-grad-tr: 43 30% 92%`
+- `--scene-grad-bl: 137 20% 90%`
+- `--scene-grad-br: 43 40% 88%`
+- `--scene-grad-base-start: 60 20% 98%`
+- `--scene-grad-base-end: 137 15% 96%`
 
-**Surface Glass:** Light-mode glass treatment — subtle, barely visible.
-- `--surface-glass-top: hsl(0 0% 100% / 0.7)`
-- `--surface-glass-bottom: hsl(137 10% 96% / 0.3)`
-- `--surface-glass-glow: hsl(43 89% 60% / 0.05)`
-- `--surface-glass-edge: hsl(0 0% 100% / 0.4)`
-- `--surface-glass-shadow: hsl(137 30% 20% / 0.08)`
-- `--surface-border-*: hsl(137 20% 82% / 0.3)` (all four corners + mid)
+**Surface Glass:** Light-mode glass treatment — subtle, barely visible. Raw HSL channels (same convention as scene gradients).
+- `--surface-glass-top: 0 0% 100%`
+- `--surface-glass-bottom: 137 10% 96%`
+- `--surface-glass-glow: 43 89% 60%`
+- `--surface-glass-edge: 0 0% 100%`
+- `--surface-glass-shadow: 137 30% 20%`
+- `--surface-border-*: 137 20% 82%` (all four corners + mid)
 
 **Surface Lighting:**
 - `--surface-light-angle: 156deg`
@@ -80,11 +80,11 @@ Beyond the core palette above, Daylight needs these additional tokens (derived f
 - `--type-shadow-x: 0px`
 - `--type-shadow-y: 1px`
 
-**App Background:**
+**App Background:** Daylight intentionally uses a simplified single-color overlay instead of the multi-gradient overlay used by Indica. No background image or pattern — the clean off-white foundation carries the theme.
 - `--app-bg-image: none`
 - `--app-bg-pattern-opacity: 0`
 - `--app-bg-filter: none`
-- `--app-bg-overlay: hsl(137 15% 94% / 0.3)`
+- `--app-bg-overlay: hsl(137 15% 94% / 0.3)` (single flat tint, not the 5-layer gradient used by Indica)
 - `--app-bg-overlay-opacity: 0.3`
 
 ### Midnight (Replaces Dark)
@@ -95,7 +95,7 @@ Near-black with forest green tints in the grays, gold accents. Total Hemp at nig
 - Card: `137 18% 12%` (forest-tinted dark)
 - Primary: `59 30% 92%` / Primary-foreground: `137 20% 8%`
 - Secondary: `137 15% 18%` / Secondary-foreground: `59 30% 92%`
-- Accent: `43 89% 60%` (gold) / Accent-foreground: `137 20% 8%`
+- Accent: `43 89% 60%` (gold) / Accent-foreground: `137 20% 8%` (near-black forest — darker than Indica/Daylight's `137 55% 15%` for stronger contrast on dark backgrounds)
 - Muted: `137 12% 18%` / Muted-foreground: `137 20% 55%`
 - Border: `137 15% 16%`
 - Ring: `43 70% 55%`
@@ -115,21 +115,21 @@ Near-black with forest green tints in the grays, gold accents. Total Hemp at nig
 
 **Popover:** `--popover: 137 18% 12%` / `--popover-foreground: 59 30% 92%`
 
-**Scene Gradients:** Deep forest/gold tones instead of pure gray.
-- `--scene-grad-tl: hsl(137 25% 6% / 0.8)`
-- `--scene-grad-tr: hsl(43 40% 15% / 0.3)`
-- `--scene-grad-bl: hsl(137 30% 5% / 0.7)`
-- `--scene-grad-br: hsl(43 50% 12% / 0.2)`
-- `--scene-grad-base-start: hsl(137 20% 8%)`
-- `--scene-grad-base-end: hsl(137 15% 6%)`
+**Scene Gradients:** Deep forest/gold tones instead of pure gray. Raw HSL channels (same convention as Daylight above).
+- `--scene-grad-tl: 137 25% 6%`
+- `--scene-grad-tr: 43 40% 15%`
+- `--scene-grad-bl: 137 30% 5%`
+- `--scene-grad-br: 43 50% 12%`
+- `--scene-grad-base-start: 137 20% 8%`
+- `--scene-grad-base-end: 137 15% 6%`
 
-**Surface Glass:** Dark-mode glass — more visible contrast.
-- `--surface-glass-top: hsl(137 15% 18% / 0.5)`
-- `--surface-glass-bottom: hsl(137 20% 6% / 0.4)`
-- `--surface-glass-glow: hsl(43 89% 60% / 0.06)`
-- `--surface-glass-edge: hsl(59 30% 92% / 0.08)`
-- `--surface-glass-shadow: hsl(0 0% 0% / 0.4)`
-- `--surface-border-*: hsl(137 15% 16% / 0.4)` (all four corners + mid)
+**Surface Glass:** Dark-mode glass — more visible contrast. Raw HSL channels.
+- `--surface-glass-top: 137 15% 18%`
+- `--surface-glass-bottom: 137 20% 6%`
+- `--surface-glass-glow: 43 89% 60%`
+- `--surface-glass-edge: 59 30% 92%`
+- `--surface-glass-shadow: 0 0% 0%`
+- `--surface-border-*: 137 15% 16%` (all four corners + mid)
 
 **Surface Lighting:**
 - `--surface-light-angle: 156deg`
@@ -142,11 +142,11 @@ Near-black with forest green tints in the grays, gold accents. Total Hemp at nig
 - `--type-shadow-x: 0px`
 - `--type-shadow-y: 2px`
 
-**App Background:**
+**App Background:** Midnight also uses a simplified single-color overlay (same rationale as Daylight above). Deep forest tint instead of multi-gradient.
 - `--app-bg-image: none`
 - `--app-bg-pattern-opacity: 0`
 - `--app-bg-filter: none`
-- `--app-bg-overlay: hsl(137 20% 4% / 0.5)`
+- `--app-bg-overlay: hsl(137 20% 4% / 0.5)` (single flat tint)
 - `--app-bg-overlay-opacity: 0.5`
 
 ### Migration Steps
@@ -154,7 +154,7 @@ Near-black with forest green tints in the grays, gold accents. Total Hemp at nig
 2. Remove `[data-theme="sativa"]` block entirely (brand vars now on `:root`)
 3. Rewrite `[data-theme="light"]` → `[data-theme="daylight"]` with brand-injected palette above
 4. Rewrite `[data-theme="dark"]` → `[data-theme="midnight"]` with brand-injected palette above
-5. `[data-theme="indica"]` stays unchanged
+5. `[data-theme="indica"]` — change `--accent` from tangelo to gold (`43 89% 60%`), add `--accent-foreground: 137 55% 15%`
 6. Update `src/themes/config.ts`: `THEMES` array → `["indica", "daylight", "midnight"]`
 7. Update `src/components/theme/theme-provider.tsx`: default theme → `"indica"`, localStorage migration for users with `"sativa"` → `"indica"`, `"light"` → `"daylight"`, `"dark"` → `"midnight"`
 8. Update theme switcher UI to show named labels: "Indica", "Daylight", "Midnight"
@@ -345,7 +345,8 @@ Kill all `rounded-3xl` (24px) and `rounded-2xl` (16px) usage on panels/cards. Th
 
 ### Typography Scale
 ```
-10px — micro labels only: PLP card strength line, PDP option labels, tag badges (text-[10px])
+10px — micro labels: PLP card strength line, PDP option labels, tag badges (text-[10px])
+11px — micro captions: compliance text, nav meta, footer fine print (text-[11px])
 13px — captions, meta text, brand names, subtitles (text-xs)
 15px — body, card titles (text-sm / text-[15px])
 18px — section headings (text-lg)
@@ -353,7 +354,7 @@ Kill all `rounded-3xl` (24px) and `rounded-2xl` (16px) usage on panels/cards. Th
 24px — page titles, PDP title (text-2xl)
 32px — hero heading only (text-3xl)
 ```
-Kill truly arbitrary sizes like `text-[1.02rem]` and `text-[11px]`. The 10px micro-label size is intentional for dense product metadata — it's part of the design system, not an ad-hoc value.
+Kill truly arbitrary sizes like `text-[1.02rem]`. The 10px and 11px micro sizes are intentional for dense product metadata and compliance text — they're part of the design system, not ad-hoc values.
 
 ### Text Shadows
 - Remove `text-cast-shadow` from all card and product elements
