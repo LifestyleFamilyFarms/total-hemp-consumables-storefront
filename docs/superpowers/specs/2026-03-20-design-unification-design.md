@@ -11,15 +11,18 @@
 ### Decision
 Kill Sativa theme. Keep Indica as default. Create Daylight (branded light) and Midnight (branded dark) by injecting brand DNA into the current generic Light/Dark themes.
 
-### Indica (Default — Unchanged)
+### Indica (Default — One Change)
 - Background: `137 55% 22%` (forest green)
 - Foreground: `59 80% 82%` (butter)
 - Card: `137 40% 18%`
 - Primary: butter / Primary-foreground: forest
 - Secondary: cocoa / Secondary-foreground: butter
-- Accent: tangelo
+- **Accent: `43 89% 60%` (gold)** — changed from tangelo (`20 79% 52%`) so all themes share gold as the CTA/accent color
+- Accent-foreground: `137 55% 15%` (dark forest)
 - Muted-foreground: gold
 - Ring: gold
+
+> **Breaking change from "unchanged":** Indica's `--accent` moves from tangelo to gold. This unifies the CTA button color across all three themes. Tangelo is preserved as `--brand-tangelo` on `:root` for any element that still needs it (e.g., sale badges, warning states).
 
 ### Daylight (Replaces Sativa + Light)
 White/cream foundation with forest green primary and gold accent. Clean but unmistakably Total Hemp.
@@ -35,7 +38,54 @@ White/cream foundation with forest green primary and gold accent. Clean but unmi
 - Ring: `137 55% 22%`
 - Destructive: `0 70% 50%` / Destructive-foreground: `0 0% 100%`
 
-Scene gradient positions should use muted green/gold tones instead of the current pure gray.
+### Daylight Extended Tokens
+Beyond the core palette above, Daylight needs these additional tokens (derived from the Indica token set):
+
+**Sidebar:**
+- `--sidebar-background: 60 15% 97%`
+- `--sidebar-foreground: 137 55% 22%`
+- `--sidebar-primary: 137 55% 22%` / `--sidebar-primary-foreground: 0 0% 100%`
+- `--sidebar-accent: 43 89% 60%` / `--sidebar-accent-foreground: 137 55% 15%`
+- `--sidebar-border: 137 20% 82%`
+- `--sidebar-ring: 137 55% 22%`
+
+**Input:** `--input: 137 20% 82%`
+
+**Popover:** `--popover: 60 15% 99%` / `--popover-foreground: 137 55% 22%`
+
+**Scene Gradients:** Use muted green/gold tones instead of the current pure gray.
+- `--scene-grad-tl: hsl(137 15% 94% / 0.6)`
+- `--scene-grad-tr: hsl(43 30% 92% / 0.4)`
+- `--scene-grad-bl: hsl(137 20% 90% / 0.5)`
+- `--scene-grad-br: hsl(43 40% 88% / 0.3)`
+- `--scene-grad-base-start: hsl(60 20% 98%)`
+- `--scene-grad-base-end: hsl(137 15% 96%)`
+
+**Surface Glass:** Light-mode glass treatment — subtle, barely visible.
+- `--surface-glass-top: hsl(0 0% 100% / 0.7)`
+- `--surface-glass-bottom: hsl(137 10% 96% / 0.3)`
+- `--surface-glass-glow: hsl(43 89% 60% / 0.05)`
+- `--surface-glass-edge: hsl(0 0% 100% / 0.4)`
+- `--surface-glass-shadow: hsl(137 30% 20% / 0.08)`
+- `--surface-border-*: hsl(137 20% 82% / 0.3)` (all four corners + mid)
+
+**Surface Lighting:**
+- `--surface-light-angle: 156deg`
+- `--surface-light-source-x: 12%`
+- `--surface-light-source-y: 6%`
+
+**Typography Shadow:** Minimal on light backgrounds.
+- `--type-shadow-color: 137 30% 20%`
+- `--type-shadow-opacity: 0.06`
+- `--type-shadow-x: 0px`
+- `--type-shadow-y: 1px`
+
+**App Background:**
+- `--app-bg-image: none`
+- `--app-bg-pattern-opacity: 0`
+- `--app-bg-filter: none`
+- `--app-bg-overlay: hsl(137 15% 94% / 0.3)`
+- `--app-bg-overlay-opacity: 0.3`
 
 ### Midnight (Replaces Dark)
 Near-black with forest green tints in the grays, gold accents. Total Hemp at night.
@@ -51,7 +101,53 @@ Near-black with forest green tints in the grays, gold accents. Total Hemp at nig
 - Ring: `43 70% 55%`
 - Destructive: `0 60% 45%` / Destructive-foreground: `59 30% 92%`
 
-Scene gradient positions should use deep forest/gold tones instead of pure gray.
+### Midnight Extended Tokens
+
+**Sidebar:**
+- `--sidebar-background: 137 18% 10%`
+- `--sidebar-foreground: 59 30% 92%`
+- `--sidebar-primary: 59 30% 92%` / `--sidebar-primary-foreground: 137 20% 8%`
+- `--sidebar-accent: 43 89% 60%` / `--sidebar-accent-foreground: 137 20% 8%`
+- `--sidebar-border: 137 15% 16%`
+- `--sidebar-ring: 43 70% 55%`
+
+**Input:** `--input: 137 15% 16%`
+
+**Popover:** `--popover: 137 18% 12%` / `--popover-foreground: 59 30% 92%`
+
+**Scene Gradients:** Deep forest/gold tones instead of pure gray.
+- `--scene-grad-tl: hsl(137 25% 6% / 0.8)`
+- `--scene-grad-tr: hsl(43 40% 15% / 0.3)`
+- `--scene-grad-bl: hsl(137 30% 5% / 0.7)`
+- `--scene-grad-br: hsl(43 50% 12% / 0.2)`
+- `--scene-grad-base-start: hsl(137 20% 8%)`
+- `--scene-grad-base-end: hsl(137 15% 6%)`
+
+**Surface Glass:** Dark-mode glass — more visible contrast.
+- `--surface-glass-top: hsl(137 15% 18% / 0.5)`
+- `--surface-glass-bottom: hsl(137 20% 6% / 0.4)`
+- `--surface-glass-glow: hsl(43 89% 60% / 0.06)`
+- `--surface-glass-edge: hsl(59 30% 92% / 0.08)`
+- `--surface-glass-shadow: hsl(0 0% 0% / 0.4)`
+- `--surface-border-*: hsl(137 15% 16% / 0.4)` (all four corners + mid)
+
+**Surface Lighting:**
+- `--surface-light-angle: 156deg`
+- `--surface-light-source-x: 12%`
+- `--surface-light-source-y: 6%`
+
+**Typography Shadow:** Subtle depth on dark backgrounds.
+- `--type-shadow-color: 0 0% 0%`
+- `--type-shadow-opacity: 0.3`
+- `--type-shadow-x: 0px`
+- `--type-shadow-y: 2px`
+
+**App Background:**
+- `--app-bg-image: none`
+- `--app-bg-pattern-opacity: 0`
+- `--app-bg-filter: none`
+- `--app-bg-overlay: hsl(137 20% 4% / 0.5)`
+- `--app-bg-overlay-opacity: 0.5`
 
 ### Migration Steps
 1. Move brand color variables (`--brand-forest`, `--brand-teal`, etc.) to `:root` so they're available to all themes
@@ -66,10 +162,11 @@ Scene gradient positions should use deep forest/gold tones instead of pure gray.
 10. Regenerate scene gradient positions and surface glass tokens for Daylight and Midnight themes
 
 ### Files Affected
-- `src/app/global.css` — theme definitions
+- `src/app/global.css` — theme definitions, Indica accent change, Daylight/Midnight full token sets
 - `src/themes/config.ts` — theme list
 - `src/components/theme/theme-provider.tsx` — default, localStorage migration
-- `src/components/layout/topbar.tsx` — theme switcher, logo mapping
+- `src/components/layout/topbar.tsx` — theme switcher, logo mapping, `menuBadgeVariantByTheme` keyed by old IDs
+- `src/lib/brand/index.ts` — `BrandThemeId` type union (`"sativa" | "indica" | "light" | "dark"` → `"indica" | "daylight" | "midnight"`), `THEME_LOGO_MAP`, `THEME_LOGO_FAMILY_SVGS`, `getLogoVariantForTheme()`, `getAuthPanelLogoVariantForTheme()`
 - Any component with `data-theme` hardcoded checks
 
 ---
@@ -113,17 +210,26 @@ Kill all 3 rotating card styles (minimal, cinematic, natural). Replace with a si
 - Remove CSS classes: `.plp-card--minimal`, `.plp-card--cinematic`, `.plp-card--natural`
 - Remove CSS classes: `.plp-card__media-vignette`, `.plp-card__media-glass`, `.plp-card__media-glow`
 - Remove from global.css: all card variant styles (~80 lines)
+- Remove `surface-panel` class from product cards — replace with `bg-card border border-border/30`
 - Remove `cardStyle` prop from `ProductPreview` component
+- Remove `styleLabel` prop from `ProductPreview`
 - Remove `ResolvedPlpCardStyle` type and `DEFAULT_PLP_CARD_STYLE` constant
 - Remove `card-style.ts` module (`src/modules/store/lib/card-style.ts`)
-- Remove `styleLabel` prop from `ProductPreview`
+- Remove `PlpCardStyleSwitcher` component entirely
 - Remove `activeCardStyle` logic from `paginated-products.tsx`
+- Remove card style from URL state (`cardStyle` key in `PlpUrlState`)
 
 ### Files Affected
 - `src/app/global.css` — remove card variant CSS, add new floating card CSS
-- `src/modules/products/components/product-preview/index.tsx` — simplify to single card style
-- `src/modules/store/templates/paginated-products.tsx` — remove card style cycling
-- `src/modules/store/lib/card-style.ts` — delete entirely
+- `src/modules/products/components/product-preview/index.tsx` — simplify to single card style, remove `surface-panel`
+- `src/modules/products/components/variant-preview/index.tsx` — remove `ResolvedPlpCardStyle` import and prop
+- `src/modules/store/lib/card-style.ts` — **delete entirely**
+- `src/modules/store/components/plp-card-style-switcher.tsx` — **delete entirely**
+- `src/modules/store/lib/url-state.ts` — remove `cardStyle` from `PlpUrlState` type and `PLP_QUERY_KEYS`
+- `src/modules/store/templates/index.tsx` — remove `PlpCardStyleSwitcher` import and usage, remove `cardStyle` prop
+- `src/modules/store/templates/paginated-products.tsx` — remove card style cycling, `resolvePlpCardStyleForIndex`, `activeCardStyle`
+- `src/modules/collections/templates/index.tsx` — remove `PlpCardStyle` import and `cardStyle` prop
+- `src/modules/categories/templates/index.tsx` — remove `PlpCardStyle` import and `cardStyle` prop
 
 ---
 
@@ -177,25 +283,28 @@ Replace the 3-column grid (`1.1fr 0.85fr 0.85fr`) with a 2-column layout (`1fr 1
 
 ### Kill List
 - Remove 3-column grid: `xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.85fr)_minmax(0,0.85fr)]`
-- Remove `aspect-[5/6]` portrait ratio on hero image
+- Remove `aspect-[5/6]` portrait ratio on hero image → `aspect-square` (1:1)
 - Remove `rounded-3xl` (30px) on panels → `rounded-xl` (12px)
 - Remove `text-3xl` on both title and price → `text-2xl` title, `text-xl` price
-- Remove `surface-panel` class from buy box and accordion panels
-- Remove accordion from its own column → move below
+- Remove `surface-panel` class from buy box and accordion panels — replace with `bg-card border border-border/30` or no background
+- Remove accordion from its own column → move below the fold
+- Remove any `min-height` constraints on the product image area
 
 ### Files Affected
-- `src/modules/products/components/product-detail-client/index.tsx` — full layout refactor
+- `src/modules/products/components/product-detail-client/index.tsx` — full layout refactor (grid, sticky, accordion placement)
+- `src/modules/products/components/image-gallery/` — if image gallery is a separate component, update aspect ratio and border radius
 
 ---
 
 ## 4. App Shell Integration
 
 ### Topbar
-- Replace heavy `surface-nav` glassmorphism with: `bg-background/85 backdrop-blur-md` (lighter)
-- On scroll: transition to `bg-background/95` for more opacity (use IntersectionObserver or scroll listener)
+- Remove `surface-nav` class from the topbar element. The topbar currently applies both `surface-nav` AND inline `bg-background/90 backdrop-blur-xl` — remove the `surface-nav` class and simplify to: `bg-background/85 backdrop-blur-md`
+- On scroll: transition to `bg-background/95` for more opacity (use IntersectionObserver or scroll listener, add `transition-colors duration-200`)
 - Keep `h-16`, `sticky top-0 z-40`
 - Navigation links: `text-sm font-medium` (drop `font-semibold`)
 - Theme switcher: show 3 named options (Indica / Daylight / Midnight), use a dropdown or segmented control instead of rotating icon
+- Update `menuBadgeVariantByTheme` mapping (lines 48-53 of topbar.tsx) to use new theme IDs
 
 ### Footer
 - Keep 4-column grid on desktop
@@ -204,10 +313,8 @@ Replace the 3-column grid (`1.1fr 0.85fr 0.85fr`) with a 2-column layout (`1fr 1
 - Remove heavy border treatment, use `border-t border-border/30`
 
 ### Landing Page Hero
-- Evaluate stashed hero work (`stash@{0}`) — 550 lines of particle system rework
-- If the hero uses the old Sativa palette or feels disconnected from Indica, redesign to match new design language
-- Hero should use forest green depth with gold accent elements, matching the Floating card vocabulary
-- This is a **follow-up task** — evaluate the stash first, then decide rebuild vs. apply
+- **Out of scope for this sprint.** Hero redesign is listed in Follow-ups below.
+- During implementation: if the hero references `[data-theme="sativa"]` or Sativa-specific tokens, update those references to work with the new theme names. Do not redesign the hero layout or visuals.
 
 ### Global Surface Treatment
 - `surface-panel`: reduce usage. Use only on modals, cart drawer, popovers — not on product cards, buy boxes, or accordion panels
@@ -238,13 +345,15 @@ Kill all `rounded-3xl` (24px) and `rounded-2xl` (16px) usage on panels/cards. Th
 
 ### Typography Scale
 ```
-13px — captions, labels, meta text
-15px — body, card titles
-18px — section headings, prices
+10px — micro labels only: PLP card strength line, PDP option labels, tag badges (text-[10px])
+13px — captions, meta text, brand names, subtitles (text-xs)
+15px — body, card titles (text-sm / text-[15px])
+18px — section headings (text-lg)
+20px — PDP price (text-xl)
 24px — page titles, PDP title (text-2xl)
 32px — hero heading only (text-3xl)
 ```
-Kill arbitrary sizes like `text-[1.02rem]`, `text-[10px]`, `text-[11px]` where possible. Map to nearest scale step.
+Kill truly arbitrary sizes like `text-[1.02rem]` and `text-[11px]`. The 10px micro-label size is intentional for dense product metadata — it's part of the design system, not an ad-hoc value.
 
 ### Text Shadows
 - Remove `text-cast-shadow` from all card and product elements
@@ -252,7 +361,7 @@ Kill arbitrary sizes like `text-[1.02rem]`, `text-[10px]`, `text-[11px]` where p
 - Remove the global `h1, h2, h3, h4, h5, h6` text-shadow rule — apply via class only where needed
 
 ### Button Style
-- Primary CTA: `bg-accent text-accent-foreground` (gold on Indica/Midnight, gold on Daylight)
+- Primary CTA: `bg-accent text-accent-foreground` — gold (`43 89% 60%`) across all three themes (enabled by Indica accent change in Section 1)
 - Secondary: `bg-secondary text-secondary-foreground`
 - Ghost: `hover:bg-muted`
 - Destructive: `bg-destructive text-destructive-foreground`
@@ -298,7 +407,7 @@ Replace hardcoded hex in global.css autofill styles:
 
 ## Out of Scope (Follow-ups)
 
-1. **Hero redesign** — evaluate stash first, then decide in a follow-up session
+1. **Hero redesign** — evaluate `stash@{0}` (550 lines of particle system rework), decide rebuild vs. apply in a follow-up session. Hero should ultimately use forest green depth with gold accent elements, matching the Floating card vocabulary.
 2. **Product image upload** — user has transparent-BG images ready, separate task
 3. **Collection pages** — no collections assigned yet, design when products are organized
 4. **Mobile bottom nav** — evaluate need after breakpoint QA
