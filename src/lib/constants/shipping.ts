@@ -1,3 +1,5 @@
+import { US_STATES, STATE_CODE_TO_NAME } from "./us-states"
+
 /**
  * States where we CANNOT ship hemp products.
  *
@@ -11,7 +13,7 @@
  *
  * See hemp-compliance skill for full state-by-state reference.
  */
-const BLOCKED_SHIPPING_STATES = new Set([
+export const BLOCKED_SHIPPING_STATES = new Set([
   "Idaho",
   "Kansas",
   "Nebraska",
@@ -21,6 +23,21 @@ const BLOCKED_SHIPPING_STATES = new Set([
   "Tennessee",
   "Wyoming",
 ])
+
+const NAME_TO_CODE = new Map(US_STATES.map((s) => [s.label, s.value]))
+
+/** 2-letter codes for all blocked shipping states. Derived from BLOCKED_SHIPPING_STATES. */
+export const BLOCKED_SHIPPING_STATE_CODES = new Set(
+  [...BLOCKED_SHIPPING_STATES]
+    .map((name) => NAME_TO_CODE.get(name))
+    .filter((c): c is string => !!c)
+)
+
+/** Returns full state name if the code is blocked, null otherwise. */
+export function blockedStateName(code: string): string | null {
+  if (!BLOCKED_SHIPPING_STATE_CODES.has(code.toUpperCase())) return null
+  return STATE_CODE_TO_NAME[code.toUpperCase()] ?? null
+}
 
 /**
  * States requiring extra compliance beyond our baseline 21+ / age-gate:

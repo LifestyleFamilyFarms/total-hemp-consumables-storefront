@@ -50,3 +50,8 @@ export const US_STATES = [
   { value: "WI", label: "Wisconsin" },
   { value: "WY", label: "Wyoming" },
 ]
+
+/** Lookup: 2-letter code → full state name. Built from US_STATES. */
+export const STATE_CODE_TO_NAME: Record<string, string> = Object.fromEntries(
+  US_STATES.map((s) => [s.value, s.label])
+)
