@@ -133,7 +133,7 @@ export default function AgeGate({ className }: AgeGateProps) {
           </div>
         )}
         {showGeoNotice && geoState && (
-          <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/50">
+          <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/50" role="alert">
             <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
               Shipping notice
             </p>

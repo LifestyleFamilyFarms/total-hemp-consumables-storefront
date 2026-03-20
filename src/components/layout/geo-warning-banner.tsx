@@ -18,7 +18,11 @@ export default function GeoWarningBanner() {
   const [stateName, setStateName] = useState<string | null>(null)
 
   useEffect(() => {
-    if (sessionStorage.getItem(DISMISS_KEY) === "1") return
+    try {
+      if (sessionStorage.getItem(DISMISS_KEY) === "1") return
+    } catch {
+      // sessionStorage unavailable (private browsing, storage full)
+    }
     const region = getGeoRegion()
     if (region && BLOCKED_SHIPPING_STATE_CODES.has(region)) {
       setStateName(blockedStateName(region) ?? region)
@@ -29,7 +33,11 @@ export default function GeoWarningBanner() {
   if (!visible || !stateName) return null
 
   const handleDismiss = () => {
-    sessionStorage.setItem(DISMISS_KEY, "1")
+    try {
+      sessionStorage.setItem(DISMISS_KEY, "1")
+    } catch {
+      // sessionStorage unavailable
+    }
     setVisible(false)
   }
 
