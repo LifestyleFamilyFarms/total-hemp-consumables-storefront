@@ -197,6 +197,34 @@ export async function middleware(request: NextRequest) {
     return setSecurityHeaders(response)
   }
 
+  const repCode = request.nextUrl.searchParams.get("rep")?.trim() || ""
+  const isGammaGummies =
+    request.nextUrl.pathname.includes("/gamma-gummies") ||
+    request.nextUrl.pathname.endsWith("/gamma-gummies")
+  const withRepCookie = (res: NextResponse) => {
+    if (repCode && !isGammaGummies) {
+      res.cookies.set("_sales_rep", repCode, {
+        maxAge: 60 * 60 * 24 * 30,
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      })
+    }
+    return res
+  }
+
+  const withGeoCookie = (res: NextResponse, req: NextRequest) => {
+    const region = req.headers.get("x-vercel-ip-country-region")?.toUpperCase()
+    if (region && region.length === 2) {
+      res.cookies.set("geo_region", region, {
+        maxAge: 60 * 60 * 24,
+        sameSite: "lax",
+        path: "/",
+      })
+    }
+    return res
+  }
+
   const MAINTENANCE_ENABLED = process.env.MAINTENANCE_MODE === "1" || process.env.MAINTENANCE_MODE === "true"
 
   if (MAINTENANCE_ENABLED) {
@@ -218,28 +246,12 @@ export async function middleware(request: NextRequest) {
       const fallback = Array.from(allowed)[0] || maintenancePath
       url.pathname = fallback || maintenancePath
       url.search = ""
-      return setSecurityHeaders(NextResponse.redirect(url, 307))
+      return withGeoCookie(setSecurityHeaders(NextResponse.redirect(url, 307)), request)
     }
 
     if (reqPath === maintenancePath) {
-      return nextWithSecurityHeaders()
+      return withGeoCookie(nextWithSecurityHeaders(), request)
     }
-  }
-
-  const repCode = request.nextUrl.searchParams.get("rep")?.trim() || ""
-  const isGammaGummies =
-    request.nextUrl.pathname.includes("/gamma-gummies") ||
-    request.nextUrl.pathname.endsWith("/gamma-gummies")
-  const withRepCookie = (res: NextResponse) => {
-    if (repCode && !isGammaGummies) {
-      res.cookies.set("_sales_rep", repCode, {
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-      })
-    }
-    return res
   }
 
   let redirectUrl = request.nextUrl.href
@@ -260,7 +272,7 @@ export async function middleware(request: NextRequest) {
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
     const res = nextWithSecurityHeaders()
-    return withRepCookie(res)
+    return withRepCookie(withGeoCookie(res, request))
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
@@ -270,13 +282,13 @@ export async function middleware(request: NextRequest) {
     })
 
     setSecurityHeaders(response)
-    return withRepCookie(response)
+    return withRepCookie(withGeoCookie(response, request))
   }
 
   // check if the url is a static asset
   if (request.nextUrl.pathname.includes(".")) {
     const res = nextWithSecurityHeaders()
-    return withRepCookie(res)
+    return withRepCookie(withGeoCookie(res, request))
   }
 
   const redirectPath =
@@ -291,7 +303,7 @@ export async function middleware(request: NextRequest) {
   }
 
   setSecurityHeaders(response)
-  return withRepCookie(response)
+  return withRepCookie(withGeoCookie(response, request))
 }
 
 // export const config = {
