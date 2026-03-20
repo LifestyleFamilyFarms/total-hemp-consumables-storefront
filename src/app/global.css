@@ -318,51 +318,6 @@
     transform: translate3d(0, calc(var(--shell-scroll-y) * -0.01), 0);
   }
 
-  .surface-panel {
-    background-color: hsl(var(--card) / 0.66) !important;
-    background-image:
-      radial-gradient(
-        94% 88% at 0% 0%,
-        hsl(var(--surface-border-top-left) / 0.17) 0%,
-        transparent 62%
-      ),
-      radial-gradient(
-        94% 88% at 100% 0%,
-        hsl(var(--surface-border-top-right) / 0.16) 0%,
-        transparent 62%
-      ),
-      radial-gradient(
-        96% 92% at 0% 100%,
-        hsl(var(--surface-border-bottom-left) / 0.14) 0%,
-        transparent 64%
-      ),
-      radial-gradient(
-        96% 92% at 100% 100%,
-        hsl(var(--surface-border-bottom-right) / 0.14) 0%,
-        transparent 64%
-      ),
-      radial-gradient(
-        130% 110% at var(--surface-light-source-x) var(--surface-light-source-y),
-        hsl(var(--surface-glass-glow) / 0.18) 0%,
-        transparent 56%
-      ),
-      linear-gradient(
-        var(--surface-light-angle),
-        hsl(var(--surface-glass-top) / 0.28) 0%,
-        hsl(var(--surface-glass-bottom) / 0.22) 100%
-      ) !important;
-    background-blend-mode: screen, screen, screen, multiply, soft-light, normal !important;
-    border-color: hsl(var(--surface-border-mid) / 0.36) !important;
-    box-shadow:
-      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
-      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.42),
-      inset 1px -1px 0 hsl(var(--surface-border-bottom-left) / 0.3),
-      inset -1px -1px 0 hsl(var(--surface-border-bottom-right) / 0.34),
-      0 14px 32px hsl(var(--surface-glass-shadow) / 0.22) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-  }
-
   .surface-universal {
     background-color: hsl(var(--card) / 0.7) !important;
     background-image:
@@ -385,24 +340,6 @@
       0 12px 28px hsl(var(--surface-glass-shadow) / 0.2) !important;
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
-  }
-
-  .surface-nav {
-    background-color: hsl(var(--card) / 0.68) !important;
-    background-image:
-      radial-gradient(90% 70% at 0% 0%, hsl(var(--surface-border-top-left) / 0.14) 0%, transparent 66%),
-      radial-gradient(90% 70% at 100% 0%, hsl(var(--surface-border-top-right) / 0.13) 0%, transparent 66%),
-      radial-gradient(95% 80% at 0% 100%, hsl(var(--surface-border-bottom-left) / 0.1) 0%, transparent 70%),
-      radial-gradient(95% 80% at 100% 100%, hsl(var(--surface-border-bottom-right) / 0.1) 0%, transparent 70%),
-      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.18) 0%, hsl(var(--surface-glass-bottom) / 0.16) 100%) !important;
-    background-blend-mode: screen, screen, multiply, multiply, normal !important;
-    border-color: hsl(var(--surface-border-mid) / 0.48) !important;
-    box-shadow:
-      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.44),
-      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.4),
-      0 8px 24px hsl(var(--surface-glass-shadow) / 0.18) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
   }
 
   .surface-button {
