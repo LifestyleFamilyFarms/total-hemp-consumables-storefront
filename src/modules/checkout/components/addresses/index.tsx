@@ -55,6 +55,7 @@ const Addresses = ({
     router.push(pathname + "?step=address")
   }
 
+  const [shippingBlocked, setShippingBlocked] = useState(false)
   const [addressError, setAddressError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -193,6 +194,7 @@ const Addresses = ({
               checked={sameAsBilling}
               onChange={toggleSameAsBilling}
               cart={currentCart}
+              onBlockedStateChange={setShippingBlocked}
             />
 
             {!sameAsBilling && (
@@ -202,11 +204,16 @@ const Addresses = ({
               type="submit"
               className="w-full md:w-auto h-11 px-6 text-sm font-medium"
               data-testid="submit-address-button"
-              disabled={submitting}
+              disabled={submitting || shippingBlocked}
             >
               {submitting && <BrandSpinner className="mr-2" />}
               Continue to delivery
             </Button>
+            {shippingBlocked && (
+              <p className="text-xs text-destructive" data-testid="blocked-state-submit-hint">
+                Change your shipping state to continue.
+              </p>
+            )}
             <ErrorMessage
               error={addressError}
               data-testid="address-error-message"

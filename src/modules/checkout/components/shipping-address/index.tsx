@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
 import { US_STATES } from "src/lib/constants/us-states"
+import { BLOCKED_SHIPPING_STATE_CODES, blockedStateName } from "@lib/constants/shipping"
 import AddressAutocompleteInput from "./address-autocomplete-input"
 
 const ShippingAddress = ({
@@ -14,11 +15,13 @@ const ShippingAddress = ({
   cart,
   checked,
   onChange,
+  onBlockedStateChange,
 }: {
   customer: HttpTypes.StoreCustomer | null
   cart: HttpTypes.StoreCart | null
   checked: boolean
   onChange: () => void
+  onBlockedStateChange?: (blocked: boolean) => void
 }) => {
   const [formData, setFormData] = useState<Record<string, any>>({
     "shipping_address.first_name": cart?.shipping_address?.first_name || "",
@@ -107,6 +110,19 @@ const ShippingAddress = ({
 
   const isUsAddress =
     (formData["shipping_address.country_code"] || "").toLowerCase() === "us"
+
+  const provinceValue = formData["shipping_address.province"] || ""
+  const isBlockedState =
+    isUsAddress &&
+    provinceValue.length > 0 &&
+    BLOCKED_SHIPPING_STATE_CODES.has(provinceValue.toUpperCase())
+  const blockedName = isBlockedState
+    ? blockedStateName(provinceValue.toUpperCase())
+    : null
+
+  useEffect(() => {
+    onBlockedStateChange?.(isBlockedState)
+  }, [isBlockedState, onBlockedStateChange])
 
   const handleAutocompleteSelection = (suggestion: {
     address1?: string
@@ -275,6 +291,17 @@ const ShippingAddress = ({
                   </option>
                 ))}
               </NativeSelect>
+              {isBlockedState && blockedName && (
+                <div
+                  className="mt-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+                  role="alert"
+                  data-testid="blocked-state-error"
+                >
+                  We&apos;re unable to ship hemp products to {blockedName}. Online
+                  hemp sales are restricted by state law. You may ship to a
+                  different state.
+                </div>
+              )}
             </div>
           ) : (
             <Input
