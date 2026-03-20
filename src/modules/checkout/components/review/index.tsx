@@ -16,10 +16,12 @@ function AddressSummary({ address }: { address: HttpTypes.StoreCartAddress }) {
       <p>
         {address.first_name} {address.last_name}
       </p>
-      <p>{address.address_1}</p>
+      {address.address_1 && <p>{address.address_1}</p>}
       {address.address_2 && <p>{address.address_2}</p>}
       <p>
-        {address.city}, {address.province} {address.postal_code}
+        {[address.city, address.province, address.postal_code]
+          .filter(Boolean)
+          .join(", ")}
       </p>
     </div>
   )
@@ -34,7 +36,7 @@ const Review = ({ cart }: { cart: any }) => {
 
   const previousStepsCompleted =
     cart.shipping_address &&
-    cart.shipping_methods.length > 0 &&
+    (cart.shipping_methods?.length ?? 0) > 0 &&
     (cart.payment_collection || paidByGiftcard)
 
   const items: any[] = cart?.items ?? []
