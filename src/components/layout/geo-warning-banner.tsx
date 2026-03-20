@@ -60,7 +60,7 @@ export default function GeoWarningBanner() {
       <button
         onClick={handleDismiss}
         aria-label="Dismiss shipping notice"
-        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-amber-600 transition hover:bg-amber-100 dark:text-amber-400 dark:hover:bg-amber-900/50"
+        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-amber-600 transition hover:bg-amber-100 dark:text-amber-400 dark:hover:bg-amber-900/50"
       >
         <X className="h-4 w-4" />
       </button>

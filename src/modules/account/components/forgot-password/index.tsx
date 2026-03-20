@@ -76,7 +76,7 @@ const ForgotPassword = ({ setCurrentView }: Props) => {
               error={fieldErrors?.email}
               data-testid="forgot-email-input"
             />
-            <SubmitButton className="w-full mt-6" data-testid="forgot-submit">
+            <SubmitButton className="w-full mt-6 bg-accent text-accent-foreground font-bold hover:bg-accent/90" data-testid="forgot-submit">
               Send reset link
             </SubmitButton>
           </form>

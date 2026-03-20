@@ -104,7 +104,7 @@ export default function AgeGate({ className }: AgeGateProps) {
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-description"
     >
-      <div className="w-full max-w-md rounded-2xl border border-border/60 bg-background p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-xl border border-border/30 bg-background p-6 shadow-xl">
         <p className="text-xs uppercase tracking-[0.4em] text-foreground/60">
           Age Verification
         </p>
@@ -118,7 +118,7 @@ export default function AgeGate({ className }: AgeGateProps) {
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <button
               ref={confirmRef}
-              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+              className="rounded-lg bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-sm transition hover:bg-accent/90"
               onClick={handleAgeConfirm}
             >
               Yes, I am 21+
@@ -144,7 +144,7 @@ export default function AgeGate({ className }: AgeGateProps) {
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <button
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+                className="rounded-lg bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-sm transition hover:bg-accent/90"
                 onClick={() => setOpen(false)}
               >
                 Continue browsing

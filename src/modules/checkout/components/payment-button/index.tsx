@@ -107,7 +107,7 @@ const AuthorizeNetPaymentButton = ({
       <Button
         disabled={notReady || submitting}
         onClick={handlePayment}
-        className="h-11 px-6 text-sm font-medium"
+        className="h-11 px-6 text-sm font-bold bg-accent text-accent-foreground hover:bg-accent/90"
         data-testid={dataTestId ?? "submit-order-button"}
       >
         {submitting && <BrandSpinner className="mr-2" />}
