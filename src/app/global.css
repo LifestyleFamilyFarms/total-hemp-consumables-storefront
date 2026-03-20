@@ -3,8 +3,7 @@
 @import "tailwindcss/utilities";
 
 @layer base {
-  :root,
-  [data-theme="sativa"] {
+  :root {
     --brand-forest: 137 55% 22%;
     --brand-teal: 162 80% 36%;
     --brand-butter: 59 80% 82%;
@@ -15,75 +14,7 @@
     --brand-graphite: 0 0% 28%;
     --brand-silver: 0 0% 62%;
     --brand-white: 0 0% 100%;
-
-    --background: var(--brand-butter);
-    --foreground: var(--brand-forest);
-    --card: var(--brand-white);
-    --card-foreground: var(--brand-forest);
-    --popover: var(--brand-white);
-    --popover-foreground: var(--brand-forest);
-    --primary: var(--brand-forest);
-    --primary-foreground: var(--brand-butter);
-    --secondary: var(--brand-gold);
-    --secondary-foreground: var(--brand-forest);
-    --muted: 59 60% 90%;
-    --muted-foreground: var(--brand-cocoa);
-    --accent: var(--brand-tangelo);
-    --accent-foreground: var(--brand-white);
-    --destructive: var(--brand-tangelo);
-    --destructive-foreground: var(--brand-white);
-    --border: var(--brand-cocoa);
-    --input: var(--brand-cocoa);
-    --ring: var(--brand-forest);
     --radius: 0.625rem;
-
-    --sidebar-background: var(--brand-butter);
-    --sidebar-foreground: var(--brand-forest);
-    --sidebar-primary: var(--brand-forest);
-    --sidebar-primary-foreground: var(--brand-butter);
-    --sidebar-accent: var(--brand-gold);
-    --sidebar-accent-foreground: var(--brand-forest);
-    --sidebar-border: var(--brand-cocoa);
-    --sidebar-ring: var(--brand-forest);
-
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
-    --app-bg-size: cover;
-    --app-bg-position: center;
-    --app-bg-pattern-opacity: .5;
-    --app-bg-filter: blur(1px) saturate(0.7) contrast(0.9) brightness(0.95);
-    --scene-grad-tl: 52 92% 84%;
-    --scene-grad-tr: 24 88% 58%;
-    --scene-grad-bl: 162 62% 34%;
-    --scene-grad-br: 137 48% 15%;
-    --scene-grad-base-start: 59 44% 78%;
-    --scene-grad-base-end: 137 42% 23%;
-    --app-bg-overlay:
-      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 1) 0%, transparent 75%),
-      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
-      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
-      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 0.82) 50%, transparent 100%),
-      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
-    --app-bg-overlay-opacity: 0.6;
-
-    --surface-light-angle: 156deg;
-    --surface-light-source-x: 12%;
-    --surface-light-source-y: 6%;
-    --surface-glass-top: var(--scene-grad-tl);
-    --surface-glass-bottom: var(--scene-grad-base-end);
-    --surface-glass-glow: var(--scene-grad-tr);
-    --surface-glass-edge: 59 72% 94%;
-    --surface-glass-shadow: 137 46% 12%;
-    --surface-border-top-left: var(--scene-grad-tl);
-    --surface-border-top-right: var(--scene-grad-tr);
-    --surface-border-bottom-left: var(--scene-grad-bl);
-    --surface-border-bottom-right: var(--scene-grad-br);
-    --surface-border-mid: var(--scene-grad-base-end);
-    --type-shadow-color: 15 48% 18%;
-    --type-shadow-opacity: 0.34;
-    --type-shadow-x: 1px;
-    --type-shadow-y: 1px;
-    
-
   }
 
   [data-theme="indica"] {
@@ -99,8 +30,8 @@
     --secondary-foreground: var(--brand-butter);
     --muted: 137 30% 24%;
     --muted-foreground: var(--brand-gold);
-    --accent: var(--brand-tangelo);
-    --accent-foreground: var(--brand-black);
+    --accent: var(--brand-gold);
+    --accent-foreground: 137 55% 15%;
     --destructive: var(--brand-tangelo);
     --destructive-foreground: var(--brand-black);
     --border: var(--brand-cocoa);
@@ -147,135 +78,128 @@
     --type-shadow-opacity: 0.44;
     --type-shadow-x: 1px;
     --type-shadow-y: 1px;
-
   }
 
-  [data-theme="light"] {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 8%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 0 0% 8%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 8%;
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 30%;
-    --accent: 0 0% 92%;
-    --accent-foreground: 0 0% 8%;
-    --destructive: 0 0% 20%;
+  [data-theme="daylight"] {
+    --background: 60 20% 98%;
+    --foreground: 137 55% 22%;
+    --card: 60 15% 99%;
+    --card-foreground: 137 55% 22%;
+    --popover: 60 15% 99%;
+    --popover-foreground: 137 55% 22%;
+    --primary: 137 55% 22%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 137 20% 94%;
+    --secondary-foreground: 137 55% 22%;
+    --muted: 137 15% 92%;
+    --muted-foreground: 137 30% 40%;
+    --accent: 43 89% 60%;
+    --accent-foreground: 137 55% 15%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
-    --ring: 0 0% 15%;
+    --border: 137 20% 82%;
+    --input: 137 20% 82%;
+    --ring: 137 55% 22%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 12%;
-    --sidebar-primary: 0 0% 8%;
+    --sidebar-background: 60 15% 97%;
+    --sidebar-foreground: 137 55% 22%;
+    --sidebar-primary: 137 55% 22%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 92%;
-    --sidebar-accent-foreground: 0 0% 8%;
-    --sidebar-border: 0 0% 85%;
-    --sidebar-ring: 0 0% 20%;
+    --sidebar-accent: 43 89% 60%;
+    --sidebar-accent-foreground: 137 55% 15%;
+    --sidebar-border: 137 20% 82%;
+    --sidebar-ring: 137 55% 22%;
 
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
-    --app-bg-pattern-opacity: 0.5;
-    --app-bg-filter: blur(1px) saturate(0.55) contrast(0.92) brightness(1.02);
-    --scene-grad-tl: 60 100% 98%;
-    --scene-grad-tr: 43 86% 90%;
-    --scene-grad-bl: 162 26% 72%;
-    --scene-grad-br: 210 16% 58%;
-    --scene-grad-base-start: 60 42% 97%;
-    --scene-grad-base-end: 43 55% 92%;
-    --app-bg-overlay:
-      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 1) 0%, transparent 75%),
-      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
-      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
-      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 0.727) 50%, transparent 100%),
-      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
-    --app-bg-overlay-opacity: 0.6;
+    --app-bg-image: none;
+    --app-bg-pattern-opacity: 0;
+    --app-bg-filter: none;
+    --scene-grad-tl: 137 15% 94%;
+    --scene-grad-tr: 43 30% 92%;
+    --scene-grad-bl: 137 20% 90%;
+    --scene-grad-br: 43 40% 88%;
+    --scene-grad-base-start: 60 20% 98%;
+    --scene-grad-base-end: 137 15% 96%;
+    --app-bg-overlay: hsl(137 15% 94% / 0.3);
+    --app-bg-overlay-opacity: 0.3;
 
-    --surface-glass-top: var(--scene-grad-tl);
-    --surface-glass-bottom: var(--scene-grad-base-end);
-    --surface-glass-glow: var(--scene-grad-tr);
+    --surface-light-angle: 156deg;
+    --surface-light-source-x: 12%;
+    --surface-light-source-y: 6%;
+    --surface-glass-top: 0 0% 100%;
+    --surface-glass-bottom: 137 10% 96%;
+    --surface-glass-glow: 43 89% 60%;
     --surface-glass-edge: 0 0% 100%;
-    --surface-glass-shadow: 220 26% 32%;
-    --surface-border-top-left: var(--scene-grad-tl);
-    --surface-border-top-right: var(--scene-grad-tr);
-    --surface-border-bottom-left: var(--scene-grad-bl);
-    --surface-border-bottom-right: var(--scene-grad-br);
-    --surface-border-mid: var(--scene-grad-base-end);
-    --type-shadow-color: 210 20% 38%;
-    --type-shadow-opacity: 0.22;
-    --type-shadow-x: 1px;
+    --surface-glass-shadow: 137 30% 20%;
+    --surface-border-top-left: 137 15% 94%;
+    --surface-border-top-right: 43 30% 92%;
+    --surface-border-bottom-left: 137 20% 90%;
+    --surface-border-bottom-right: 43 40% 88%;
+    --surface-border-mid: 137 15% 96%;
+    --type-shadow-color: 137 30% 20%;
+    --type-shadow-opacity: 0.06;
+    --type-shadow-x: 0px;
     --type-shadow-y: 1px;
-
   }
 
-  [data-theme="dark"] {
-    --background: 0 0% 8%;
-    --foreground: 0 0% 96%;
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 0 0% 96%;
-    --primary-foreground: 0 0% 8%;
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 0 0% 25%;
-    --accent-foreground: 0 0% 96%;
-    --destructive: 0 0% 40%;
-    --destructive-foreground: 0 0% 96%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 0 0% 60%;
+  [data-theme="midnight"] {
+    --background: 137 20% 8%;
+    --foreground: 59 30% 92%;
+    --card: 137 18% 12%;
+    --card-foreground: 59 30% 92%;
+    --popover: 137 18% 12%;
+    --popover-foreground: 59 30% 92%;
+    --primary: 59 30% 92%;
+    --primary-foreground: 137 20% 8%;
+    --secondary: 137 15% 18%;
+    --secondary-foreground: 59 30% 92%;
+    --muted: 137 12% 18%;
+    --muted-foreground: 137 20% 55%;
+    --accent: 43 89% 60%;
+    --accent-foreground: 137 20% 8%;
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 59 30% 92%;
+    --border: 137 15% 16%;
+    --input: 137 15% 16%;
+    --ring: 43 70% 55%;
 
-    --sidebar-background: 0 0% 12%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 0 0% 90%;
-    --sidebar-primary-foreground: 0 0% 8%;
-    --sidebar-accent: 0 0% 24%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 0 0% 60%;
+    --sidebar-background: 137 18% 10%;
+    --sidebar-foreground: 59 30% 92%;
+    --sidebar-primary: 59 30% 92%;
+    --sidebar-primary-foreground: 137 20% 8%;
+    --sidebar-accent: 43 89% 60%;
+    --sidebar-accent-foreground: 137 20% 8%;
+    --sidebar-border: 137 15% 16%;
+    --sidebar-ring: 43 70% 55%;
 
-    --app-bg-image: url("/backgrounds/app/hemp-checker-dim-solid.webp");
-    --app-bg-pattern-opacity: 0.3;
-    --app-bg-filter: blur(1px) saturate(0.5) contrast(1) brightness(0.6);
-    --scene-grad-tl: 59 52% 70%;
-    --scene-grad-tr: 43 58% 62%;
-    --scene-grad-bl: 137 24% 24%;
-    --scene-grad-br: 0 0% 5%;
-    --scene-grad-base-start: 137 24% 14%;
-    --scene-grad-base-end: 0 0% 6%;
-    --app-bg-overlay:
-      radial-gradient(ellipse at -15% -10%, hsl(var(--scene-grad-tl) / 0.741) 0%, transparent 75%),
-      radial-gradient(ellipse at 85% -25%, hsl(var(--scene-grad-tr) / 1) 0%, transparent 35%),
-      radial-gradient(74% 66% at -6% 108%, hsl(var(--scene-grad-bl) / 1) 0%, transparent 70%),
-      radial-gradient(100% 100% at 106% 110%, hsl(var(--scene-grad-br) / 1) 0%, transparent 100%),
-      linear-gradient(156deg, hsl(var(--scene-grad-base-start)) 0%, hsl(var(--scene-grad-base-end)) 100%);
+    --app-bg-image: none;
+    --app-bg-pattern-opacity: 0;
+    --app-bg-filter: none;
+    --scene-grad-tl: 137 25% 6%;
+    --scene-grad-tr: 43 40% 15%;
+    --scene-grad-bl: 137 30% 5%;
+    --scene-grad-br: 43 50% 12%;
+    --scene-grad-base-start: 137 20% 8%;
+    --scene-grad-base-end: 137 15% 6%;
+    --app-bg-overlay: hsl(137 20% 4% / 0.5);
     --app-bg-overlay-opacity: 0.5;
 
-    --surface-glass-top: var(--scene-grad-tl);
-    --surface-glass-bottom: var(--scene-grad-base-end);
-    --surface-glass-glow: var(--scene-grad-tr);
-    --surface-glass-edge: 0 0% 100%;
-    --surface-glass-shadow: 0 0% 2%;
-    --surface-border-top-left: var(--scene-grad-tl);
-    --surface-border-top-right: var(--scene-grad-tr);
-    --surface-border-bottom-left: var(--scene-grad-bl);
-    --surface-border-bottom-right: var(--scene-grad-br);
-    --surface-border-mid: var(--scene-grad-base-end);
-    --type-shadow-color: 0 0% 2%;
-    --type-shadow-opacity: 0.56;
-    --type-shadow-x: 1px;
-    --type-shadow-y: 1px;
-
+    --surface-light-angle: 156deg;
+    --surface-light-source-x: 12%;
+    --surface-light-source-y: 6%;
+    --surface-glass-top: 137 15% 18%;
+    --surface-glass-bottom: 137 20% 6%;
+    --surface-glass-glow: 43 89% 60%;
+    --surface-glass-edge: 59 30% 92%;
+    --surface-glass-shadow: 0 0% 0%;
+    --surface-border-top-left: 137 25% 6%;
+    --surface-border-top-right: 43 40% 15%;
+    --surface-border-bottom-left: 137 30% 5%;
+    --surface-border-bottom-right: 43 50% 12%;
+    --surface-border-mid: 137 15% 6%;
+    --type-shadow-color: 0 0% 0%;
+    --type-shadow-opacity: 0.3;
+    --type-shadow-x: 0px;
+    --type-shadow-y: 2px;
   }
 
   * {
