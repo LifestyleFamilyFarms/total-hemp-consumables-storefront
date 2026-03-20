@@ -51,6 +51,7 @@ export default async function Checkout({
               cart={cart}
               customer={customer}
               currentStep={currentStep}
+              countryCode={params?.countryCode || "us"}
             />
           </PaymentWrapper>
           <CheckoutSummary cart={cart} />

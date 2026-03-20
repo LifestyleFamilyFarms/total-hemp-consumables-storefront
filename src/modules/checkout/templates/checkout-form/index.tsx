@@ -5,18 +5,25 @@ import Addresses from "@modules/checkout/components/addresses"
 import Payment from "@modules/checkout/components/payment"
 import Review from "@modules/checkout/components/review"
 import Shipping from "@modules/checkout/components/shipping"
+import { redirect } from "next/navigation"
 
 export default async function CheckoutForm({
   cart,
   customer,
   currentStep,
+  countryCode,
 }: {
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
   currentStep: string
+  countryCode: string
 }) {
   if (!cart) {
     return null
+  }
+
+  if (!cart.items || cart.items.length === 0) {
+    redirect(`/${countryCode}/cart`)
   }
 
   const shippingMethods = await listCartShippingMethods(cart.id)
