@@ -1,6 +1,7 @@
 "use client"
 
 import { isAuthorizeNet } from "@lib/constants"
+import { mapPaymentError } from "@lib/util/payment-errors"
 import { HttpTypes } from "@medusajs/types"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
@@ -83,16 +84,14 @@ const AuthorizeNetPaymentButton = ({
         router.push(`/${country}/order/${order.id}/confirmed`)
       } else {
         if (!isOrderResponse(result)) {
-          const msg =
-            result.error?.message || "Could not complete order. Please try again."
-          setErrorMessage(msg)
+          setErrorMessage(mapPaymentError(result.error?.message))
         }
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setErrorMessage(err.message)
+        setErrorMessage(mapPaymentError(err.message))
       } else {
-        setErrorMessage("Could not complete order")
+        setErrorMessage(mapPaymentError(null))
       }
     } finally {
       setSubmitting(false)

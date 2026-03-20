@@ -6,6 +6,7 @@ import { setShippingMethod } from "@lib/data/cart"
 import {
   CHECKOUT_SHIPPING_MODE,
   SHIPSTATION_SERVICE_ALLOWLIST_SET,
+  getDeliveryEstimate,
 } from "@lib/constants/shipping"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
@@ -591,6 +592,10 @@ const Shipping: React.FC<ShippingProps> = ({
     } lb — ${totalDisplay}.`
   }, [cart?.currency_code, selectedShippingOption, selectedShippingPrice, totalWeightPounds])
 
+  const deliveryEstimate = selectedShippingOption?.name
+    ? getDeliveryEstimate(selectedShippingOption.name)
+    : null
+
   const shippingRateDisplay =
     selectedShippingOption === null
       ? "-"
@@ -754,6 +759,11 @@ const Shipping: React.FC<ShippingProps> = ({
                           <div className="text-xs text-muted-foreground">
                             {shippingRateExplanation}
                           </div>
+                          {deliveryEstimate && (
+                            <div className="text-xs font-medium text-foreground/80">
+                              Est. delivery: {deliveryEstimate}
+                            </div>
+                          )}
                         </div>
                         <Button
                           type="button"

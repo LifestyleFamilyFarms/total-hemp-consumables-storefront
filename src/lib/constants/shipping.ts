@@ -155,6 +155,26 @@ export const SHIPSTATION_SERVICE_ALLOWLIST_SET =
     ? new Set(expandedAllowlistValues)
     : null
 
+export const DELIVERY_ESTIMATE_MAP: Record<string, string> = {
+  ground: "5–7 business days",
+  economy: "5–10 business days",
+  priority: "2–3 business days",
+  express: "1–2 business days",
+  overnight: "Next business day",
+  "2day": "2 business days",
+  "2-day": "2 business days",
+  standard: "3–5 business days",
+}
+
+/** Returns an estimated delivery timeframe based on service name keywords, or null. */
+export function getDeliveryEstimate(serviceName: string): string | null {
+  const lower = serviceName.toLowerCase()
+  for (const [key, estimate] of Object.entries(DELIVERY_ESTIMATE_MAP)) {
+    if (lower.includes(key)) return estimate
+  }
+  return null
+}
+
 export type CheckoutShippingMode = "pickup_only" | "full"
 
 const resolveCheckoutShippingMode = (): CheckoutShippingMode => {
