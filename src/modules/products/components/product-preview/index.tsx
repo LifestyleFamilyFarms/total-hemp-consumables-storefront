@@ -335,7 +335,7 @@ export default function ProductPreview({
             ) : null}
 
             {variantDetailSummary ? (
-              <div className="rounded-xl border border-border/55 bg-background/55 px-2.5 py-2 text-[11px] text-foreground/68">
+              <div className="rounded-xl border border-border/30 bg-card px-2.5 py-2 text-[11px] text-foreground/68">
                 {variantDetailSummary}
               </div>
             ) : null}

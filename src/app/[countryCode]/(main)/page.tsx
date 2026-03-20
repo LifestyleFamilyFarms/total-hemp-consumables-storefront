@@ -70,15 +70,8 @@ export default async function Home(props: {
         }}
       />
       <HeroSection />
-      {/* Post-hero sections: dark-themed, full-bleed with grain texture */}
-      <div
-        data-theme="indica"
-        className="relative -mx-[50vw] left-1/2 right-1/2 w-screen"
-        style={{
-          background:
-            "linear-gradient(180deg, #050e08 0%, #091a0f 15%, #0b1e13 50%, #091a0f 85%, #050e08 100%)",
-        }}
-      >
+      {/* Post-hero sections: full-bleed, inherits active theme */}
+      <div className="relative -mx-[50vw] left-1/2 right-1/2 w-screen bg-background">
         <div className="mx-auto max-w-8xl">
           <EffectSection />
           <CategorySection categories={categories} />

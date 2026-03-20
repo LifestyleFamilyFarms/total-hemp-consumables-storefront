@@ -342,23 +342,6 @@
     -webkit-backdrop-filter: blur(8px) !important;
   }
 
-  .surface-button {
-    border-color: hsl(var(--surface-border-mid) / 0.5) !important;
-    background-color: hsl(var(--card) / 0.74) !important;
-    background-image:
-      radial-gradient(90% 82% at 0% 0%, hsl(var(--surface-border-top-left) / 0.2) 0%, transparent 66%),
-      radial-gradient(88% 82% at 100% 0%, hsl(var(--surface-border-top-right) / 0.18) 0%, transparent 66%),
-      radial-gradient(92% 84% at 0% 100%, hsl(var(--surface-border-bottom-left) / 0.12) 0%, transparent 70%),
-      radial-gradient(92% 84% at 100% 100%, hsl(var(--surface-border-bottom-right) / 0.14) 0%, transparent 70%),
-      linear-gradient(var(--surface-light-angle), hsl(var(--surface-glass-top) / 0.2) 0%, hsl(var(--surface-glass-bottom) / 0.18) 100%) !important;
-    background-blend-mode: screen, screen, multiply, multiply, normal !important;
-    box-shadow:
-      inset 1px 1px 0 hsl(var(--surface-border-top-left) / 0.42),
-      inset -1px 1px 0 hsl(var(--surface-border-top-right) / 0.36),
-      inset 0 -1px 0 hsl(var(--surface-border-bottom-right) / 0.3),
-      0 4px 10px hsl(var(--surface-glass-shadow) / 0.2) !important;
-    text-shadow: var(--type-shadow-x) var(--type-shadow-y) 0 hsl(var(--type-shadow-color) / calc(var(--type-shadow-opacity) * 0.85));
-  }
 
   .auth-logo-overlay {
     border-color: hsl(var(--surface-border-mid) / 0.55);
@@ -393,7 +376,7 @@
     height: 100%;
     flex-direction: column;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid hsl(var(--border) / 0.3);
     background-color: hsl(var(--card));
     transition: transform 300ms ease, box-shadow 300ms ease;
@@ -409,7 +392,7 @@
     margin: 12px 12px 0;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 10px;
     background: radial-gradient(
       ellipse at 50% 100%,
       hsl(var(--accent) / 0.12),

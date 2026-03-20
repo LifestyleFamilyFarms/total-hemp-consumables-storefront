@@ -37,7 +37,7 @@ export default async function CheckoutLayout({
 
       <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-md border-b border-border/30 px-4 py-3 transition-colors duration-200 md:px-6">
         <div className="mx-auto flex w-full max-w-8xl items-center justify-between gap-3">
-          <Button asChild variant="ghost" size="sm" className="surface-button">
+          <Button asChild variant="ghost" size="sm">
             <Link href={`/${cc}`}>Back to shopping</Link>
           </Button>
           <BrandLogo variant="navMonogram" className="w-8 sm:w-9" />

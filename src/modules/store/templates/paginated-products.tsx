@@ -56,7 +56,7 @@ export default async function PaginatedProducts({
 
     if (!variants.length) {
       return (
-        <div className="rounded-xl border border-border/30 bg-card/50 px-6 py-14 text-center">
+        <div className="rounded-xl border border-border/30 bg-card px-6 py-14 text-center">
           <p className="text-xl font-semibold text-foreground">
             {emptyStateTitle || "No offerings matched this view."}
           </p>
@@ -121,7 +121,7 @@ export default async function PaginatedProducts({
 
   if (!products.length) {
     return (
-      <div className="rounded-xl border border-border/30 bg-card/50 px-6 py-14 text-center">
+      <div className="rounded-xl border border-border/30 bg-card px-6 py-14 text-center">
         <p className="text-xl font-semibold text-foreground">
           {emptyStateTitle || "No products matched this view."}
         </p>
