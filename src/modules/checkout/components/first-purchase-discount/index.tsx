@@ -13,6 +13,21 @@ import { retrieveCustomer } from "@lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
+/**
+ * Expected shape of the first-purchase discount API response.
+ * Typed fields are checked first; string matching is a backward-compat fallback.
+ */
+interface FirstPurchaseDiscountFields {
+  applied?: boolean
+  eligible?: boolean
+  already_applied?: boolean
+  disabled?: boolean
+  status?: string
+  message?: string
+  reason?: string
+  promotion_code?: string
+}
+
 type FirstPurchaseStatus =
   | "idle"
   | "loading"
@@ -52,6 +67,14 @@ const parseStatusFromResponse = (
   const status = typeof response.status === "string" ? response.status.toLowerCase() : ""
   const message = typeof response.message === "string" ? response.message.toLowerCase() : ""
   const reason = typeof response.reason === "string" ? response.reason.toLowerCase() : ""
+
+  if (process.env.NODE_ENV === "development") {
+    console.warn(
+      "[FirstPurchaseDiscount] Falling back to string matching for response:",
+      { status, message, reason }
+    )
+  }
+
   const combined = `${status} ${message} ${reason}`
 
   if (response.disabled || containsAny(combined, ["disabled", "feature flag"])) {
