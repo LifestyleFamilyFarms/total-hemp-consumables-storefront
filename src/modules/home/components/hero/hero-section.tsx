@@ -27,7 +27,7 @@ function stagger(delayMs: number) {
 
 export default function HeroSection() {
   return (
-    <section className="relative -mx-[50vw] -mt-[calc(4rem+2rem)] sm:-mt-[calc(4rem+2.5rem)] left-1/2 right-1/2 flex w-screen min-h-[100vh] items-center justify-center overflow-hidden pt-20">
+    <section className="relative -mx-[50vw] -mt-[6rem] sm:-mt-[6.5rem] left-1/2 right-1/2 flex w-screen min-h-[100vh] items-center justify-center overflow-hidden pt-28">
       {/* Layer 1: Farm photo with Ken Burns drift + brand treatment */}
       <div className="brand-photo-hero absolute inset-0">
         <Image
@@ -73,7 +73,7 @@ export default function HeroSection() {
 
       {/* Layer 5: Content — glass container wrapping everything */}
       <div className="relative z-10 mx-auto w-full max-w-[860px] px-4 py-8 sm:py-12">
-        <div className="rounded-3xl border border-white/[0.06] bg-black/[0.35] px-8 py-14 text-center backdrop-blur-[2px] shadow-[0_8px_48px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.04)] sm:px-12 sm:py-16">
+        <div className="rounded-3xl border border-white/[0.06] bg-black/[0.35] px-8 py-14 text-center backdrop-blur-[2.5px] shadow-[0_8px_48px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.04)] sm:px-12 sm:py-16">
         <BrandReveal />
 
         {/* Headline */}

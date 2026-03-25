@@ -304,7 +304,8 @@
       contrast(calc(var(--photo-contrast) + 0.04))
       saturate(calc(var(--photo-saturate) + 0.06))
       sepia(var(--photo-sepia))
-      hue-rotate(var(--photo-hue-rotate));
+      hue-rotate(var(--photo-hue-rotate))
+      blur(0.75px);
     transition: filter 0.3s ease;
   }
 

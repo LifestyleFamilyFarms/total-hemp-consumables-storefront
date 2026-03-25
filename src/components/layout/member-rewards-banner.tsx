@@ -35,7 +35,7 @@ export default function MemberRewardsBanner({
   }
 
   return (
-    <div className="sticky top-16 z-30 border-b border-border/60 bg-emerald-100/90 backdrop-blur supports-[backdrop-filter]:bg-emerald-100/70">
+    <div className="fixed left-0 right-0 top-[4.5rem] z-30 border-b border-border/60 bg-emerald-100/90 backdrop-blur supports-[backdrop-filter]:bg-emerald-100/70">
       <div className="relative mx-auto w-full max-w-8xl px-4 py-2 sm:px-6">
         <div className="flex flex-wrap items-center justify-center gap-2 pr-10 text-center">
           <p className="text-sm font-medium text-emerald-900">
