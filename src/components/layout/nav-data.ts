@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import { CircleUserRound, Gift, Home, Sparkles, Store } from "lucide-react"
+import { CircleUserRound, Gift, Store, TreePine } from "lucide-react"
 
 export type NavItem = {
   label: string
@@ -7,18 +7,16 @@ export type NavItem = {
   icon?: LucideIcon
 }
 
+/* Primary nav: Shop + Our Farm — categories are injected dynamically from the backend */
 export const PRIMARY_NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: (countryCode) => `/${countryCode}`, icon: Home },
-  { label: "Shop All", href: (countryCode) => `/${countryCode}/store`, icon: Store },
+  { label: "Shop", href: (countryCode) => `/${countryCode}/store`, icon: Store },
+]
+
+export const SECONDARY_NAV_ITEMS: NavItem[] = [
   {
-    label: "Gamma Gummies",
-    href: (countryCode) => `/${countryCode}/gamma-gummies`,
-    icon: Sparkles,
-  },
-  {
-    label: "Rewards",
-    href: (countryCode) => `/${countryCode}/content/loyalty-rewards`,
-    icon: Gift,
+    label: "Our Farm",
+    href: (countryCode) => `/${countryCode}/content/about`,
+    icon: TreePine,
   },
 ]
 
@@ -33,7 +31,8 @@ export const ACCOUNT_NAV_ITEMS: NavItem[] = [
     href: (countryCode) => `/${countryCode}/account/addresses`,
   },
   {
-    label: "Loyalty",
+    label: "Loyalty & Rewards",
     href: (countryCode) => `/${countryCode}/account/loyalty`,
+    icon: Gift,
   },
 ]

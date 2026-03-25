@@ -64,6 +64,15 @@
     --type-shadow-opacity: 0.44;
     --type-shadow-x: 1px;
     --type-shadow-y: 1px;
+
+    /* Brand photo treatment — earthy, warm forest tones */
+    --photo-brightness: 0.95;
+    --photo-contrast: 1.08;
+    --photo-saturate: 1.12;
+    --photo-sepia: 0.06;
+    --photo-hue-rotate: 0deg;
+    --photo-overlay: var(--brand-forest);
+    --photo-overlay-opacity: 0.08;
   }
 
   [data-theme="daylight"] {
@@ -113,6 +122,15 @@
     --type-shadow-opacity: 0.06;
     --type-shadow-x: 0px;
     --type-shadow-y: 1px;
+
+    /* Brand photo treatment — bright, airy, clean greens */
+    --photo-brightness: 1.06;
+    --photo-contrast: 0.98;
+    --photo-saturate: 1.18;
+    --photo-sepia: 0.02;
+    --photo-hue-rotate: 0deg;
+    --photo-overlay: var(--brand-forest);
+    --photo-overlay-opacity: 0.04;
   }
 
   [data-theme="midnight"] {
@@ -162,6 +180,15 @@
     --type-shadow-opacity: 0.3;
     --type-shadow-x: 0px;
     --type-shadow-y: 2px;
+
+    /* Brand photo treatment — moody, deep, cool tones */
+    --photo-brightness: 0.88;
+    --photo-contrast: 1.12;
+    --photo-saturate: 0.92;
+    --photo-sepia: 0.04;
+    --photo-hue-rotate: -5deg;
+    --photo-overlay: var(--brand-forest);
+    --photo-overlay-opacity: 0.12;
   }
 
   * {
@@ -234,6 +261,63 @@
 
   .page-top-offset {
     @apply pt-4 sm:pt-6;
+  }
+
+  /* ─── Brand Photo Treatment ─────────────────────────────
+   * Applies theme-aware color grading to farm/brand photography.
+   * Usage: <div class="brand-photo"><Image ... /></div>
+   * Each theme shifts the mood: indica=earthy, daylight=airy, midnight=moody
+   * The overlay adds a subtle brand-colored wash for cohesion.
+   * ─────────────────────────────────────────────────────── */
+  .brand-photo {
+    @apply relative overflow-hidden;
+  }
+
+  .brand-photo img,
+  .brand-photo > [data-nimg] {
+    filter:
+      brightness(var(--photo-brightness))
+      contrast(var(--photo-contrast))
+      saturate(var(--photo-saturate))
+      sepia(var(--photo-sepia))
+      hue-rotate(var(--photo-hue-rotate));
+    transition: filter 0.3s ease;
+  }
+
+  .brand-photo::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: hsl(var(--photo-overlay) / var(--photo-overlay-opacity));
+    mix-blend-mode: multiply;
+    transition: background 0.3s ease;
+  }
+
+  /* Hero variant — stronger treatment for full-width heroes */
+  .brand-photo-hero {
+    @apply relative overflow-hidden;
+  }
+
+  .brand-photo-hero img,
+  .brand-photo-hero > [data-nimg] {
+    filter:
+      brightness(calc(var(--photo-brightness) - 0.04))
+      contrast(calc(var(--photo-contrast) + 0.04))
+      saturate(calc(var(--photo-saturate) + 0.06))
+      sepia(var(--photo-sepia))
+      hue-rotate(var(--photo-hue-rotate));
+    transition: filter 0.3s ease;
+  }
+
+  .brand-photo-hero::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--photo-overlay) / 0.02) 0%,
+      hsl(var(--photo-overlay) / calc(var(--photo-overlay-opacity) + 0.06)) 100%
+    );
+    mix-blend-mode: multiply;
+    transition: background 0.3s ease;
   }
 
   /* border-triple removed */
@@ -522,6 +606,11 @@
     animation: none !important;
   }
 
+  .hero-ken-burns {
+    animation: none !important;
+    transform: scale(1) !important;
+  }
+
   /* Icon draw-on strokes: show immediately */
   .icon-draw-on {
     stroke-dashoffset: 0 !important;
@@ -557,8 +646,24 @@
 }
 
 @keyframes hero-fade-up {
-  0% { opacity: 0; transform: translateY(20px); }
+  0% { opacity: 0; transform: translateY(24px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-rule-expand {
+  0% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+/* Ken Burns — slow drift + zoom on hero background photo */
+.hero-ken-burns {
+  animation: hero-ken-burns 25s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes hero-ken-burns {
+  0% { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1.5%); }
 }
 
 @keyframes hero-scroll-hint {
