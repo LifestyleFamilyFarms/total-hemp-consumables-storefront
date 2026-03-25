@@ -179,8 +179,8 @@ const Payment = ({
             return
           }
 
-          const token = await createToken()
-          const opaqueData = token?.opaqueData
+          const tokenResult = await createToken()
+          const opaqueData = tokenResult?.opaqueData ?? tokenResult
 
           if (!opaqueData?.dataDescriptor || !opaqueData?.dataValue) {
             throw new Error("Could not tokenize card. Try again.")

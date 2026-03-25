@@ -15,18 +15,16 @@ export default async function Checkout({
   params,
   searchParams,
 }: {
-  params: { countryCode?: string }
-  searchParams: { step?: string } | Promise<{ step?: string }>
+  params: Promise<{ countryCode?: string }>
+  searchParams: Promise<{ step?: string }>
 }) {
-  const resolvedSearch =
-    searchParams && typeof (searchParams as any)?.then === "function"
-      ? await (searchParams as Promise<{ step?: string }>)
-      : (searchParams as { step?: string } | undefined) || {}
+  const resolvedParams = await params
+  const resolvedSearch = await searchParams
 
   const cart = await retrieveCart()
 
   if (!cart) {
-    const country = params?.countryCode || "us"
+    const country = resolvedParams?.countryCode || "us"
     redirect(`/${country}/cart`)
   }
 
@@ -51,7 +49,7 @@ export default async function Checkout({
               cart={cart}
               customer={customer}
               currentStep={currentStep}
-              countryCode={params?.countryCode || "us"}
+              countryCode={resolvedParams?.countryCode || "us"}
             />
           </PaymentWrapper>
           <CheckoutSummary cart={cart} />
