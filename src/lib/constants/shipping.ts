@@ -3,25 +3,31 @@ import { US_STATES, STATE_CODE_TO_NAME } from "./us-states"
 /**
  * States where we CANNOT ship hemp products.
  *
- * Blocked:
- *   - ID: requires 0.0% THC (not 0.3%), effectively bans all hemp products
- *   - KS, NE, NC, SC, WY: hemp shipping prohibited or unclear legality
- *   - TN: online/delivery hemp sales BANNED effective Jan 1, 2026 (face-to-face only)
+ * Updated 2026-04-02 based on deep compliance research.
+ * See hemp-compliance skill and vault reference:
+ * 07-References/2026-04-01-hemp-flower-shipping-restrictions-by-state.md
  *
- * Medical-only (excluded — we don't have medical licensing):
- *   - SD: medical-only hemp program
+ * CORRECTIONS from previous list:
+ *   - REMOVED NE, NC, SC (currently legal — moved to conditional/monitored)
+ *   - ADDED AL, CA, HI, IA, IN, KY, LA, TX, UT, WY (all ban smokable hemp)
  *
- * See hemp-compliance skill for full state-by-state reference.
+ * Laws change frequently — legal counsel should review before launch.
  */
 export const BLOCKED_SHIPPING_STATES = new Set([
-  "Idaho",
-  "Kansas",
-  "Nebraska",
-  "North Carolina",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
-  "Wyoming",
+  "Alabama", // HB 445 (Jul 2025) — smokable hemp = Class C felony
+  "California", // AB 8 (Jan 2026) — ALL hemp flower/inhalables banned
+  "Hawaii", // Admin rules (2020) — smokable hemp flower banned
+  "Idaho", // HB 126 — 0.0% THC requirement
+  "Indiana", // SEA 516 — smokable hemp = Class A misdemeanor
+  "Iowa", // HF 2581 (2020) — ALL inhalable hemp banned
+  "Kansas", // HB 2167 — smokable flower/vapes/teas banned
+  "Kentucky", // 302 KAR 50:070 — raw flower retail sale banned (B2B only)
+  "Louisiana", // Act 752 (Jan 2025) — smokable hemp flower banned
+  "South Dakota", // SB 39 (2026) — smokable flower + intoxicating hemp banned
+  "Tennessee", // HB 1376 (Jan 2026) — online hemp sales banned (face-to-face only)
+  "Texas", // DSHS rules (Mar 31, 2026) — all smokable hemp banned
+  "Utah", // State hemp regs — smokable hemp banned (oils/edibles only)
+  "Wyoming", // SF 32 (2024) — hostile enforcement, 10th Circuit upheld ban
 ])
 
 const NAME_TO_CODE = new Map(US_STATES.map((s) => [s.label, s.value]))
@@ -51,13 +57,87 @@ export function blockedStateName(code: string): string | null {
  * These states are still in ALLOWED_SHIPPING_STATES but need product-level
  * validation at checkout or catalog filtering before launch.
  */
+/**
+ * IMPORTANT: Total Hemp sells THCA, Delta-9, CBD, AND CBG products.
+ * THCA/Delta-9 are intoxicating — they trigger "intoxicating hemp" bans
+ * in states that would otherwise allow non-intoxicating CBG.
+ *
+ * These states need product-level filtering or catalog restrictions.
+ * THCA/Delta-9 products CANNOT ship to states marked HIGH RISK.
+ *
+ * Last audited: 2026-04-02.
+ */
 export const EXTRA_COMPLIANCE_STATES = [
-  { code: "NJ", label: "New Jersey", note: "0.4mg total THC cap, 21+, beverage restrictions after Apr 2026" },
-  { code: "NY", label: "New York", note: "CBD in food/drink banned, fines $250-$600" },
-  { code: "OH", label: "Ohio", note: "SB 56 banned intoxicating hemp products Dec 2025" },
-  { code: "AL", label: "Alabama", note: "Medical-only program — review product catalog" },
-  { code: "AR", label: "Arkansas", note: "Medical-only program — review product catalog" },
-  { code: "MS", label: "Mississippi", note: "Medical-only, 20:1 CBD:THC ratio, max 2.5mg THC/mL" },
+  {
+    code: "AR",
+    label: "Arkansas",
+    note: "1mg THC/container cap (SB 533). Inhalable hemp restricted. BLOCKED for THCA/D9.",
+  },
+  {
+    code: "MS",
+    label: "Mississippi",
+    note: "20:1 CBD:THC ratio. AG says most consumable hemp illegal. BLOCKED for THCA/D9.",
+  },
+  {
+    code: "CT",
+    label: "Connecticut",
+    note: "Intoxicating hemp restricted to regulated cannabis market. CBD/CBG OK, THCA/D9 BLOCKED.",
+  },
+  {
+    code: "MA",
+    label: "Massachusetts",
+    note: "May channel intoxicating hemp to cannabis market. CBD/CBG OK, THCA/D9 HIGH RISK.",
+  },
+  {
+    code: "VT",
+    label: "Vermont",
+    note: "Intoxicating hemp channeled to cannabis market. CBD/CBG OK, THCA/D9 BLOCKED.",
+  },
+  {
+    code: "OH",
+    label: "Ohio",
+    note: "SB 56 bans intoxicating hemp (Mar 2026). CBD/CBG likely exempt, THCA/D9 BLOCKED.",
+  },
+  {
+    code: "NJ",
+    label: "New Jersey",
+    note: "0.4mg total THC cap (Jan 2026), 21+. THCA/D9 products almost certainly over cap.",
+  },
+  {
+    code: "VA",
+    label: "Virginia",
+    note: "2mg/package THC cap, retail registration, child-resistant packaging.",
+  },
+  {
+    code: "NY",
+    label: "New York",
+    note: "CBD in food/drink banned (fines $250-$600). Smokable flower not affected.",
+  },
+  {
+    code: "NE",
+    label: "Nebraska",
+    note: "Currently legal, AG pushing for ban. LB 316 stalled. Monitor.",
+  },
+  {
+    code: "NC",
+    label: "North Carolina",
+    note: "Currently legal. HB 328 stalled. THCa-friendly for now.",
+  },
+  {
+    code: "SC",
+    label: "South Carolina",
+    note: "Currently legal. Bills 3924, 4758 pending. Monitor.",
+  },
+  {
+    code: "MN",
+    label: "Minnesota",
+    note: "OCM licensing required. Intoxicating hemp may need cannabis market channel.",
+  },
+  {
+    code: "FL",
+    label: "Florida",
+    note: "Currently very THCa-friendly. No restrictions. Monitor — legislation pending.",
+  },
 ] as const
 
 export const EXTRA_COMPLIANCE_STATE_CODES = new Set(
@@ -65,21 +145,16 @@ export const EXTRA_COMPLIANCE_STATE_CODES = new Set(
 )
 
 export const ALLOWED_SHIPPING_STATES = [
-  "Alabama",
   "Alaska",
   "Arizona",
   "Arkansas",
-  "California",
+  "Colorado",
+  "Connecticut",
   "Delaware",
   "District of Columbia",
   "Florida",
   "Georgia",
-  "Hawaii",
   "Illinois",
-  "Indiana",
-  "Iowa",
-  "Kentucky",
-  "Louisiana",
   "Maine",
   "Maryland",
   "Massachusetts",
@@ -88,11 +163,13 @@ export const ALLOWED_SHIPPING_STATES = [
   "Mississippi",
   "Missouri",
   "Montana",
+  "Nebraska",
   "Nevada",
   "New Hampshire",
   "New Jersey",
   "New Mexico",
   "New York",
+  "North Carolina",
   "North Dakota",
   "Ohio",
   "Oklahoma",
@@ -100,8 +177,7 @@ export const ALLOWED_SHIPPING_STATES = [
   "Pennsylvania",
   "Puerto Rico",
   "Rhode Island",
-  "Texas",
-  "Utah",
+  "South Carolina",
   "Vermont",
   "Virginia",
   "Washington",
@@ -151,9 +227,7 @@ const expandedAllowlistValues = SHIPSTATION_SERVICE_ALLOWLIST
   : []
 
 export const SHIPSTATION_SERVICE_ALLOWLIST_SET =
-  expandedAllowlistValues.length > 0
-    ? new Set(expandedAllowlistValues)
-    : null
+  expandedAllowlistValues.length > 0 ? new Set(expandedAllowlistValues) : null
 
 /** Ordered most-specific to least-specific to avoid keyword collisions (e.g. "Priority Express" → express wins). */
 export const DELIVERY_ESTIMATE_MAP: Record<string, string> = {
@@ -179,9 +253,8 @@ export function getDeliveryEstimate(serviceName: string): string | null {
 export type CheckoutShippingMode = "pickup_only" | "full"
 
 const resolveCheckoutShippingMode = (): CheckoutShippingMode => {
-  const mode = process.env.NEXT_PUBLIC_CHECKOUT_SHIPPING_MODE
-    ?.trim()
-    .toLowerCase()
+  const mode =
+    process.env.NEXT_PUBLIC_CHECKOUT_SHIPPING_MODE?.trim().toLowerCase()
 
   return mode === "full" ? "full" : "pickup_only"
 }
