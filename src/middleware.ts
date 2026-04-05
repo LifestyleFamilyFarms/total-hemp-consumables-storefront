@@ -134,6 +134,7 @@ export async function middleware(request: NextRequest) {
     "'self'",
     AUTHNET,
     `'nonce-${NONCE}'`,
+    "'unsafe-inline'",
   ])
 
   if (isProd) {

@@ -98,6 +98,7 @@ export const AuthorizeNetCardContainer = ({
             </p>
             <Card
               options={{
+                targetOrigin: "'*'",
                 style: (() => {
                   const cs =
                     typeof window !== "undefined"
